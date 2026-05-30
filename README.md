@@ -1,104 +1,176 @@
-# Shammichalas — Creative Portfolio
+<!-- HEADER BANNER -->
+<div align="center">
 
-A cinematic, interactive, and immersive developer portfolio built on a highly polished web tech stack. The website is crafted to offer an unforgettable first impression by blending standard portfolio details with high-end, responsive 3D physics and hardware-accelerated rendering.
+```
+░██████╗██╗░░██╗░█████╗░███╗░░░███╗███╗░░░███╗██╗░█████╗░██╗░░██╗░█████╗░██╗░░░░░░█████╗░░██████╗
+██╔════╝██║░░██║██╔══██╗████╗░████║████╗░████║██║██╔══██╗██║░░██║██╔══██╗██║░░░░░██╔══██╗██╔════╝
+╚█████╗░███████║███████║██╔████╔██║██╔████╔██║██║██║░░╚═╝███████║███████║██║░░░░░███████║╚█████╗░
+░╚═══██╗██╔══██║██╔══██║██║╚██╔╝██║██║╚██╔╝██║██║██║░░██╗██╔══██║██╔══██║██║░░░░░██╔══██║░╚═══██╗
+██████╔╝██║░░██║██║░░██║██║░╚═╝░██║██║░╚═╝░██║██║╚█████╔╝██║░░██║██║░░██║███████╗██║░░██║██████╔╝
+╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝╚═════╝░
+```
 
----
+<img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&weight=700&size=22&duration=3000&pause=1000&color=F08080&center=true&vCenter=true&width=600&lines=Creative+Developer+%F0%9F%8E%AC;Cinematic+UI+Architect+%F0%9F%8E%A8;3D+Physics+%26+WebGL+Enthusiast+%E2%9A%A1;Building+the+Unforgettable+%F0%9F%94%A5" alt="Typing SVG" />
 
-## 🌌 The Cinematic Hero Section
-
-The **Hero Section** (`HeroSection.jsx`) is designed to feel like an interactive video game entrance or a premium digital canvas. Rather than relying on simple CSS backgrounds or heavy, unoptimized video feeds, it implements a highly advanced **Frame-by-Frame Canvas Sequence Engine**.
-
-### Core Architecture:
-1. **Preloaded Canvas Sequence**: 
-   - Preloads **40 high-resolution cinematic frames** (`ezgif-frame-001.jpg` to `040.jpg`) on load.
-   - Tracks load progress dynamically through a custom visual preloader screen (`Loader.jsx`) which leverages `<AnimatePresence>` for elegant fadeouts.
-   - Provides a safety timeout fallback mechanism to automatically resolve loading states in less-than-ideal network environments.
-2. **Responsive Canvas Cover Rendering**:
-   - Uses an HTML5 `<canvas>` that resizes responsively to match both mobile screens and ultra-wide desktop configurations.
-   - Calculates custom scale ratios (similar to CSS `object-fit: cover`) to keep coordinates centered and cropped with maximum visual balance.
-3. **Cursor-Reactive Spotlight Overlay**:
-   - Captures cursor movement in real time and updates CSS variables (`--mouse-x` and `--mouse-y`).
-   - Uses these coordinates to paint a soft spotlight glow overlay that dynamically tracks across the viewport, reacting to your every hover.
-4. **Floating Interactive Tech Stack Node Net**:
-   - Displays floating **Glassmorphic Tech Node Cards** representing core competencies (React, Python, AWS, Docker, OpenAI, etc.).
-   - Integrates glowing connection lines (`ConnectionLines.jsx`) that form a living constellation linking the floating cards across the canvas space.
+</div>
 
 ---
 
-## 🎬 GSAP ScrollTrigger Integration
+<!-- ABOUT SECTION -->
+<div align="center">
 
-**GSAP (GreenSock Animation Platform)** serves as the high-precision timeline sequencer, driving all scroll-based changes with fluid, hardware-accelerated responsiveness.
+## 🎬 Who Am I?
 
-### How GSAP is Used:
-* **Frame Sequence Scrubbing**:
-  - Leverages GSAP’s `ScrollTrigger` to bind the 40-frame sequence to the user's scrollbar.
-  - As you scroll down, GSAP scrubs the timeline, drawing successive frames onto the `<canvas>` dynamically based on scroll depth.
-* **Cinematic Camera Zoom**:
-  - As the sequence advances, a GSAP timeline slowly scales the canvas element up (`scale(1.02)` to `scale(1.06)`).
-  - This mimics a physical camera sliding forward, giving the user a deep 3D flying feel.
-* **Staggered Entrance Animation**:
-  - Coordinates a staggered load-in timeline (`gsap.timeline`) for the hero text components (small tags, headings, descriptions, call-to-actions, and social links).
-  - Animates layout coordinates smoothly upward (`y: 25` to `0`) using a buttery ease (`ease: 'power3.out'`).
-* **Sequential Fadeouts**:
-  - Automatically fades out and lifts text blocks one-by-one as the user scrolls, clearing the viewport and maintaining clean contrast as the canvas frame transitions.
+</div>
 
----
+> *"I don't build websites. I craft experiences that leave a mark."*
 
-## ⚡ Framer Motion & Physics Engine
+I'm **Shammichalas** — a developer obsessed with the intersection of **cinema, code, and creativity**. I build portfolios and web apps that feel less like software and more like *interactive films*. Every pixel is intentional. Every animation has a purpose. Every project tells a story.
 
-While GSAP orchestrates complex scroll timelines, **Framer Motion** powers individual component interactions, spring-based micro-animations, and fluid 3D transformations.
-
-### How Framer Motion is Used:
-* **Buttery Spring Physics**:
-  - Floating tech cards (`FloatingCards.jsx`) monitor user mouse coordinates.
-  - Coordinate inputs are mapped through Framer Motion’s `useSpring` hooks to smooth out abrupt mouse movements with custom mass, stiffness, and damping coefficients.
-* **3D Mouse Parallax & Tilting**:
-  - Uses `useTransform` to translate mouse movements into custom 3D rotations (`rotateX`, `rotateY`) and coordinates (`x`, `y`).
-  - Assigns individual **depth coefficients** to each card (e.g. `0.24` for Docker, `0.10` for Python). Cards with higher depth translate further, generating a highly convincing **3D parallax effect** relative to cursor movement.
-* **Slow Floating Oscillation**:
-  - Every floating card runs a continuous, independent floating animation loop (`y: [0, -floatAmplitude, 0]`) with staggered delays and randomized durations, ensuring the UI always feels alive.
-* **Accessibility First**:
-  - Uses a window media query listener to check for `@media (prefers-reduced-motion: reduce)`.
-  - Dynamically scales down or completely disables floating physics if the user's system preferences require reduced motion, ensuring premium accessibility compliance.
-* **Immersive Skills Galaxy**:
-  - Inside `SkillsGalaxy.jsx`, Framer Motion animates SVG path trace-out vectors, active orbital expansions, and glowing solar structures.
-* **3D Patent Showcase Tilt**:
-  - Inside `PatentShowcase.jsx`, cards tilt on hover using spring physics to catch simulated ceiling reflections.
+- 🎥 **Cinematic UI** — Frame-by-frame canvas sequences, physics-driven interactions
+- ⚡ **Hardware-accelerated rendering** — WebGL, Three.js, GPU-pushed visuals
+- 🎨 **Design-first development** — I obsess over typography, motion, and spatial composition
+- 🕹️ **Game-like interfaces** — UI that rewards curiosity and rewards exploration
 
 ---
 
-## 🛠️ The Premium Tech Stack
+<!-- TECH STACK -->
+## 🛠️ The Arsenal
 
-The application relies on a modern, high-performance web development stack:
+<div align="center">
 
-*   **Vite**: The next-generation frontend tool for blazing-fast local development and builds.
-*   **React.js**: A component-based reactive framework driving UI state.
-*   **Tailwind CSS**: Utility-first CSS framework for clean, responsive glassmorphic layouts.
-*   **GSAP + ScrollTrigger**: Advanced canvas frame interpolation and scroll timeline coordination.
-*   **Framer Motion**: Spring physics, custom vectors, interactive parallax, and motion transitions.
-*   **Lucide Icons**: Crisp, vector-based SVG iconography.
+### ⚙️ Core Stack
+
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white)
+
+### 🎨 Motion & Visual
+
+![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)
+![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=black)
+![WebGL](https://img.shields.io/badge/WebGL-990000?style=for-the-badge&logo=webgl&logoColor=white)
+![Canvas API](https://img.shields.io/badge/Canvas_API-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+
+### 🧰 Tools & Backend
+
+![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
+![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
+
+</div>
 
 ---
 
-## 🚀 Getting Started
+<!-- FEATURED PROJECT -->
+## 🌟 Signature Work
 
-### Prerequisites
-Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+### 🎬 [Shammichalas — Creative Portfolio](https://github.com/Shammichalas/Shammichalas)
 
-### Installation
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/shammichalas/Shammichalas.git
-   ```
-2. Navigate to the project directory:
-   ```bash
-   cd Shammichalas
-   ```
-3. Install the dependencies:
-   ```bash
-   npm install
-   ```
-4. Launch the local development server:
-   ```bash
-   npm run dev
-   ```
+> *A cinematic, interactive developer portfolio that blurs the line between website and film.*
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   🎞️  40-Frame Canvas Sequence Engine                       │
+│   🖱️  Cursor-reactive spotlight overlay                     │
+│   ⚡  Hardware-accelerated 3D physics                       │
+│   📱  Fully responsive — mobile to ultra-wide               │
+│   🎭  AnimatePresence-driven scene transitions              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**What makes it cinematic:**
+- Preloads **40 high-resolution frames** to simulate video without the bloat
+- A **custom preloader** that tracks load progress with elegant fade animations
+- The hero section reacts to your **every cursor movement** — it's alive
+- Object-fit cover logic built natively in Canvas for pixel-perfect crops
+
+---
+
+<!-- GITHUB STATS -->
+## 📊 By The Numbers
+
+<div align="center">
+
+<img height="180em" src="https://github-readme-stats.vercel.app/api?username=shammichalas&show_icons=true&theme=radical&bg_color=0d1117&title_color=F08080&text_color=c9d1d9&icon_color=F08080&border_color=30363d&hide_border=false&count_private=true"/>
+
+<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=shammichalas&layout=compact&theme=radical&bg_color=0d1117&title_color=F08080&text_color=c9d1d9&border_color=30363d&hide_border=false"/>
+
+</div>
+
+<div align="center">
+
+[![GitHub Streak](https://streak-stats.demolab.com?user=shammichalas&theme=radical&background=0d1117&border=30363d&ring=F08080&fire=F08080&currStreakLabel=F08080)](https://git.io/streak-stats)
+
+</div>
+
+---
+
+<!-- PHILOSOPHY -->
+## 🧠 My Design Philosophy
+
+```javascript
+const shammichalas = {
+  belief:     "Every interface should feel like it was made for exactly one person.",
+  approach:   "Cinema-first. Performance-obsessed. Detail-maniacal.",
+  currently:  "Pushing the boundaries of what a portfolio can feel like.",
+  mantra:     "Don't build. Compose.",
+
+  tools: {
+    motion:   ["GSAP", "Framer Motion", "CSS Keyframes"],
+    render:   ["Three.js", "WebGL", "Canvas API"],
+    stack:    ["React", "Next.js", "TypeScript", "Tailwind"],
+  },
+
+  superpower: "Turning static UIs into interactive experiences 🎬",
+};
+```
+
+---
+
+<!-- ACTIVITY GRAPH -->
+## 🔥 Activity
+
+<div align="center">
+
+[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=shammichalas&bg_color=0d1117&color=F08080&line=F08080&point=ffffff&area=true&hide_border=true)](https://github.com/ashutosh00710/github-readme-activity-graph)
+
+</div>
+
+---
+
+<!-- CONNECT -->
+## 📡 Reach The Director
+
+<div align="center">
+
+*I'm always open to collabs on ambitious, visually-rich projects.*
+
+[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shammichalas)
+[![Portfolio](https://img.shields.io/badge/Portfolio-F08080?style=for-the-badge&logo=googlechrome&logoColor=white)](#)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](#)
+[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](#)
+
+</div>
+
+---
+
+<div align="center">
+
+```
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+▓                                                ▓
+▓   "The best interfaces are the ones people     ▓
+▓    forget are interfaces."                     ▓
+▓                              — Shammichalas    ▓
+▓                                                ▓
+▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+```
+
+![Profile Views](https://komarev.com/ghpvc/?username=shammichalas&color=F08080&style=for-the-badge&label=SCENE+VIEWS)
+
+</div>

@@ -122,9 +122,11 @@ export default function HeroSection() {
       { length: activeFrameCount },
       (_, i) => {
         const frameNum = String(i + 1).padStart(3, "0");
-        return isMobile
+        const relativePath = isMobile
           ? `hero-section-mob/ezgif-frame-${frameNum}.jpg`
           : `hero-section/ezgif-frame-${frameNum}.jpg`;
+        const cleanBaseUrl = baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+        return `${cleanBaseUrl}${relativePath}`;
       }
     );
 
@@ -134,10 +136,10 @@ export default function HeroSection() {
         console.warn("Preloader safety timeout triggered. Proceeding with partially loaded assets.");
         // Fill in missing frames with a fallback SVG placeholder to keep sequence intact
         for (let idx = 0; idx < activeFrameCount; idx++) {
-          if (!loadedImages.at(idx)) {
+          if (!loadedImages[idx]) {
             const fallbackImg = new Image();
             fallbackImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%2302040a"/><text x="50%" y="50%" fill="%23f97316" font-size="24" text-anchor="middle">Loading...</text></svg>';
-            loadedImages.splice(idx, 1, fallbackImg);
+            loadedImages[idx] = fallbackImg;
           }
         }
         setImages([...loadedImages]);
@@ -165,7 +167,7 @@ export default function HeroSection() {
       img.onload = () => {
         if (!isMounted) return;
         loadedCount++;
-        loadedImages.splice(idx, 1, img);
+        loadedImages[idx] = img;
         setPreloadProgress((loadedCount / activeFrameCount) * 100);
 
         if (loadedCount === activeFrameCount) {
@@ -182,7 +184,7 @@ export default function HeroSection() {
         // Fallback placeholder to prevent lockups on error
         const fallbackImg = new Image();
         fallbackImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%2302040a"/><text x="50%" y="50%" fill="%23f97316" font-size="24" text-anchor="middle">Loading Frame...</text></svg>';
-        loadedImages.splice(idx, 1, fallbackImg);
+        loadedImages[idx] = fallbackImg;
         setPreloadProgress((loadedCount / activeFrameCount) * 100);
 
         if (loadedCount === activeFrameCount) {

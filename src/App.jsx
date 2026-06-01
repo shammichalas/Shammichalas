@@ -36,6 +36,9 @@ export default function App() {
     gsap.ticker.add(gsapTickerCallback);
     gsap.ticker.lagSmoothing(0);
 
+    // Call ScrollTrigger.refresh() immediately after Lenis is configured
+    ScrollTrigger.refresh();
+
     // Dynamic Background & Particle Evolution System using ScrollTriggers
     // Monitors section bounds and transitions particle generator modes
     const triggerConfigs = [
@@ -103,7 +106,7 @@ export default function App() {
       <HeroSection />
 
       {/* 1.5. Layout Overlap Spacer for Hero to Skills Transition */}
-      <div className="h-screen w-full pointer-events-none" />
+      <div className="h-screen w-full pointer-events-none bg-slate-950" />
 
       {/* 2. Concentric 3D Skills Galaxy Nodes */}
       <SkillsGalaxy />

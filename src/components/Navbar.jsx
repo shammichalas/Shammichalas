@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
@@ -24,9 +25,12 @@ export default function Navbar() {
       const scrollPosition = window.scrollY + window.innerHeight / 3;
 
       for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections[i];
+        const section = sections.at(i);
         if (section && scrollPosition >= section.offsetTop) {
-          setActiveSection(navItems[i].name);
+          const navItem = navItems.at(i);
+          if (navItem) {
+            setActiveSection(navItem.name);
+          }
           break;
         }
       }

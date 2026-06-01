@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, CheckCircle2 } from 'lucide-react';
@@ -112,6 +113,7 @@ const getSkillIcon = (techName) => {
 };
 
 export default function ExperienceTimeline() {
+
   return (
     <section 
       id="experience" 

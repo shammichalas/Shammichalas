@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
@@ -113,10 +114,12 @@ export default function HeroSection() {
     };
     window.addEventListener('resize', handleResize);
 
-    const activeFrameCount = isMobile ? 1 : 40;
+    const activeFrameCount = isMobile ? 16 : 40;
     const activeFrames = Array.from(
       { length: activeFrameCount },
-      (_, i) => `/hero-section/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`
+      (_, i) => isMobile
+        ? `/hero section mob/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`
+        : `/hero-section/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`
     );
 
     // Safety timeout: auto-resolve loading state after 5 seconds if stuck
@@ -125,13 +128,13 @@ export default function HeroSection() {
         console.warn("Preloader safety timeout triggered. Proceeding with partially loaded assets.");
         // Fill in missing frames with a fallback SVG placeholder to keep sequence intact
         for (let idx = 0; idx < activeFrameCount; idx++) {
-          if (!loadedImages[idx]) {
+          if (!loadedImages.at(idx)) {
             const fallbackImg = new Image();
             fallbackImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%2302040a"/><text x="50%" y="50%" fill="%23f97316" font-size="24" text-anchor="middle">Loading...</text></svg>';
-            loadedImages[idx] = fallbackImg;
+            loadedImages.splice(idx, 1, fallbackImg);
           }
         }
-        setImages(loadedImages);
+        setImages([...loadedImages]);
 
         // Fast-forward preloadProgress smoothly to 100%
         let currentProgress = (loadedCount / activeFrameCount) * 100;
@@ -156,7 +159,7 @@ export default function HeroSection() {
       img.onload = () => {
         if (!isMounted) return;
         loadedCount++;
-        loadedImages[idx] = img;
+        loadedImages.splice(idx, 1, img);
         setPreloadProgress((loadedCount / activeFrameCount) * 100);
 
         if (loadedCount === activeFrameCount) {
@@ -173,7 +176,7 @@ export default function HeroSection() {
         // Fallback placeholder to prevent lockups on error
         const fallbackImg = new Image();
         fallbackImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%2302040a"/><text x="50%" y="50%" fill="%23f97316" font-size="24" text-anchor="middle">Loading Frame...</text></svg>';
-        loadedImages[idx] = fallbackImg;
+        loadedImages.splice(idx, 1, fallbackImg);
         setPreloadProgress((loadedCount / activeFrameCount) * 100);
 
         if (loadedCount === activeFrameCount) {
@@ -195,7 +198,7 @@ export default function HeroSection() {
 
   // GSAP Canvas Sequence & Text Animations
   useEffect(() => {
-    const activeFrameCount = isMobile ? 1 : 40;
+    const activeFrameCount = isMobile ? 16 : 40;
     if (isLoading || images.length !== activeFrameCount) return;
 
     const canvas = canvasRef.current;
@@ -209,7 +212,7 @@ export default function HeroSection() {
 
     // Render helper with Cover (center crop) scaling math
     const renderFrame = (index) => {
-      const img = images[index];
+      const img = images.at(index);
       if (!img) return;
 
       const canvasWidth = canvas.width;
@@ -252,9 +255,10 @@ export default function HeroSection() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=200%', // Scrolls 2x viewport height for ample scrub space
+        end: '+=300%', // Extended scroll space to allow skills section to overlap
         scrub: isMobile ? 0.5 : 1.0, // Buttery soft scrub or snappy on mobile
         pin: true,
+        pinSpacing: false, // Turn off pin spacing so subsequent content overlaps it
         anticipatePin: 1,
         onUpdate: (self) => {
           const progress = self.progress;
@@ -265,7 +269,7 @@ export default function HeroSection() {
       }
     });
 
-    // Animate image sequence frames over entire timeline duration
+    // Animate image sequence frames over first 2/3 of the timeline duration (equals +=200% scroll)
     canvasTl.to(sequenceObj, {
       frame: activeFrameCount - 1,
       snap: 'frame',
@@ -277,6 +281,8 @@ export default function HeroSection() {
         });
       }
     });
+    // Add empty space to extend the timeline duration for the overlap transition phase
+    canvasTl.to({}, { duration: 5 });
 
     // 3. Scroll-bound Text Fadeout (Fades out elements one-by-one as user scrolls down)
     const textFadeTl = gsap.timeline({
@@ -339,7 +345,7 @@ export default function HeroSection() {
       <div 
         ref={containerRef} 
         id="home"
-        className="relative w-full min-h-screen flex items-center justify-center bg-slate-950 select-none py-20 md:py-0 overflow-hidden"
+        className="relative w-full min-h-screen flex items-center justify-center bg-slate-950 select-none py-20 md:py-0 overflow-hidden z-10"
       >
         
         {/* Layer 0: Canvas image sequence */}

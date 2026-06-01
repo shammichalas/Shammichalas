@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
 import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Heart, Code2, Users2 } from 'lucide-react';

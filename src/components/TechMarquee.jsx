@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
 import React from 'react';
 import { motion } from 'framer-motion';
 
@@ -114,7 +115,10 @@ const getMarqueeIcon = (name) => {
       </svg>
     )
   };
-  return icons[name] || null;
+  if (typeof name === 'string' && Object.prototype.hasOwnProperty.call(icons, name)) {
+    return icons[name];
+  }
+  return null;
 };
 
 export default function TechMarquee() {

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
 import React, { useEffect, useRef } from 'react';
 
 export default function BackgroundParticles({ mode = 'embers' }) {

@@ -115,11 +115,15 @@ export default function HeroSection() {
     window.addEventListener('resize', handleResize);
 
     const activeFrameCount = isMobile ? 16 : 40;
+    const baseUrl = import.meta.env.BASE_URL || '/';
     const activeFrames = Array.from(
       { length: activeFrameCount },
-      (_, i) => isMobile
-        ? `/hero section mob/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`
-        : `/hero-section/ezgif-frame-${String(i + 1).padStart(3, "0")}.jpg`
+      (_, i) => {
+        const frameNum = String(i + 1).padStart(3, "0");
+        return isMobile
+          ? `${baseUrl}hero-section-mob/ezgif-frame-${frameNum}.jpg`
+          : `${baseUrl}hero-section/ezgif-frame-${frameNum}.jpg`;
+      }
     );
 
     // Safety timeout: auto-resolve loading state after 5 seconds if stuck

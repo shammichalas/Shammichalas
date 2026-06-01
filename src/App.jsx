@@ -102,6 +102,9 @@ export default function App() {
       {/* 1. Cinematic Canvas Scrub Hero Section */}
       <HeroSection />
 
+      {/* 1.5. Layout Overlap Spacer for Hero to Skills Transition */}
+      <div className="h-screen w-full pointer-events-none" />
+
       {/* 2. Concentric 3D Skills Galaxy Nodes */}
       <SkillsGalaxy />
 

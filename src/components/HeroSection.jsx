@@ -260,9 +260,10 @@ export default function HeroSection() {
       scrollTrigger: {
         trigger: containerRef.current,
         start: 'top top',
-        end: '+=300%', // Extended scroll space to allow skills section to overlap
+        end: '+=200%', // 100% scroll for canvas scrubbing + 100% scroll for skills overlap
         scrub: isMobile ? 0.5 : 1.0, // Buttery soft scrub or snappy on mobile
         pin: true,
+        pinSpacing: false, // Allows subsequent sections to scroll up and overlap
         anticipatePin: 1,
         onUpdate: (self) => {
           const progress = self.progress;
@@ -273,7 +274,7 @@ export default function HeroSection() {
       }
     });
 
-    // Animate image sequence frames over first 2/3 of the timeline duration (equals +=200% scroll)
+    // Animate image sequence frames over first 50% of the scroll timeline
     canvasTl.to(sequenceObj, {
       frame: activeFrameCount - 1,
       snap: 'frame',
@@ -285,8 +286,8 @@ export default function HeroSection() {
         });
       }
     });
-    // Add empty space to extend the timeline duration for the overlap transition phase
-    canvasTl.to({}, { duration: 5 });
+    // Pinned idle phase: Hero canvas stays fixed on last frame while Skills section overlaps it
+    canvasTl.to({}, { duration: 10 });
 
     // 3. Scroll-bound Text Fadeout (Fades out elements one-by-one as user scrolls down)
     const textFadeTl = gsap.timeline({

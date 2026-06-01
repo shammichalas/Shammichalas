@@ -102,9 +102,6 @@ export default function App() {
       {/* 1. Cinematic Canvas Scrub Hero Section */}
       <HeroSection />
 
-      {/* Spacer to allow the pinned Hero section canvas animation to play fully before SkillsGalaxy overlaps it */}
-      <div className="h-[200vh] pointer-events-none" />
-
       {/* 2. Concentric 3D Skills Galaxy Nodes */}
       <SkillsGalaxy />
 

@@ -240,7 +240,7 @@ export default function SkillsGalaxy() {
       {/* Cinematic Cosmic Nebula Background Layer */}
       <div className="absolute inset-0 w-full h-full pointer-events-none -z-20 overflow-hidden opacity-[0.25] select-none">
         <img 
-          src={`${import.meta.env.BASE_URL || '/'}skills_galaxy_bg.png`} 
+          src="skills_galaxy_bg.png" 
           alt="Cosmic Space Nebula" 
           className="w-full h-full object-cover scale-[1.05] animate-pulse"
           style={{ animationDuration: '12s' }}

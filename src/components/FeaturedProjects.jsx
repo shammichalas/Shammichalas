@@ -264,7 +264,7 @@ export default function FeaturedProjects() {
         className="absolute inset-0 w-full h-[120%] pointer-events-none -z-20 overflow-hidden opacity-[0.26] select-none"
       >
         <img 
-          src={`${import.meta.env.BASE_URL || '/'}stellar_blueprint_bg.png`} 
+          src="stellar_blueprint_bg.png" 
           alt="Parallax Cyber-Stellar digital blueprint background" 
           className="w-full h-full object-cover"
         />

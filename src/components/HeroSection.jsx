@@ -103,6 +103,8 @@ export default function HeroSection() {
   const [isLoading, setIsLoading] = useState(true);
   const [preloadProgress, setPreloadProgress] = useState(0);
 
+  const activeFrameCount = isMobile ? 16 : 40;
+
   // Preload Images
   useEffect(() => {
     let loadedCount = 0;
@@ -114,15 +116,15 @@ export default function HeroSection() {
     };
     window.addEventListener('resize', handleResize);
 
-    const activeFrameCount = isMobile ? 16 : 40;
     const baseUrl = import.meta.env.BASE_URL || '/';
+    // Use relative paths to prevent root/subpath deployment 404s
     const activeFrames = Array.from(
       { length: activeFrameCount },
       (_, i) => {
         const frameNum = String(i + 1).padStart(3, "0");
         return isMobile
-          ? `${baseUrl}hero-section-mob/ezgif-frame-${frameNum}.jpg`
-          : `${baseUrl}hero-section/ezgif-frame-${frameNum}.jpg`;
+          ? `hero-section-mob/ezgif-frame-${frameNum}.jpg`
+          : `hero-section/ezgif-frame-${frameNum}.jpg`;
       }
     );
 
@@ -202,7 +204,6 @@ export default function HeroSection() {
 
   // GSAP Canvas Sequence & Text Animations
   useEffect(() => {
-    const activeFrameCount = isMobile ? 16 : 40;
     if (isLoading || images.length !== activeFrameCount) return;
 
     const canvas = canvasRef.current;
@@ -262,7 +263,6 @@ export default function HeroSection() {
         end: '+=300%', // Extended scroll space to allow skills section to overlap
         scrub: isMobile ? 0.5 : 1.0, // Buttery soft scrub or snappy on mobile
         pin: true,
-        pinSpacing: false, // Turn off pin spacing so subsequent content overlaps it
         anticipatePin: 1,
         onUpdate: (self) => {
           const progress = self.progress;

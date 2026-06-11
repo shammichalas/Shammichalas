@@ -273,6 +273,10 @@ export default function SkillsGalaxy() {
   const rotateX = useTransform(smoothCardY, [-0.5, 0.5], [8, -8]);
   const rotateY = useTransform(smoothCardX, [-0.5, 0.5], [-8, 8]);
 
+  // Card cursor highlight coordinates (defined at top level to obey rules of hooks)
+  const highlightLeft = useTransform(smoothCardX, [-0.5, 0.5], ['0%', '100%']);
+  const highlightTop = useTransform(smoothCardY, [-0.5, 0.5], ['0%', '100%']);
+
   // Ring radii calculation
   const getRingRadius = (ringIdx) => {
     if (isMobile) return [50, 95, 140][ringIdx];
@@ -373,7 +377,7 @@ export default function SkillsGalaxy() {
           }}
           className="w-full lg:w-[42%] flex flex-col justify-center z-10 relative"
         >
-          {/* Realistic backlit glow passing through crystal glass */}
+          {/* Realistic backlit backlit glow passing through crystal glass */}
           {!isMobile && (
             <div 
               style={{ 
@@ -441,8 +445,8 @@ export default function SkillsGalaxy() {
             {!isMobile && (
               <motion.div 
                 style={{ 
-                  left: useTransform(smoothCardX, [-0.5, 0.5], ['0%', '100%']), 
-                  top: useTransform(smoothCardY, [-0.5, 0.5], ['0%', '100%']), 
+                  left: highlightLeft, 
+                  top: highlightTop, 
                   transform: 'translate(-50%, -50%)',
                   background: `radial-gradient(circle, ${currentGlowColor} 0%, transparent 65%)`
                 }}

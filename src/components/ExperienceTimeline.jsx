@@ -136,6 +136,10 @@ const ExperienceCard = ({ exp, isEven, isMobile }) => {
   const rotateX = useTransform(smoothCardY, [-0.5, 0.5], [6, -6]);
   const rotateY = useTransform(smoothCardX, [-0.5, 0.5], [-6, 6]);
 
+  // Card cursor highlight coordinates (defined at top level to obey rules of hooks)
+  const highlightLeft = useTransform(smoothCardX, [-0.5, 0.5], ['0%', '100%']);
+  const highlightTop = useTransform(smoothCardY, [-0.5, 0.5], ['0%', '100%']);
+
   const currentGlowColor = exp.glow.replace('0.2', '0.22');
 
   return (
@@ -195,8 +199,8 @@ const ExperienceCard = ({ exp, isEven, isMobile }) => {
         {!isMobile && (
           <motion.div 
             style={{ 
-              left: useTransform(smoothCardX, [-0.5, 0.5], ['0%', '100%']), 
-              top: useTransform(smoothCardY, [-0.5, 0.5], ['0%', '100%']), 
+              left: highlightLeft, 
+              top: highlightTop, 
               transform: 'translate(-50%, -50%)',
               background: `radial-gradient(circle, ${currentGlowColor} 0%, transparent 65%)`
             }}

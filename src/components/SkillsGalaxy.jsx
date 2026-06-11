@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
 // Expanded skill nodes with deep technical descriptions, ratings, and custom inline SVG icons
 const skillsData = [
@@ -187,9 +187,23 @@ const skillsData = [
 
 export default function SkillsGalaxy() {
   const [hoveredSkill, setHoveredSkill] = useState(skillsData[0]); // Default details display
-  const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
   const [isMobile, setIsMobile] = useState(false);
   const [rotation, setRotation] = useState(0);
+
+  const containerRef = useRef(null);
+  const cardRef = useRef(null);
+
+  // Global mouse coordinates for parallax
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+  const smoothMouseX = useSpring(mouseX, { stiffness: 50, damping: 20 });
+  const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 });
+
+  // Cursor coordinates inside the console card for 3D tilt
+  const cardX = useMotionValue(0);
+  const cardY = useMotionValue(0);
+  const smoothCardX = useSpring(cardX, { stiffness: 90, damping: 25 });
+  const smoothCardY = useSpring(cardY, { stiffness: 90, damping: 25 });
 
   // Slow continuous rotation of the galaxy
   useEffect(() => {
@@ -202,8 +216,6 @@ export default function SkillsGalaxy() {
     return () => cancelAnimationFrame(frameId);
   }, []);
 
-
-
   useEffect(() => {
     setIsMobile(window.innerWidth < 768);
     const handleResize = () => {
@@ -212,9 +224,11 @@ export default function SkillsGalaxy() {
 
     const handleMouseMove = (e) => {
       if (window.innerWidth < 768) return;
-      const x = (e.clientX / window.innerWidth - 0.5) * 20; // max shift 20px
-      const y = (e.clientY / window.innerHeight - 0.5) * 20;
-      setMouseOffset({ x, y });
+      // Normalise coordinates to range [-1, 1] relative to viewport
+      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+      mouseX.set(nx);
+      mouseY.set(ny);
     };
 
     window.addEventListener('resize', handleResize);
@@ -223,32 +237,120 @@ export default function SkillsGalaxy() {
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, []);
+  }, [mouseX, mouseY]);
 
-  // Compute ring dimensions based on screen bounds
-  // eslint-disable-next-line
+  const handleCardMouseMove = (e) => {
+    if (!cardRef.current || isMobile) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const width = rect.width;
+    const height = rect.height;
+    // Calculate normalized coordinate relative to card center, range [-0.5, 0.5]
+    const x = (e.clientX - rect.left) / width - 0.5;
+    const y = (e.clientY - rect.top) / height - 0.5;
+    cardX.set(x);
+    cardY.set(y);
+  };
+
+  const handleCardMouseLeave = () => {
+    cardX.set(0);
+    cardY.set(0);
+  };
+
+  // Parallax offsets (max shift in px)
+  const bgParallaxX = useTransform(smoothMouseX, [-1, 1], [15, -15]);
+  const bgParallaxY = useTransform(smoothMouseY, [-1, 1], [15, -15]);
+
+  const ringParallaxX = useTransform(smoothMouseX, [-1, 1], [-10, 10]);
+  const ringParallaxY = useTransform(smoothMouseY, [-1, 1], [-10, 10]);
+
+  const mapParallaxX = useTransform(smoothMouseX, [-1, 1], [-32, 32]);
+  const mapParallaxY = useTransform(smoothMouseY, [-1, 1], [-32, 32]);
+
+  const cardParallaxX = useTransform(smoothMouseX, [-1, 1], [-18, 18]);
+  const cardParallaxY = useTransform(smoothMouseY, [-1, 1], [-18, 18]);
+
+  // Card 3D tilt angles
+  const rotateX = useTransform(smoothCardY, [-0.5, 0.5], [8, -8]);
+  const rotateY = useTransform(smoothCardX, [-0.5, 0.5], [-8, 8]);
+
+  // Ring radii calculation
   const getRingRadius = (ringIdx) => {
     if (isMobile) return [50, 95, 140][ringIdx];
     return [90, 160, 230][ringIdx];
   };
 
+  const currentGlowColor = hoveredSkill ? hoveredSkill.glow.replace('0.4', '0.22') : 'rgba(249, 115, 22, 0.15)';
+
   return (
     <section 
       id="skills" 
+      ref={containerRef}
       className="relative min-h-screen py-32 px-6 md:px-12 bg-[#02040a] flex flex-col justify-center overflow-hidden z-40 border-t border-white/5 select-none"
     >
-      {/* Cinematic Cosmic Nebula Background Layer */}
-      <div className="absolute inset-0 w-full h-full pointer-events-none -z-20 overflow-hidden opacity-[0.25] select-none">
-        <img 
-          src="/skills_galaxy_bg.png" 
-          alt="Cosmic Space Nebula" 
-          className="w-full h-full object-cover scale-[1.05] animate-pulse"
-          style={{ animationDuration: '12s' }}
+      {/* Cinematic Ambient Spatial Backdrop Layer */}
+      <motion.div 
+        style={{ 
+          x: isMobile ? 0 : bgParallaxX, 
+          y: isMobile ? 0 : bgParallaxY,
+          scale: 1.08
+        }}
+        className="absolute inset-0 w-full h-full pointer-events-none -z-20 overflow-hidden select-none"
+      >
+        {/* Subtle dot matrix grid (radial-gradient dots every 32px with 0.05 opacity) */}
+        <div 
+          className="absolute inset-0 opacity-[0.05] pointer-events-none"
+          style={{
+            backgroundImage: 'radial-gradient(rgba(255, 255, 255, 1) 1px, transparent 1px)',
+            backgroundSize: '32px 32px'
+          }}
         />
+
+        {/* Ambient floating volumetric lights */}
+        {!isMobile && (
+          <>
+            <motion.div 
+              animate={{ 
+                x: [-40, 40, -40],
+                y: [-30, 30, -30]
+              }}
+              transition={{
+                duration: 22,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute top-[15%] left-[15%] w-[500px] h-[500px] rounded-full bg-[hsla(270,70%,45%,0.06)] blur-[120px]"
+            />
+            <motion.div 
+              animate={{ 
+                x: [40, -40, 40],
+                y: [30, -30, 30]
+              }}
+              transition={{
+                duration: 28,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute bottom-[20%] right-[10%] w-[550px] h-[550px] rounded-full bg-[hsla(210,75%,45%,0.05)] blur-[130px]"
+            />
+            <motion.div 
+              animate={{ 
+                x: [-35, 35, -35],
+                y: [40, -40, 40]
+              }}
+              transition={{
+                duration: 25,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute top-[40%] right-[30%] w-[450px] h-[450px] rounded-full bg-[hsla(340,75%,50%,0.05)] blur-[110px]"
+            />
+          </>
+        )}
+
         {/* Soft dark-to-transparent overlays on all sides to blend seamlessly */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#02040a] via-transparent to-[#02040a]" />
         <div className="absolute inset-0 bg-gradient-to-r from-[#02040a] via-transparent to-[#02040a]" />
-      </div>
+      </motion.div>
 
       {/* Dynamic atmospheric radial background glow specific to the active hovered skill */}
       <div 
@@ -264,21 +366,90 @@ export default function SkillsGalaxy() {
       >
         
         {/* Left Side: Header & Interactive Dashboard Display Panel */}
-        <div className="w-full lg:w-[42%] flex flex-col justify-center">
+        <motion.div 
+          style={{ 
+            x: isMobile ? 0 : cardParallaxX, 
+            y: isMobile ? 0 : cardParallaxY 
+          }}
+          className="w-full lg:w-[42%] flex flex-col justify-center z-10 relative"
+        >
+          {/* Realistic backlit glow passing through crystal glass */}
+          {!isMobile && (
+            <div 
+              style={{ 
+                backgroundColor: hoveredSkill ? hoveredSkill.glow.replace('0.4', '0.14') : 'rgba(249, 115, 22, 0.05)',
+                transition: 'background-color 1s ease, box-shadow 1s ease',
+                boxShadow: hoveredSkill ? `0 0 90px 15px ${hoveredSkill.glow.replace('0.4', '0.08')}` : 'none'
+              }}
+              className="absolute inset-0 rounded-3xl blur-[40px] -z-10 pointer-events-none opacity-80" 
+            />
+          )}
+
           <div className="mb-8">
-            <span className="font-display text-xs font-bold tracking-[0.25em] text-orange-500 uppercase">
-              COGNITIVE ECOSYSTEM
+            <span className="font-display text-xs font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-400 to-rose-400 uppercase border border-purple-500/20 px-3 py-1 rounded-full inline-block backdrop-blur-md">
+              SPATIAL INTERFACE
             </span>
-            <h2 className="font-display text-4xl md:text-5xl font-extrabold mt-3 mb-6 leading-tight">
-              Skills Galaxy
+            <h2 className="font-display text-4xl md:text-5xl font-extrabold mt-4 mb-6 leading-tight text-white">
+              Skills <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-400 to-rose-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.25)]">Galaxy</span>
             </h2>
             <p className="font-sans text-slate-400 text-sm md:text-base leading-relaxed">
-              Hover over the rotating stars within the tech universe to read specialized proficiencies. Bright glowing pathways actively stream to related nodes.
+              Immerse yourself in my cognitive ecosystem. Hover over the floating nodes to traverse the network. Parallax tilt is mapped to your spatial perspective.
             </p>
           </div>
 
-          {/* Interactive details console panel */}
-          <div className="glass-panel-glow p-8 rounded-3xl min-h-[220px] flex flex-col justify-between relative overflow-hidden bg-slate-950/70 border border-orange-500/20 shadow-glow-orange">
+          {/* Interactive details spatial console panel */}
+          <motion.div
+            ref={cardRef}
+            onMouseMove={handleCardMouseMove}
+            onMouseLeave={handleCardMouseLeave}
+            animate={isMobile ? {} : {
+              y: [0, -6, 0]
+            }}
+            transition={isMobile ? {} : {
+              duration: 6,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+            style={{
+              rotateX: isMobile ? 0 : rotateX,
+              rotateY: isMobile ? 0 : rotateY,
+              transformStyle: 'preserve-3d',
+              perspective: 1000,
+              background: 'radial-gradient(circle at center, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.76) 100%)',
+              boxShadow: '0 25px 60px rgba(0,0,0,0.85), inset 0 1.5px 2.5px rgba(255,255,255,0.2), inset 0 -1.5px 2.5px rgba(0,0,0,0.5)',
+            }}
+            className="relative overflow-hidden backdrop-blur-xl border border-white/10 rounded-3xl p-8 min-h-[230px] flex flex-col justify-between group transition-all duration-300"
+          >
+            {/* Micro-noise texture for sandblasted glass grain effect */}
+            <div 
+              style={{
+                backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
+                opacity: 0.03
+              }}
+              className="absolute inset-0 pointer-events-none z-0 mix-blend-overlay rounded-3xl"
+            />
+
+            {/* Soft top-left room light reflection */}
+            <div 
+              className="absolute inset-0 pointer-events-none z-0 rounded-3xl"
+              style={{
+                background: 'radial-gradient(circle at 8% 8%, rgba(255, 255, 255, 0.12) 0%, transparent 45%)'
+              }}
+            />
+
+            {/* Dynamic Cursor Light (Spatial Eye Highlight) */}
+            {!isMobile && (
+              <motion.div 
+                style={{ 
+                  left: useTransform(smoothCardX, [-0.5, 0.5], ['0%', '100%']), 
+                  top: useTransform(smoothCardY, [-0.5, 0.5], ['0%', '100%']), 
+                  transform: 'translate(-50%, -50%)',
+                  background: `radial-gradient(circle, ${currentGlowColor} 0%, transparent 65%)`
+                }}
+                className="absolute w-80 h-80 pointer-events-none z-0 mix-blend-screen transition-all duration-700"
+              />
+            )}
+
             <AnimatePresence mode="wait">
               {hoveredSkill && (
                 <motion.div
@@ -287,54 +458,61 @@ export default function SkillsGalaxy() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -15 }}
                   transition={{ duration: 0.4, ease: "easeOut" }}
-                  className="flex flex-col h-full"
+                  style={{ transform: 'translateZ(30px)' }}
+                  className="flex flex-col h-full relative z-10"
                 >
                   <div className="flex items-center gap-3 mb-4">
                     <div 
-                      style={{ backgroundColor: hoveredSkill.glow }}
-                      className="w-3.5 h-3.5 rounded-full blur-[2px] animate-pulse" 
+                      style={{ 
+                        backgroundColor: hoveredSkill.glow.replace('0.4', '1'),
+                        boxShadow: `0 0 10px ${hoveredSkill.glow}`
+                      }}
+                      className="w-2.5 h-2.5 rounded-full animate-pulse" 
                     />
-                    <span className="font-display text-[10px] tracking-widest font-extrabold text-orange-500 uppercase">
+                    <span 
+                      style={{ color: hoveredSkill.glow.replace('0.4', '0.9') }}
+                      className="font-display text-[10px] tracking-widest font-extrabold uppercase"
+                    >
                       {hoveredSkill.category}
                     </span>
                   </div>
 
-                  <h3 className="font-display text-2xl font-extrabold text-slate-100 mb-3">
+                  <h3 className="font-display text-2xl font-extrabold text-white mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
                     {hoveredSkill.name}
                   </h3>
 
-                  <p className="font-sans text-slate-400 text-xs md:text-sm leading-relaxed mb-6 font-medium">
+                  <p className="font-sans text-slate-300 text-xs md:text-sm leading-relaxed mb-6 font-medium">
                     {hoveredSkill.desc}
                   </p>
 
                   <div className="flex items-center justify-between border-t border-white/5 pt-4 text-[10px] tracking-wider font-extrabold text-slate-500 uppercase">
                     <span>COGNITIVE MATRIX</span>
-                    <span className="text-orange-400">STATUS: CALIBRATED</span>
+                    <span style={{ color: hoveredSkill.glow.replace('0.4', '0.95') }}>STATUS: CALIBRATED</span>
                   </div>
                 </motion.div>
               )}
             </AnimatePresence>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
 
         {/* Right Side: Rotating 3D Galaxy Map */}
-        {/* Right Side: Rotating 3D Galaxy Map on desktop, tactile grid on mobile */}
         {isMobile ? (
-          <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6">
+          <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6 z-10">
             {skillsData.map((skill) => {
               const isSelected = hoveredSkill?.id === skill.id;
               return (
                 <div
                   key={skill.id}
                   onClick={() => setHoveredSkill(skill)}
-                  className={`glass-panel p-4 rounded-2xl flex flex-col items-center justify-center text-center border transition-all duration-300 pointer-events-auto cursor-pointer ${
-                    isSelected 
-                      ? 'border-orange-500 bg-orange-500/10 shadow-glow-orange scale-[1.03]' 
-                      : 'border-white/5 bg-slate-950/45 hover:border-white/10'
-                  }`}
+                  style={{
+                    borderColor: isSelected ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.05)',
+                    backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.25)',
+                    boxShadow: isSelected ? '0 10px 25px rgba(0,0,0,0.5)' : 'none',
+                  }}
+                  className="p-4 rounded-2xl flex flex-col items-center justify-center text-center border transition-all duration-300 cursor-pointer backdrop-blur-md"
                 >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 bg-slate-900 border border-white/5 transition-transform duration-300 ${
-                    isSelected ? 'scale-105 border-orange-500/30' : ''
+                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 bg-slate-900/50 border border-white/5 transition-transform duration-300 ${
+                    isSelected ? 'scale-105 border-white/20' : ''
                   }`}>
                     {skill.icon}
                   </div>
@@ -344,156 +522,171 @@ export default function SkillsGalaxy() {
             })}
           </div>
         ) : (
-          <div 
-            className="w-full lg:w-[58%] flex items-center justify-center relative min-h-[380px] md:min-h-[500px]"
-            style={{
-              transform: `translate(${mouseOffset.x}px, ${mouseOffset.y}px)`,
-              transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)'
-            }}
-          >
-            {/* Constellation Ring outlines */}
-            {[0, 1, 2].map((ringIdx) => (
-              <div
-                key={ringIdx}
-                style={{
-                  width: `${getRingRadius(ringIdx) * 2}px`,
-                  height: `${getRingRadius(ringIdx) * 2}px`,
-                  border: '1.2px dashed rgba(255,255,255,0.03)',
-                  boxShadow: hoveredSkill?.ring === ringIdx ? '0 0 25px rgba(249, 115, 22, 0.015)' : 'none',
-                  transition: 'box-shadow 0.6s'
-                }}
-                className="absolute rounded-full pointer-events-none"
-              />
-            ))}
-
-            {/* Galaxy Interactive Node Container */}
-            <div 
-              style={{ 
-                transform: `rotate(${isMobile ? 0 : rotation}deg)`,
-                width: isMobile ? '320px' : '500px',
-                height: isMobile ? '320px' : '500px'
+          <div className="w-full lg:w-[58%] flex items-center justify-center relative min-h-[380px] md:min-h-[500px] overflow-visible">
+            
+            {/* Layer 1: Constellation Rings (linked to ringParallax) */}
+            <motion.div
+              style={{
+                x: ringParallaxX,
+                y: ringParallaxY,
               }}
-              className="relative flex items-center justify-center transition-transform duration-75"
+              className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
             >
-              {/* SVG Connecting lines overlaid from active hovered node */}
-              <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible mix-blend-screen">
-                {hoveredSkill && skillsData.map((node) => {
-                  // Only draw links to other nodes in the SAME category (creating active category-related streams)
-                  if (node.id === hoveredSkill.id || node.category !== hoveredSkill.category) return null;
+              {[0, 1, 2].map((ringIdx) => (
+                <div
+                  key={ringIdx}
+                  style={{
+                    width: `${getRingRadius(ringIdx) * 2}px`,
+                    height: `${getRingRadius(ringIdx) * 2}px`,
+                    border: '1.2px dashed rgba(255,255,255,0.04)',
+                    boxShadow: hoveredSkill?.ring === ringIdx ? '0 0 30px rgba(168, 85, 247, 0.02)' : 'none',
+                    transition: 'box-shadow 0.6s'
+                  }}
+                  className="absolute rounded-full"
+                />
+              ))}
+            </motion.div>
 
-                  const center = isMobile ? 160 : 250;
+            {/* Layer 2: Galaxy Node Map (linked to mapParallax) */}
+            <motion.div
+              style={{
+                x: mapParallaxX,
+                y: mapParallaxY,
+                transformStyle: 'preserve-3d',
+              }}
+              className="absolute inset-0 flex items-center justify-center z-10"
+            >
+              {/* Inner rotating container holding nodes and connection lines */}
+              <div 
+                style={{ 
+                  transform: `rotate(${rotation}deg)`,
+                  width: '500px',
+                  height: '500px',
+                  transformStyle: 'preserve-3d',
+                }}
+                className="relative flex items-center justify-center transition-transform duration-75"
+              >
+                {/* SVG Connecting lines overlaid from active hovered node */}
+                <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible mix-blend-screen">
+                  {hoveredSkill && skillsData.map((node) => {
+                    // Only draw links to other nodes in the SAME category
+                    if (node.id === hoveredSkill.id || node.category !== hoveredSkill.category) return null;
+
+                    const center = 250;
+                    
+                    // Coords of active hovered node
+                    const radiusA = getRingRadius(hoveredSkill.ring);
+                    const angleA = ((hoveredSkill.angle + rotation) * Math.PI) / 180;
+                    const ax = center + radiusA * Math.cos(angleA);
+                    const ay = center + radiusA * Math.sin(angleA);
+
+                    // Coords of target connected node
+                    const radiusB = getRingRadius(node.ring);
+                    const angleB = ((node.angle + rotation) * Math.PI) / 180;
+                    const bx = center + radiusB * Math.cos(angleB);
+                    const by = center + radiusB * Math.sin(angleB);
+
+                    // Curve controls
+                    const cx1 = ax + (bx - ax) * 0.25;
+                    const cy1 = ay + (by - ay) * 0.75;
+
+                    return (
+                      <g key={node.id}>
+                        {/* Underlying faint background connector path */}
+                        <path
+                          d={`M ${ax} ${ay} Q ${cx1} ${cy1} ${bx} ${by}`}
+                          fill="none"
+                          stroke={hoveredSkill.glow}
+                          strokeWidth="1.2"
+                          opacity="0.15"
+                        />
+                        
+                        {/* Travelling Bright Laser Spark */}
+                        <motion.path
+                          d={`M ${ax} ${ay} Q ${cx1} ${cy1} ${bx} ${by}`}
+                          fill="none"
+                          stroke={hoveredSkill.glow.replace('0.4', '0.95')}
+                          strokeWidth="2.5"
+                          opacity="0.95"
+                          initial={{ pathLength: 0.15, pathOffset: 0 }}
+                          animate={{ pathOffset: [0, 1.05] }}
+                          transition={{ 
+                            duration: 2.2, 
+                            repeat: Infinity, 
+                            ease: "linear"
+                          }}
+                          style={{ 
+                            filter: `drop-shadow(0 0 5px ${hoveredSkill.glow.replace('0.4', '0.85')})` 
+                          }}
+                        />
+
+                        {/* Small glowing joint receiver point */}
+                        <circle 
+                          cx={bx} 
+                          cy={by} 
+                          r="3" 
+                          fill="#f97316" 
+                          opacity="0.8" 
+                          style={{ filter: 'drop-shadow(0 0 3px #f97316)' }}
+                        />
+                      </g>
+                    );
+                  })}
+                </svg>
+
+                {/* Render nodes */}
+                {skillsData.map((skill) => {
+                  const radius = getRingRadius(skill.ring);
+                  const angleRad = ((skill.angle + rotation) * Math.PI) / 180;
+                  const nodeX = radius * Math.cos(angleRad);
+                  const nodeY = radius * Math.sin(angleRad);
                   
-                  // Coords of active hovered node
-                  const radiusA = getRingRadius(hoveredSkill.ring);
-                  const angleA = ((hoveredSkill.angle + (isMobile ? 0 : rotation)) * Math.PI) / 180;
-                  const ax = center + radiusA * Math.cos(angleA);
-                  const ay = center + radiusA * Math.sin(angleA);
-
-                  // Coords of target connected node
-                  const radiusB = getRingRadius(node.ring);
-                  const angleB = ((node.angle + (isMobile ? 0 : rotation)) * Math.PI) / 180;
-                  const bx = center + radiusB * Math.cos(angleB);
-                  const by = center + radiusB * Math.sin(angleB);
-
-                  // Curve controls
-                  const cx1 = ax + (bx - ax) * 0.25;
-                  const cy1 = ay + (by - ay) * 0.75;
+                  const isHovered = hoveredSkill?.id === skill.id;
 
                   return (
-                    <g key={node.id}>
-                      {/* Underlying faint background connector path */}
-                      <path
-                        d={`M ${ax} ${ay} Q ${cx1} ${cy1} ${bx} ${by}`}
-                        fill="none"
-                        stroke={hoveredSkill.glow}
-                        strokeWidth="1.2"
-                        opacity="0.12"
-                      />
-                      
-                      {/* Travelling Bright Laser Spark (Direct pulsing flow arrow going only to target nodes!) */}
-                      <motion.path
-                        d={`M ${ax} ${ay} Q ${cx1} ${cy1} ${bx} ${by}`}
-                        fill="none"
-                        stroke={hoveredSkill.glow.replace('0.4', '0.9')}
-                        strokeWidth="2.5"
-                        opacity="0.95"
-                        initial={{ pathLength: 0.15, pathOffset: 0 }}
-                        animate={{ pathOffset: [0, 1.05] }}
-                        transition={{ 
-                          duration: 2.2, 
-                          repeat: Infinity, 
-                          ease: "linear"
-                        }}
-                        style={{ 
-                          filter: `drop-shadow(0 0 5px ${hoveredSkill.glow.replace('0.4', '0.8')})` 
-                        }}
-                      />
-
-                      {/* Small glowing joint receiver point */}
-                      <circle 
-                        cx={bx} 
-                        cy={by} 
-                        r="3" 
-                        fill="#f97316" 
-                        opacity="0.8" 
-                        style={{ filter: 'drop-shadow(0 0 3px #f97316)' }}
-                      />
-                    </g>
-                  );
-                })}
-              </svg>
-
-              {/* Render nodes */}
-              {skillsData.map((skill) => {
-                const radius = getRingRadius(skill.ring);
-                const angleRad = ((skill.angle + (isMobile ? 0 : rotation)) * Math.PI) / 180;
-                const nodeX = radius * Math.cos(angleRad);
-                const nodeY = radius * Math.sin(angleRad);
-                
-                const isHovered = hoveredSkill?.id === skill.id;
-
-                return (
-                  <div
-                    key={skill.id}
-                    style={{
-                      position: 'absolute',
-                      left: `calc(50% + ${nodeX}px)`,
-                      top: `calc(50% + ${nodeY}px)`,
-                      transform: `translate(-50%, -50%) rotate(${isMobile ? 0 : -rotation}deg) scale(${isHovered ? 1.25 : 1})`,
-                      transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
-                      zIndex: isHovered ? 30 : 10
-                    }}
-                    className="cursor-pointer group pointer-events-auto"
-                    onMouseEnter={() => setHoveredSkill(skill)}
-                  >
-                    {/* Glowing Node Circle housing the high-fidelity SVG icon instead of letters */}
-                    <div 
+                    <div
+                      key={skill.id}
                       style={{
-                        boxShadow: isHovered ? `0 0 25px ${skill.glow}` : '0 0 5px rgba(255,255,255,0.03)'
+                        position: 'absolute',
+                        left: `calc(50% + ${nodeX}px)`,
+                        top: `calc(50% + ${nodeY}px)`,
+                        transform: `translate(-50%, -50%) rotate(${-rotation}deg) scale(${isHovered ? 1.25 : 1})`,
+                        transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
+                        zIndex: isHovered ? 30 : 10,
+                        transformStyle: 'preserve-3d'
                       }}
-                      className={`w-9 h-9 md:w-11 md:h-11 rounded-full border flex items-center justify-center transition-all duration-500 bg-slate-950 ${
-                        isHovered 
-                          ? 'border-orange-500 text-orange-400' 
-                          : 'border-white/5 text-slate-400 group-hover:border-white/20'
-                      }`}
+                      className="cursor-pointer group pointer-events-auto"
+                      onMouseEnter={() => setHoveredSkill(skill)}
                     >
-                      <div className="w-5 h-5 flex items-center justify-center scale-90 md:scale-100 transition-transform duration-300 group-hover:scale-105">
-                        {skill.icon}
+                      {/* Frosted Spherical Glass Node containing high-fidelity icon */}
+                      <div 
+                        style={{
+                          boxShadow: isHovered 
+                            ? `0 0 30px ${skill.glow}, inset 0 1px 1px rgba(255,255,255,0.15)` 
+                            : '0 4px 10px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.05)',
+                          borderColor: isHovered ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.08)',
+                          backgroundColor: isHovered ? skill.glow.replace('0.4', '0.12') : 'rgba(15, 23, 42, 0.35)',
+                        }}
+                        className="w-9 h-9 md:w-11 md:h-11 rounded-full border backdrop-blur-md flex items-center justify-center transition-all duration-500"
+                      >
+                        <div className="w-5 h-5 flex items-center justify-center scale-90 md:scale-100 transition-transform duration-300 group-hover:scale-105">
+                          {skill.icon}
+                        </div>
+                      </div>
+
+                      {/* Node label */}
+                      <div className={`absolute left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1 rounded-md border backdrop-blur-md bg-slate-950/80 text-[9px] font-sans font-extrabold tracking-widest uppercase transition-all duration-300 pointer-events-none whitespace-nowrap ${
+                        isHovered 
+                          ? 'opacity-100 border-white/20 text-white shadow-lg' 
+                          : 'opacity-0 group-hover:opacity-90 border-white/5 text-slate-400'
+                      }`}>
+                        {skill.name}
                       </div>
                     </div>
-
-                    {/* Node label */}
-                    <div className={`absolute left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1 rounded-md border bg-slate-950/90 text-[9px] font-sans font-extrabold tracking-widest uppercase transition-all duration-300 pointer-events-none whitespace-nowrap ${
-                      isHovered 
-                        ? 'opacity-100 border-orange-500/30 text-orange-400' 
-                        : 'opacity-0 group-hover:opacity-90 border-white/5 text-slate-400'
-                    }`}>
-                      {skill.name}
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                  );
+                })}
+              </div>
+            </motion.div>
           </div>
         )}
 

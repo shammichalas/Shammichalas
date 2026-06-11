@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import SkillsGalaxy from './components/SkillsGalaxy';
 import ExperienceTimeline from './components/ExperienceTimeline';
-import FeaturedProjects from './components/FeaturedProjects';
+import ProjectArcCarousel from './components/ProjectArcCarousel';
 import TechMarquee from './components/TechMarquee';
 import ContactTerminal from './components/ContactTerminal';
 import BackgroundParticles from './components/BackgroundParticles';
@@ -112,7 +112,7 @@ export default function App() {
       <SkillsGalaxy />
 
       {/* 3. Large Project Miniature Sandbox Showcase */}
-      <FeaturedProjects />
+      <ProjectArcCarousel />
 
       {/* 4. Futuristic Scroll Timeline Experience */}
       <ExperienceTimeline />

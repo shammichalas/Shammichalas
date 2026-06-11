@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useRef } from 'react';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import { Calendar, CheckCircle2 } from 'lucide-react';
 
 const experiences = [
@@ -112,7 +112,164 @@ const getSkillIcon = (techName) => {
   );
 };
 
+const ExperienceCard = ({ exp, isEven, isMobile }) => {
+  const cardRef = useRef(null);
+  const cardX = useMotionValue(0);
+  const cardY = useMotionValue(0);
+  const smoothCardX = useSpring(cardX, { stiffness: 90, damping: 25 });
+  const smoothCardY = useSpring(cardY, { stiffness: 90, damping: 25 });
+
+  const handleMouseMove = (e) => {
+    if (!cardRef.current || isMobile) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    cardX.set(x);
+    cardY.set(y);
+  };
+
+  const handleMouseLeave = () => {
+    cardX.set(0);
+    cardY.set(0);
+  };
+
+  const rotateX = useTransform(smoothCardY, [-0.5, 0.5], [6, -6]);
+  const rotateY = useTransform(smoothCardX, [-0.5, 0.5], [-6, 6]);
+
+  const currentGlowColor = exp.glow.replace('0.2', '0.22');
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-12%" }}
+      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+      className={`w-full md:w-[45%] pl-10 md:pl-0 relative z-10 ${
+        isEven ? 'md:pr-12 md:text-right' : 'md:pl-12'
+      }`}
+    >
+      {/* Backlight glow behind the crystal card */}
+      {!isMobile && (
+        <div 
+          style={{ 
+            backgroundColor: exp.glow.replace('0.2', '0.12'),
+            boxShadow: `0 0 90px 15px ${exp.glow.replace('0.2', '0.06')}`
+          }}
+          className="absolute inset-0 rounded-3xl blur-[45px] -z-10 pointer-events-none opacity-80" 
+        />
+      )}
+
+      {/* Glass Experience Card */}
+      <motion.div
+        ref={cardRef}
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        style={{
+          rotateX: isMobile ? 0 : rotateX,
+          rotateY: isMobile ? 0 : rotateY,
+          transformStyle: 'preserve-3d',
+          perspective: 1000,
+          background: 'radial-gradient(circle at center, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.76) 100%)',
+          boxShadow: '0 25px 60px rgba(0,0,0,0.85), inset 0 1.5px 2.5px rgba(255,255,255,0.2), inset 0 -1.5px 2.5px rgba(0,0,0,0.5)',
+        }}
+        className="relative overflow-hidden border border-white/10 rounded-3xl p-8 hover:border-white/20 transition-all duration-500 group cursor-default"
+      >
+        {/* Micro-noise texture for sandblasted glass grain effect */}
+        <div 
+          style={{
+            backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
+            opacity: 0.03
+          }}
+          className="absolute inset-0 pointer-events-none z-0 mix-blend-overlay rounded-3xl"
+        />
+
+        {/* Soft top-left room light reflection */}
+        <div 
+          className="absolute inset-0 pointer-events-none z-0 rounded-3xl"
+          style={{
+            background: 'radial-gradient(circle at 8% 8%, rgba(255, 255, 255, 0.1) 0%, transparent 40%)'
+          }}
+        />
+
+        {/* Dynamic Cursor Light (Spatial Eye Highlight) */}
+        {!isMobile && (
+          <motion.div 
+            style={{ 
+              left: useTransform(smoothCardX, [-0.5, 0.5], ['0%', '100%']), 
+              top: useTransform(smoothCardY, [-0.5, 0.5], ['0%', '100%']), 
+              transform: 'translate(-50%, -50%)',
+              background: `radial-gradient(circle, ${currentGlowColor} 0%, transparent 65%)`
+            }}
+            className="absolute w-80 h-80 pointer-events-none z-0 mix-blend-screen transition-all duration-700"
+          />
+        )}
+
+        <div style={{ transform: 'translateZ(25px)' }} className="relative z-10 flex flex-col h-full">
+          {/* Meta header */}
+          <div className={`flex flex-col sm:flex-row sm:items-center gap-3 mb-4 ${
+            isEven ? 'md:justify-end' : ''
+          }`}>
+            <div className="flex items-center gap-2 text-orange-400 font-display text-xs font-extrabold tracking-widest">
+              <Calendar className="w-3.5 h-3.5" />
+              <span>{exp.period}</span>
+            </div>
+            <span className="hidden sm:inline text-slate-700">•</span>
+            <span className="font-display text-[10px] tracking-wider text-slate-400 font-bold uppercase">
+              {exp.company}
+            </span>
+          </div>
+
+          {/* Title */}
+          <h3 className="font-display text-xl font-extrabold text-white mb-2 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+            {exp.role}
+          </h3>
+          
+          <p className="font-sans text-slate-300 text-xs md:text-sm leading-relaxed mb-6 font-medium">
+            {exp.description}
+          </p>
+
+          {/* Bullet Highlights */}
+          <ul className={`space-y-3 mb-8 ${isEven ? 'md:items-end' : ''} flex flex-col`}>
+            {exp.highlights.map((hl, hlIdx) => (
+              <li 
+                key={hlIdx} 
+                className="flex items-start gap-2.5 text-xs text-slate-300 font-sans leading-relaxed text-left"
+              >
+                <CheckCircle2 className="w-4 h-4 text-orange-400 shrink-0 mt-0.5" />
+                <span>{hl}</span>
+              </li>
+            ))}
+          </ul>
+
+          {/* Tech stack pills WITH matching inline SVG icons! */}
+          <div className={`flex flex-wrap gap-2 ${isEven ? 'md:justify-end' : ''}`}>
+            {exp.tech.map((t) => (
+              <span 
+                key={t}
+                className="inline-flex items-center gap-1.5 text-[9px] tracking-wider font-extrabold text-slate-300 px-3 py-1.5 rounded-lg bg-slate-900/60 border border-white/5 uppercase transition-colors duration-300 hover:border-white/15 hover:bg-slate-900"
+              >
+                <span className="w-3.5 h-3.5 flex items-center justify-center scale-90 shrink-0">{getSkillIcon(t)}</span>
+                <span>{t}</span>
+              </span>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
 export default function ExperienceTimeline() {
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <section 
@@ -120,8 +277,8 @@ export default function ExperienceTimeline() {
       className="relative min-h-screen py-32 px-6 md:px-12 bg-[#02040a] flex flex-col justify-center overflow-hidden z-40 border-t border-white/5 select-none"
     >
       {/* Background fog blurs */}
-      <div className="absolute top-1/3 left-10 w-[350px] h-[350px] rounded-full bg-violet-600/5 blur-[120px] pointer-events-none -z-10" />
-      <div className="absolute bottom-1/3 right-10 w-[350px] h-[350px] rounded-full bg-orange-600/5 blur-[120px] pointer-events-none -z-10" />
+      <div className="absolute top-1/3 left-10 w-[350px] h-[350px] rounded-full bg-violet-600/5 blur-[120px] pointer-events-none -z-10 animate-pulse-slow" />
+      <div className="absolute bottom-1/3 right-10 w-[350px] h-[350px] rounded-full bg-orange-600/5 blur-[120px] pointer-events-none -z-10 animate-pulse-slow" />
 
       <div 
         className="scroll-section-reveal max-w-5xl mx-auto w-full relative z-10"
@@ -129,11 +286,11 @@ export default function ExperienceTimeline() {
         
         {/* Header */}
         <div className="text-center mb-24 max-w-xl mx-auto">
-          <span className="font-display text-xs font-bold tracking-[0.25em] text-orange-500 uppercase">
+          <span className="font-display text-xs font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-rose-400 uppercase border border-orange-500/20 px-3 py-1 rounded-full inline-block backdrop-blur-md">
             PROFESSIONAL HISTORY
           </span>
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold mt-3 mb-6 tracking-tight leading-tight">
-            Engineering Timeline
+          <h2 className="font-display text-4xl md:text-5xl font-extrabold mt-4 mb-6 leading-tight text-white">
+            Engineering <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-rose-400 drop-shadow-[0_0_15px_rgba(249,115,22,0.25)]">Timeline</span>
           </h2>
           <p className="font-sans text-slate-400 text-sm md:text-base leading-relaxed">
             Scroll down to trace serverless scaling achievements and high-performance frontend engineering milestones.
@@ -143,17 +300,29 @@ export default function ExperienceTimeline() {
         {/* Timeline body */}
         <div className="relative">
           
+          {/* Laser conduit background track */}
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[4px] bg-white/[0.02] border-x border-white/5 -translate-x-1/2 z-10 rounded-full" />
+          
           {/* Central Glowing Timeline Line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-slate-900 -translate-x-[1px]">
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2 z-10 overflow-hidden rounded-full">
             {/* The animated growing line inside the timeline */}
             <motion.div 
               initial={{ height: 0 }}
               whileInView={{ height: '100%' }}
               viewport={{ once: true, margin: "-10%" }}
               transition={{ duration: 1.8, ease: "easeInOut" }}
-              className="w-full bg-gradient-to-b from-orange-500 via-violet-500 to-rose-500 rounded-full origin-top shadow-[0_0_12px_rgba(249,115,22,0.3)]"
+              className="w-full h-full bg-gradient-to-b from-orange-500 via-violet-500 to-rose-500 rounded-full origin-top shadow-[0_0_15px_rgba(168,85,247,0.5)]"
             />
           </div>
+
+          {/* Floating energy packets descending down the conduit */}
+          {!isMobile && (
+            <motion.div 
+              animate={{ y: ['0%', '100%'] }}
+              transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+              className="absolute left-4 md:left-1/2 w-[6px] h-24 bg-gradient-to-b from-transparent via-purple-400 to-transparent -translate-x-1/2 z-20 pointer-events-none blur-[1px]"
+            />
+          )}
 
           <div className="space-y-20">
             {experiences.map((exp, index) => {
@@ -167,14 +336,18 @@ export default function ExperienceTimeline() {
                   }`}
                 >
                   
-                  {/* Glowing Node Dot on Timeline */}
-                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-8 h-8 rounded-full flex items-center justify-center bg-slate-950 border-2 border-slate-900 z-20">
+                  {/* Glowing 3D Glass Node Marker on Timeline */}
+                  <div className="absolute left-4 md:left-1/2 -translate-x-1/2 w-9 h-9 rounded-full flex items-center justify-center bg-slate-950/80 border border-white/10 backdrop-blur-md z-20 shadow-[inset_0_1px_1px_rgba(255,255,255,0.1)]">
                     <motion.div
                       initial={{ scale: 0, opacity: 0 }}
                       whileInView={{ scale: 1, opacity: 1 }}
                       viewport={{ once: true, margin: "-15%" }}
                       transition={{ type: 'spring', stiffness: 200, delay: 0.2 }}
-                      className="w-3 h-3 rounded-full bg-gradient-to-tr from-orange-500 to-rose-500 animate-pulse shadow-glow-orange"
+                      style={{ 
+                        backgroundColor: exp.glow.replace('0.2', '1'),
+                        boxShadow: `0 0 12px ${exp.glow.replace('0.2', '0.8')}`
+                      }}
+                      className="w-3.5 h-3.5 rounded-full animate-pulse"
                     />
                   </div>
 
@@ -182,76 +355,7 @@ export default function ExperienceTimeline() {
                   <div className="hidden md:block w-[45%]" />
 
                   {/* Card Content container */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, margin: "-12%" }}
-                    transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    className={`w-full md:w-[45%] pl-10 md:pl-0 ${
-                      isEven ? 'md:pr-12 md:text-right' : 'md:pl-12'
-                    }`}
-                  >
-                    {/* Glass Experience Card */}
-                    <div 
-                      style={{ '--shadow-color': exp.glow }}
-                      className="glass-panel p-8 rounded-3xl border border-white/5 hover:border-orange-500/15 card-border-glow transition-all duration-500 relative overflow-hidden bg-slate-950/60 shadow-2xl"
-                    >
-                      {/* Meta header */}
-                      <div className={`flex flex-col sm:flex-row sm:items-center gap-3 mb-4 ${
-                        isEven ? 'md:justify-end' : ''
-                      }`}>
-                        <div className="flex items-center gap-2 text-orange-500 font-display text-xs font-extrabold tracking-widest">
-                          <Calendar className="w-3.5 h-3.5" />
-                          <span>{exp.period}</span>
-                        </div>
-                        <span className="hidden sm:inline text-slate-700">•</span>
-                        <span className="font-display text-[10px] tracking-wider text-slate-400 font-bold uppercase">
-                          {exp.company}
-                        </span>
-                      </div>
-
-                      {/* Title */}
-                      <h3 className="font-display text-xl font-extrabold text-slate-100 mb-2">
-                        {exp.role}
-                      </h3>
-                      
-                      <p className="font-sans text-slate-400 text-xs md:text-sm leading-relaxed mb-6 font-medium">
-                        {exp.description}
-                      </p>
-
-                      {/* Bullet Highlights */}
-                      <ul className={`space-y-3 mb-8 ${isEven ? 'md:items-end' : ''} flex flex-col`}>
-                        {exp.highlights.map((hl, hlIdx) => (
-                          <li 
-                            key={hlIdx} 
-                            className="flex items-start gap-2.5 text-xs text-slate-300 font-sans leading-relaxed text-left"
-                          >
-                            <CheckCircle2 className="w-4 h-4 text-orange-500 shrink-0 mt-0.5" />
-                            <span>{hl}</span>
-                          </li>
-                        ))}
-                      </ul>
-
-                      {/* Tech stack pills WITH matching inline SVG icons! */}
-                      <div className={`flex flex-wrap gap-2 ${isEven ? 'md:justify-end' : ''}`}>
-                        {exp.tech.map((t) => (
-                          <span 
-                            key={t}
-                            className="inline-flex items-center gap-1.5 text-[9px] tracking-wider font-extrabold text-slate-300 px-3 py-1.5 rounded-lg bg-slate-900 border border-white/5 uppercase transition-colors duration-300 hover:border-orange-500/20"
-                          >
-                            <span className="w-3.5 h-3.5 flex items-center justify-center scale-90 shrink-0">{getSkillIcon(t)}</span>
-                            <span>{t}</span>
-                          </span>
-                        ))}
-                      </div>
-
-                      {/* Subtle floating glow in background */}
-                      <div 
-                        style={{ backgroundColor: exp.glow }}
-                        className="absolute -right-10 -bottom-10 w-28 h-28 rounded-full blur-[25px] opacity-10 pointer-events-none -z-10" 
-                      />
-                    </div>
-                  </motion.div>
+                  <ExperienceCard exp={exp} isEven={isEven} isMobile={isMobile} />
                 </div>
               );
             })}
@@ -277,7 +381,7 @@ export default function ExperienceTimeline() {
             Continue the Journey
           </h3>
           <p className="font-sans text-xs text-slate-500 font-semibold uppercase tracking-wider max-w-xs">
-            Scroll down to explore the tech marquee and connect .
+            Scroll down to explore the tech marquee and connect.
           </p>
         </motion.div>
 

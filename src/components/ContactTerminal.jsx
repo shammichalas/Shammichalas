@@ -89,10 +89,35 @@ export default function ContactTerminal() {
         </div>
 
         {/* Terminal Container */}
-        <div className="glass-panel-glow rounded-3xl overflow-hidden border border-orange-500/20 shadow-glow-orange bg-slate-950/80 backdrop-blur-xl flex flex-col">
+        <div 
+          style={{
+            background: 'radial-gradient(circle at center, rgba(15, 23, 42, 0.12) 0%, rgba(15, 23, 42, 0.78) 100%)',
+            boxShadow: '0 25px 60px rgba(0,0,0,0.85), inset 0 1.5px 2.5px rgba(255,255,255,0.15), inset 0 -1.5px 2.5px rgba(0,0,0,0.5)'
+          }}
+          className="relative rounded-3xl overflow-hidden border border-white/10 backdrop-blur-xl flex flex-col z-10"
+        >
+          {/* Background backlit glow passing through crystal terminal */}
+          <div className="absolute inset-0 rounded-3xl blur-[40px] bg-orange-500/5 shadow-[0_0_80px_rgba(249,115,22,0.06)] -z-10 pointer-events-none" />
+
+          {/* Micro-noise texture for sandblasted glass grain effect */}
+          <div 
+            style={{
+              backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
+              opacity: 0.03
+            }}
+            className="absolute inset-0 pointer-events-none z-0 mix-blend-overlay rounded-3xl"
+          />
+
+          {/* Soft top-left room light reflection */}
+          <div 
+            className="absolute inset-0 pointer-events-none z-0 rounded-3xl"
+            style={{
+              background: 'radial-gradient(circle at 6% 6%, rgba(255, 255, 255, 0.1) 0%, transparent 40%)'
+            }}
+          />
           
           {/* Terminal Window Header Bar */}
-          <div className="px-6 py-4 bg-slate-950 border-b border-white/5 flex items-center justify-between">
+          <div className="px-6 py-4 bg-white/[0.02] border-b border-white/10 flex items-center justify-between relative z-10 backdrop-blur-md">
             <div className="flex items-center gap-2">
               <div className="w-3.5 h-3.5 rounded-full bg-rose-500/35 border border-rose-500/20" />
               <div className="w-3.5 h-3.5 rounded-full bg-amber-500/35 border border-amber-500/20" />
@@ -106,7 +131,7 @@ export default function ContactTerminal() {
           </div>
 
           {/* Terminal Body Screen */}
-          <div className="p-6 md:p-8 font-mono text-xs md:text-sm flex flex-col gap-6 flex-grow">
+          <div className="p-6 md:p-8 font-mono text-xs md:text-sm flex flex-col gap-6 flex-grow relative z-10">
             
             {/* Live output console log */}
             <div className="flex flex-col gap-2 border-b border-white/5 pb-6 text-slate-400">
@@ -143,7 +168,7 @@ export default function ContactTerminal() {
                     value={formData.name}
                     onChange={(e) => handleInputChange('name', e.target.value)}
                     placeholder="Enter your name..."
-                    className="px-4 py-3 rounded-xl bg-slate-900/60 border border-white/5 text-slate-100 text-xs focus:outline-none focus:border-orange-500/50 transition-colors placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.05)] font-mono"
+                    className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-100 text-xs focus:outline-none focus:border-orange-500/45 focus:bg-white/[0.05] transition-all duration-300 placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.08)] font-mono backdrop-blur-md"
                   />
                 </div>
 
@@ -159,7 +184,7 @@ export default function ContactTerminal() {
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     placeholder="Enter your email address..."
-                    className="px-4 py-3 rounded-xl bg-slate-900/60 border border-white/5 text-slate-100 text-xs focus:outline-none focus:border-orange-500/50 transition-colors placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.05)] font-mono"
+                    className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-100 text-xs focus:outline-none focus:border-orange-500/45 focus:bg-white/[0.05] transition-all duration-300 placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.08)] font-mono backdrop-blur-md"
                   />
                 </div>
               </div>
@@ -176,7 +201,7 @@ export default function ContactTerminal() {
                   value={formData.message}
                   onChange={(e) => handleInputChange('message', e.target.value)}
                   placeholder="Type your message payload..."
-                  className="px-4 py-3 rounded-xl bg-slate-900/60 border border-white/5 text-slate-100 text-xs focus:outline-none focus:border-orange-500/50 transition-colors placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.05)] resize-none font-mono"
+                  className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-100 text-xs focus:outline-none focus:border-orange-500/45 focus:bg-white/[0.05] transition-all duration-300 placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.08)] resize-none font-mono backdrop-blur-md"
                 />
               </div>
 

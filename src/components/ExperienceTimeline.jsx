@@ -239,7 +239,7 @@ export default function ExperienceTimeline() {
           <span className="font-display text-[10px] font-bold tracking-[0.25em] text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-rose-400 uppercase border border-orange-500/20 px-3.5 py-1 rounded-full inline-block w-fit mb-8">
             PROFESSIONAL HISTORY
           </span>
-          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[75px] xl:text-[95px] 2xl:text-[115px] font-black tracking-tighter text-white leading-[0.85] mb-8 uppercase select-none">
+          <h2 className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-[64px] xl:text-[80px] 2xl:text-[88px] font-black tracking-tighter text-white leading-[0.85] mb-8 uppercase select-none">
             EXPERIENCE
           </h2>
           <p className="font-sans text-slate-400 text-sm lg:text-base leading-relaxed mb-6 max-w-xs">

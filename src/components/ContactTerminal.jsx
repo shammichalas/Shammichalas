@@ -231,7 +231,7 @@ export default function ContactTerminal() {
     <section 
       id="contact" 
       ref={sectionRef}
-      className="relative min-h-screen py-24 lg:py-12 px-6 md:px-12 bg-[#04060d] flex flex-col justify-center overflow-hidden z-50 border-t border-white/5 select-none"
+      className="relative min-h-screen py-24 lg:pt-24 lg:pb-36 px-6 md:px-12 bg-[#04060d] flex flex-col justify-center overflow-hidden z-50 border-t border-white/5 select-none"
     >
       <style>{`
         @keyframes cursorBlink {
@@ -353,7 +353,11 @@ export default function ContactTerminal() {
             {/* Dynamic Reveal details & transmission forms */}
             <div 
               ref={formWrapperRef}
-              className={`space-y-6 pt-4 border-t border-white/5 ${showFinal ? 'block' : 'hidden lg:hidden'}`}
+              className={`space-y-6 pt-4 border-t border-white/5 ${
+                isMobile && !showFinal ? 'hidden' : 'block'
+              } ${
+                showFinal ? 'pointer-events-auto' : 'pointer-events-none'
+              }`}
               style={{ opacity: isMobile ? 1 : 0 }}
             >
               {/* Direct formatted contact info */}

@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import SkillsGalaxy from './components/SkillsGalaxy';
 import ExperienceTimeline from './components/ExperienceTimeline';
-import ProjectArcCarousel from './components/ProjectArcCarousel';
+import StoryProjects from './components/StoryProjects';
 import TechMarquee from './components/TechMarquee';
 import ContactTerminal from './components/ContactTerminal';
 import BackgroundParticles from './components/BackgroundParticles';
@@ -111,8 +111,8 @@ export default function App() {
       {/* 2. Concentric 3D Skills Galaxy Nodes */}
       <SkillsGalaxy />
 
-      {/* 3. Large Project Miniature Sandbox Showcase */}
-      <ProjectArcCarousel />
+      {/* 3. Story-Driven Chapter Showcase */}
+      <StoryProjects />
 
       {/* 4. Futuristic Scroll Timeline Experience */}
       <ExperienceTimeline />
@@ -124,7 +124,7 @@ export default function App() {
       <ContactTerminal />
 
       {/* 10. Minimal Cinematic Footer */}
-      <footer className="py-12 border-t border-white/5 bg-[#02040a] text-center text-xs text-slate-500 font-sans z-40 relative">
+      <footer className="py-12 border-t border-white/5 bg-[#02040a] text-center text-xs text-slate-500 font-sans z-30 relative">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <p>© 2026 Sham Michalas. Co-creating the digital horizon.</p>
           <div className="flex items-center gap-6 text-[10px] font-mono uppercase tracking-widest font-bold">

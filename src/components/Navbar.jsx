@@ -1,7 +1,7 @@
-/* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Menu, X, ArrowUpRight } from 'lucide-react';
+
 
 const navItems = [
   { name: 'Home', href: '#home' },
@@ -19,25 +19,28 @@ export default function Navbar() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
-      
-      // Auto active section highlight based on scroll position
-      const sections = navItems.map(item => document.querySelector(item.href));
-      const scrollPosition = window.scrollY + window.innerHeight / 3;
 
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const section = sections.at(i);
-        if (section && scrollPosition >= section.offsetTop) {
-          const navItem = navItems.at(i);
-          if (navItem) {
-            setActiveSection(navItem.name);
+      const scrollCenter = window.innerHeight * 0.5;
+
+      for (const item of navItems) {
+        const section = document.querySelector(item.href);
+        if (section) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top <= scrollCenter && rect.bottom >= scrollCenter) {
+            setActiveSection(item.name);
+            break;
           }
-          break;
         }
       }
     };
 
     window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    // Run once on mount to initialize highlight
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const handleNavClick = (e, name, href) => {

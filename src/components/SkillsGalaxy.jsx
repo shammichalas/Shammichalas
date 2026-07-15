@@ -289,7 +289,7 @@ export default function SkillsGalaxy() {
     <section 
       id="skills" 
       ref={containerRef}
-      className="relative min-h-screen py-32 px-6 md:px-12 bg-[#02040a] flex flex-col justify-center overflow-hidden z-40 border-t border-white/5 select-none"
+      className="relative min-h-screen py-32 px-6 md:px-12 bg-[#0A0A0A] flex flex-col justify-center overflow-hidden z-40 border-t border-white/5 select-none"
     >
       {/* Cinematic Ambient Spatial Backdrop Layer */}
       <motion.div 
@@ -352,8 +352,8 @@ export default function SkillsGalaxy() {
         )}
 
         {/* Soft dark-to-transparent overlays on all sides to blend seamlessly */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#02040a] via-transparent to-[#02040a]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#02040a] via-transparent to-[#02040a]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
       </motion.div>
 
       {/* Dynamic atmospheric radial background glow specific to the active hovered skill */}

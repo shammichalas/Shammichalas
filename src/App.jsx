@@ -94,7 +94,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-slate-950 text-slate-100 overflow-x-clip selection:bg-orange-500/30 selection:text-orange-300">
+    <div className="relative min-h-screen bg-[#0A0A0A] text-slate-100 overflow-x-clip selection:bg-orange-500/30 selection:text-orange-300">
       
       {/* Global Navbar */}
       <Navbar />
@@ -106,7 +106,7 @@ export default function App() {
       <HeroSection />
 
       {/* 1.5. Layout Overlap Spacer for Hero to Skills Transition */}
-      <div className="h-screen w-full pointer-events-none bg-slate-950" />
+      <div className="h-screen w-full pointer-events-none bg-[#0A0A0A]" />
 
       {/* 2. Concentric 3D Skills Galaxy Nodes */}
       <SkillsGalaxy />
@@ -124,7 +124,7 @@ export default function App() {
       <ContactTerminal />
 
       {/* 10. Minimal Cinematic Footer */}
-      <footer className="py-12 border-t border-white/5 bg-[#02040a] text-center text-xs text-slate-500 font-sans z-30 relative">
+      <footer className="py-12 border-t border-white/5 bg-[#0A0A0A] text-center text-xs text-slate-500 font-sans z-30 relative">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
           <p>© 2026 Sham Michalas. Co-creating the digital horizon.</p>
           <div className="flex items-center gap-6 text-[10px] font-mono uppercase tracking-widest font-bold">

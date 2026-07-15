@@ -129,7 +129,6 @@ export default function HeroSection() {
         return `${cleanBaseUrl}${relativePath}`;
       }
     );
-
     // Safety timeout: auto-resolve loading state after 5 seconds if stuck
     const safetyTimeout = setTimeout(() => {
       if (isMounted && loadedCount < activeFrameCount) {
@@ -151,9 +150,6 @@ export default function HeroSection() {
           if (currentProgress >= 100) {
             setPreloadProgress(100);
             clearInterval(interval);
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 500);
           } else {
             setPreloadProgress(currentProgress);
           }
@@ -173,15 +169,12 @@ export default function HeroSection() {
         if (loadedCount === activeFrameCount) {
           clearTimeout(safetyTimeout);
           setImages(loadedImages);
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 600);
+          setPreloadProgress(100);
         }
       };
       img.onerror = () => {
         if (!isMounted) return;
         loadedCount++;
-        // Fallback placeholder to prevent lockups on error
         const fallbackImg = new Image();
         fallbackImg.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%2302040a"/><text x="50%" y="50%" fill="%23f97316" font-size="24" text-anchor="middle">Loading Frame...</text></svg>';
         loadedImages[idx] = fallbackImg;
@@ -190,14 +183,10 @@ export default function HeroSection() {
         if (loadedCount === activeFrameCount) {
           clearTimeout(safetyTimeout);
           setImages(loadedImages);
-          setTimeout(() => {
-            setIsLoading(false);
-          }, 600);
+          setPreloadProgress(100);
         }
       };
-    });
-
-    return () => {
+    });    return () => {
       isMounted = false;
       clearTimeout(safetyTimeout);
       window.removeEventListener('resize', handleResize);
@@ -342,17 +331,16 @@ export default function HeroSection() {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
-
   return (
     <>
       {/* Cinematic Loader screen */}
-      <Loader progress={preloadProgress} active={isLoading} />
+      <Loader progress={preloadProgress} active={isLoading} onComplete={() => setIsLoading(false)} />
 
       {/* Main trigger container for pinning */}
       <div 
         ref={containerRef} 
         id="home"
-        className="relative w-full min-h-screen flex items-center justify-center bg-slate-950 select-none py-20 md:py-0 overflow-hidden z-10"
+        className="relative w-full min-h-screen flex items-center justify-center bg-[#0A0A0A] select-none py-20 md:py-0 overflow-hidden z-10"
       >
         
         {/* Layer 0: Canvas image sequence */}

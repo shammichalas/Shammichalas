@@ -21,7 +21,7 @@ export default {
           border: 'rgba(249, 115, 22, 0.15)',
         },
         space: {
-          dark: '#02040a',
+          dark: '#0A0A0A',
           slate: '#0f172a',
         }
       },

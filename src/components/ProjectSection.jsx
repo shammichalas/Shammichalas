@@ -10,9 +10,9 @@ const projects = [
     description: "A live, hardened, and deployed AI thought-compression engine combining a Next.js console with a FastAPI Python pipeline.",
     github: "https://github.com/shammichalas/Flint-UI",
     demo: "https://github.com/shammichalas/Flint-UI",
-    showcase: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
-    preview1: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=600&q=80",
-    preview2: "https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?auto=format&fit=crop&w=600&q=80"
+    showcase: "/projects/flint_showcase.png",
+    preview1: "/projects/flint_p1.png",
+    preview2: "/projects/flint_p2.png"
   },
   {
     number: "02",
@@ -21,9 +21,9 @@ const projects = [
     description: "A differentiated healthcare platform utilizing gesture and emotion recognition via webcam APIs and neural networks.",
     github: "https://github.com/shammichalas/Emotion-and-Gesture-Monitoring-System-for-Autism-Disorder",
     demo: "https://github.com/shammichalas/Emotion-and-Gesture-Monitoring-System-for-Autism-Disorder",
-    showcase: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?auto=format&fit=crop&w=1200&q=80",
-    preview1: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=600&q=80",
-    preview2: "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=600&q=80"
+    showcase: "/projects/autism_showcase.png",
+    preview1: "/projects/autism_p1.png",
+    preview2: "/projects/autism_p2.png"
   },
   {
     number: "03",
@@ -32,20 +32,20 @@ const projects = [
     description: "A heavyweight computer vision system demonstrating applied machine learning and facial landmarks tracking.",
     github: "https://github.com/shammichalas/Face_attendance-using-ML",
     demo: "https://github.com/shammichalas/Face_attendance-using-ML",
-    showcase: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=1200&q=80",
-    preview1: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?auto=format&fit=crop&w=600&q=80",
-    preview2: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=600&q=80"
+    showcase: "/projects/attendance_showcase.png",
+    preview1: "/projects/attendance_p1.png",
+    preview2: "/projects/attendance_p2.png"
   },
   {
     number: "04",
     category: "CONVERSATIONAL AI",
     title: "ChatNest Messaging Core",
-    description: "An AI-powered messaging platform running WebSocket connections and context cache pipelines.",
+    description: "A WebSocket high-concurrency messaging ecosystem built around multi-tenant chat rooms and glowing holographic logs.",
     github: "https://github.com/shammichalas/chatnest",
     demo: "https://github.com/shammichalas/chatnest",
-    showcase: "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?auto=format&fit=crop&w=1200&q=80",
-    preview1: "https://images.unsplash.com/photo-1557203567-e852a82c6f71?auto=format&fit=crop&w=600&q=80",
-    preview2: "https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=600&q=80"
+    showcase: "/projects/chatnest_showcase.png",
+    preview1: "/projects/chatnest_p1.png",
+    preview2: "/projects/chatnest_p2.png"
   }
 ];
 

@@ -6,7 +6,7 @@ import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
 import SkillsGalaxy from './components/SkillsGalaxy';
 import ExperienceTimeline from './components/ExperienceTimeline';
-import StoryProjects from './components/StoryProjects';
+import ProjectSection from './components/ProjectSection';
 import TechMarquee from './components/TechMarquee';
 import ContactTerminal from './components/ContactTerminal';
 import BackgroundParticles from './components/BackgroundParticles';
@@ -94,7 +94,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen bg-slate-950 text-slate-100 overflow-x-hidden selection:bg-orange-500/30 selection:text-orange-300">
+    <div className="relative min-h-screen bg-slate-950 text-slate-100 overflow-x-clip selection:bg-orange-500/30 selection:text-orange-300">
       
       {/* Global Navbar */}
       <Navbar />
@@ -112,7 +112,7 @@ export default function App() {
       <SkillsGalaxy />
 
       {/* 3. Story-Driven Chapter Showcase */}
-      <StoryProjects />
+      <ProjectSection />
 
       {/* 4. Futuristic Scroll Timeline Experience */}
       <ExperienceTimeline />

@@ -7,6 +7,10 @@ export default {
   theme: {
     extend: {
       colors: {
+        project: {
+          bg: '#0C0C0C',
+          border: '#D7E2EA',
+        },
         sunset: {
           orange: '#f97316',
           gold: '#fbbf24',

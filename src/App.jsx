@@ -3,7 +3,7 @@ import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
+import HeroSection from './components/NewHeroSection';
 import SkillsGalaxy from './components/SkillsGalaxy';
 import ExperienceTimeline from './components/ExperienceTimeline';
 import ProjectSection from './components/ProjectSection';

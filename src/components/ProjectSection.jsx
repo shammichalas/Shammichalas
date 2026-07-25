@@ -5,47 +5,47 @@ import { ExternalLink } from 'lucide-react';
 const projects = [
   {
     number: "01",
-    category: "AI ENGINE",
-    title: "Flint Engine UI & API",
-    description: "A live, hardened, and deployed AI thought-compression engine combining a Next.js console with a FastAPI Python pipeline.",
+    category: "AI DOCUMENT INTELLIGENCE",
+    title: "Flint",
+    description: "A full-stack AI document intelligence platform processing PDFs into multi-level summaries, semantic vector search, and spaced repetition quizzes using Google Gemini API with parallel async processing.",
     github: "https://github.com/shammichalas/Flint-UI",
-    demo: "https://github.com/shammichalas/Flint-UI",
+    demo: "https://flintn.netlify.app",
     showcase: "/projects/flint_showcase.png",
     preview1: "/projects/flint_p1.png",
     preview2: "/projects/flint_p2.png"
   },
   {
     number: "02",
-    category: "ASSISTIVE TECH",
-    title: "Autism Gesture Monitor",
-    description: "A differentiated healthcare platform utilizing gesture and emotion recognition via webcam APIs and neural networks.",
-    github: "https://github.com/shammichalas/Emotion-and-Gesture-Monitoring-System-for-Autism-Disorder",
-    demo: "https://github.com/shammichalas/Emotion-and-Gesture-Monitoring-System-for-Autism-Disorder",
-    showcase: "/projects/autism_showcase.png",
-    preview1: "/projects/autism_p1.png",
-    preview2: "/projects/autism_p2.png"
+    category: "REAL-TIME MANAGEMENT",
+    title: "CafeSphere",
+    description: "A Clean Architecture real-time cafe management platform powering POS, Kitchen Display, Inventory, Reservations, and SignalR order pipeline behind JWT-secured APIs.",
+    github: "https://github.com/shammichalas",
+    demo: "https://cafespheree.netlify.app",
+    showcase: "/projects/chatnest_showcase.png",
+    preview1: "/projects/chatnest_p1.png",
+    preview2: "/projects/chatnest_p2.png"
   },
   {
     number: "03",
-    category: "COMPUTER VISION",
-    title: "Neural Face Attendance",
-    description: "A heavyweight computer vision system demonstrating applied machine learning and facial landmarks tracking.",
-    github: "https://github.com/shammichalas/Face_attendance-using-ML",
-    demo: "https://github.com/shammichalas/Face_attendance-using-ML",
+    category: "HUMAN RESOURCE CORE",
+    title: "HRMS Portal",
+    description: "A modular HRMS covering employee lifecycle, attendance, leave, and payroll built with Spring Boot, React 19 + TypeScript, PostgreSQL, and role-based JWT auth.",
+    github: "https://github.com/shammichalas",
+    demo: "https://workforhub.netlify.app",
     showcase: "/projects/attendance_showcase.png",
     preview1: "/projects/attendance_p1.png",
     preview2: "/projects/attendance_p2.png"
   },
   {
     number: "04",
-    category: "CONVERSATIONAL AI",
-    title: "ChatNest Messaging Core",
-    description: "A WebSocket high-concurrency messaging ecosystem built around multi-tenant chat rooms and glowing holographic logs.",
-    github: "https://github.com/shammichalas/chatnest",
-    demo: "https://github.com/shammichalas/chatnest",
-    showcase: "/projects/chatnest_showcase.png",
-    preview1: "/projects/chatnest_p1.png",
-    preview2: "/projects/chatnest_p2.png"
+    category: "RECIPE SYSTEM",
+    title: "Cookbook Studio",
+    description: "A Django cookbook and recipe platform with chef profiles, comments, recommendations, and PDF cookbook generator utilizing ReportLab.",
+    github: "https://github.com/shammichalas",
+    demo: "https://github.com/shammichalas",
+    showcase: "/projects/autism_showcase.png",
+    preview1: "/projects/autism_p1.png",
+    preview2: "/projects/autism_p2.png"
   }
 ];
 

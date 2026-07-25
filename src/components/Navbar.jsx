@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Home, Code2, Layers, Briefcase, Mail } from 'lucide-react';
 
 const navItems = [
-  { name: 'Home', href: '#home' },
-  { name: 'Skills', href: '#skills' },
-  { name: 'Projects', href: '#projects' },
-  { name: 'Experience', href: '#experience' },
-  { name: 'Contact', href: '#contact' }
+  { name: 'Home', href: '#home', icon: Home },
+  { name: 'Skills', href: '#skills', icon: Code2 },
+  { name: 'Projects', href: '#projects', icon: Layers },
+  { name: 'Experience', href: '#experience', icon: Briefcase },
+  { name: 'Contact', href: '#contact', icon: Mail }
 ];
 
 export default function Navbar() {
@@ -155,45 +155,47 @@ export default function Navbar() {
         variants={entryVariants}
         initial="hidden"
         animate={animationState}
-        className="fixed bottom-[28px] left-1/2 z-[9999] flex items-center gap-[4px] sm:gap-[6px] px-[8px] sm:px-[12px] py-[8px] sm:py-[10px] rounded-full border border-white/8 bg-[#0A0A0A]/82 backdrop-blur-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.35)] select-none max-w-[92vw] sm:max-w-max"
+        className="fixed bottom-[24px] left-1/2 z-[9999] flex items-center gap-[2px] sm:gap-[6px] px-[6px] sm:px-[10px] py-[6px] sm:py-[8px] rounded-3xl border border-white/8 bg-[#0A0A0A]/82 backdrop-blur-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.35)] select-none max-w-[95vw] sm:max-w-max"
         style={{
           x: "-50%"
         }}
       >
         {navItems.map((item) => {
           const isActive = activeSection === item.name;
+          const Icon = item.icon;
           return (
             <a
               key={item.name}
               href={item.href}
               onClick={(e) => handleNavClick(e, item.name, item.href)}
-              className="relative px-[12px] sm:px-[18px] py-[8px] sm:py-[12px] font-sans text-[11px] sm:text-[14px] tracking-[0.02em] font-semibold uppercase cursor-pointer select-none transition-all duration-300 flex items-center justify-center rounded-full text-slate-400"
+              className="relative px-[12px] sm:px-[20px] py-[6px] sm:py-[10px] font-sans text-[10px] sm:text-[12px] tracking-normal font-medium cursor-pointer select-none transition-all duration-300 flex flex-col items-center justify-center gap-1 rounded-2xl text-slate-400"
               style={{
                 color: isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.45)',
-                fontWeight: isActive ? 700 : 600,
-                transform: isActive ? 'scale(1.05)' : 'scale(1)',
+                fontWeight: isActive ? 600 : 500,
+                transform: isActive ? 'scale(1.02)' : 'scale(1)',
                 zIndex: 10
               }}
               whileHover={!isActive ? { 
-                y: -2, 
-                scale: 1.03, 
-                color: "rgba(255,255,255,0.9)",
-                transition: { duration: 0.25 }
+                y: -1, 
+                scale: 1.02, 
+                color: "rgba(255,255,255,0.8)",
+                transition: { duration: 0.2 }
               } : { 
-                scale: 1.07,
-                transition: { duration: 0.25 }
+                scale: 1.04,
+                transition: { duration: 0.2 }
               }}
             >
+              <Icon className="w-4 h-4 sm:w-5 sm:h-5 relative z-20" />
               <span className="relative z-20 select-none">{item.name}</span>
               {isActive && (
                 <motion.div
                   layoutId="activeFloatingPill"
-                  className="absolute inset-0 rounded-full bg-gradient-to-b from-[#FF7A00] to-[#FFB347] shadow-[0_0_25px_rgba(255,122,0,0.35)] z-10"
+                  className="absolute inset-0 rounded-2xl bg-white/[0.10] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.15),_inset_0_1px_0_rgba(255,255,255,0.15)] z-10"
                   transition={{ 
                     type: 'spring', 
                     stiffness: 280, 
-                    damping: 24, 
-                    mass: 0.8 
+                    damping: 26, 
+                    mass: 0.9 
                   }}
                 />
               )}

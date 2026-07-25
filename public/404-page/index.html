@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — Sham Michalas</title>
+  <meta name="description" content="Looks like you've stepped outside my portfolio. The page you are looking for doesn't exist or has been moved.">
+  
+  <!-- Font Integrations -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@900,500,400&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS Play CDN (Matches project styles) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <style>
+    /* Reset and Layout */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: #ffffff;
+    }
+
+    /* Core Background Setup */
+    body {
+      background-image: url('./404 page.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Architectural Typography Bevel, Extrusion, and Ambient Shadows */
+    .letter-3d {
+      font-family: 'Satoshi', sans-serif;
+      font-weight: 900;
+      color: #111111;
+      font-size: 22vw;
+      line-height: 1;
+      letter-spacing: -0.05em;
+      text-shadow: 
+        -1px -1px 0px #3a3a3a,        /* Subtle top bevel highlight */
+        1px 1px 0px #080808,          /* Hard bottom bevel */
+        1px 1px 1px rgba(0, 0, 0, 0.75),
+        2px 2px 2px rgba(0, 0, 0, 0.45),
+        4px 4px 8px rgba(0, 0, 0, 0.25),
+        8px 8px 24px rgba(0, 0, 0, 0.15);
+      user-select: none;
+    }
+
+    /* Portal Ring Style - Matches weight & scale of letters */
+    .portal-ring {
+      width: 18vw;
+      height: 18vw;
+      border: 2.7vw solid #111111;
+      border-radius: 50%;
+      position: relative;
+      /* Physical Bevel & Shadow matching the letters */
+      box-shadow: 
+        -1px -1px 0px #3a3a3a,
+        1px 1px 0px #080808,
+        1px 1px 1px rgba(0, 0, 0, 0.75),
+        2px 2px 2px rgba(0, 0, 0, 0.45),
+        4px 4px 8px rgba(0, 0, 0, 0.25),
+        8px 8px 24px rgba(0, 0, 0, 0.15),
+        /* Inner bevel/extrusion */
+        inset -1px -1px 0px #3a3a3a,
+        inset 1px 1px 0px #080808;
+      background: transparent;
+      user-select: none;
+    }
+
+    /* Mobile adjustments for 404 text size to prevent overflow */
+    @media (max-width: 640px) {
+      .letter-3d {
+        font-size: 26vw;
+      }
+      .portal-ring {
+        width: 21vw;
+        height: 21vw;
+        border: 3.1vw solid #111111;
+      }
+    }
+  </style>
+</head>
+<body class="font-sans antialiased text-[#111111]">
+
+  <!-- Content Container -->
+  <div class="flex flex-col items-center text-center px-4 max-w-4xl z-10 select-none">
+    
+    <!-- 404 Typography with Portal Ring (Occupies 65-75% width) -->
+    <div class="flex items-center justify-center mb-[24px]">
+      <span class="letter-3d">4</span>
+      <div class="portal-ring mx-[-0.8vw] sm:mx-[-1.5vw] flex items-center justify-center overflow-hidden">
+        <canvas id="portal-canvas" class="absolute inset-0 w-full h-full rounded-full"></canvas>
+      </div>
+      <span class="letter-3d">4</span>
+    </div>
+    
+    <!-- Headline -->
+    <h1 class="text-xl sm:text-2xl font-semibold text-[#111111] mb-[14px] tracking-tight" style="font-family: 'Satoshi', sans-serif;">
+      Looks like you've stepped outside my portfolio.
+    </h1>
+    
+    <!-- Description -->
+    <p class="text-sm sm:text-base font-normal text-[#555555] mb-[42px] max-w-[500px]" style="font-family: 'Inter', sans-serif; line-height: 1.6;">
+      The page you're looking for doesn't exist or has been moved.
+    </p>
+    
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row items-center gap-[16px] w-full sm:w-auto justify-center">
+      <a href="/" class="flex items-center justify-center bg-[#111111] hover:bg-black text-white font-medium rounded-[18px] h-[56px] px-8 transition-all duration-300 transform hover:scale-[1.04] hover:shadow-lg shadow-black/10 select-none cursor-pointer w-full sm:w-[180px]" style="font-family: 'Inter', sans-serif;">
+        Return Home
+      </a>
+      <a href="/#projects" class="flex items-center justify-center bg-transparent hover:bg-[#111111] text-[#111111] hover:text-white font-medium border border-[#111111] rounded-[18px] h-[56px] px-8 transition-all duration-300 hover:scale-[1.02] select-none cursor-pointer w-full sm:w-[180px]" style="font-family: 'Inter', sans-serif;">
+        View Projects
+      </a>
+    </div>
+
+  </div>
+
+  <!-- Interactive Monochrome Portal Script -->
+  <script>
+    const canvas = document.getElementById('portal-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width, height;
+
+    function resize() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      width = rect.width;
+      height = rect.height;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    // Spawning particles inside the ring core
+    const particles = [];
+    const dots = [];
+
+    // Init orbiting dots (clean circular paths)
+    const numDots = 6;
+    for (let i = 0; i < numDots; i++) {
+      dots.push({
+        angle: Math.random() * Math.PI * 2,
+        radius: (width / 2) * (0.35 + Math.random() * 0.4),
+        speed: (0.004 + Math.random() * 0.008) * (Math.random() > 0.5 ? 1 : -1),
+        size: 1.5 + Math.random() * 2,
+        opacity: 0.15 + Math.random() * 0.4
+      });
+    }
+
+    // Init floating particles (drift around inside the center core)
+    const numParticles = 24;
+    for (let i = 0; i < numParticles; i++) {
+      particles.push({
+        x: (Math.random() - 0.5) * (width * 0.5),
+        y: (Math.random() - 0.5) * (height * 0.5),
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
+        size: 1 + Math.random() * 1.5,
+        opacity: 0.08 + Math.random() * 0.25
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, width, height);
+      const centerX = width / 2;
+      const centerY = height / 2;
+      
+      // Subtle radial glow inside the ring core
+      const grad = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, width / 2);
+      grad.addColorStop(0, 'rgba(17, 17, 17, 0.05)');
+      grad.addColorStop(0.6, 'rgba(17, 17, 17, 0.01)');
+      grad.addColorStop(1, 'transparent');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, width / 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Draw floating particles
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        // Circular bounding limit
+        const dist = Math.hypot(p.x, p.y);
+        const limit = (width / 2) * 0.65;
+        if (dist > limit) {
+          const angle = Math.atan2(p.y, p.x);
+          p.x = Math.cos(angle) * limit;
+          p.y = Math.sin(angle) * limit;
+          p.vx = -p.vx * 0.85;
+          p.vy = -p.vy * 0.85;
+        }
+        
+        ctx.fillStyle = `rgba(17, 17, 17, ${p.opacity})`;
+        ctx.beginPath();
+        ctx.arc(centerX + p.x, centerY + p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Draw orbiting dots
+      dots.forEach(d => {
+        d.angle += d.speed;
+        const x = Math.cos(d.angle) * d.radius;
+        const y = Math.sin(d.angle) * d.radius;
+        
+        ctx.fillStyle = `rgba(17, 17, 17, ${d.opacity})`;
+        ctx.beginPath();
+        ctx.arc(centerX + x, centerY + y, d.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      requestAnimationFrame(draw);
+    }
+    
+    // Start animation loop
+    requestAnimationFrame(draw);
+  </script>
+</body>
+</html>

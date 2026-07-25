@@ -1,699 +1,1076 @@
-/* eslint-disable react/jsx-no-literals, react-i18next/no-literal-string, security/detect-object-injection */
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { 
+  Code, Server, Database, Cpu, Terminal as TermIcon, Cloud, Layers, 
+  Brain, Workflow, Play, CheckCircle2, Activity, FileCode, Check, RefreshCw 
+} from 'lucide-react';
 
-// Expanded skill nodes with deep technical descriptions, ratings, and custom inline SVG icons
-const skillsData = [
-  { 
-    id: 'react', 
-    name: 'React.js', 
-    category: 'Frontend', 
-    desc: 'Virtual DOM calibration, custom Hooks, fiber architecture, and state optimization pipelines.', 
-    ring: 0, 
-    angle: 0, 
-    glow: 'rgba(56, 189, 248, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-sky-400" viewBox="-11.5 -10.23174 23 20.46348" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="0" cy="0" r="2.05" fill="currentColor"/>
-        <g stroke="currentColor" strokeWidth="1" fill="none">
-          <ellipse rx="11" ry="4.2"/>
-          <ellipse rx="11" ry="4.2" transform="rotate(60)"/>
-          <ellipse rx="11" ry="4.2" transform="rotate(120)"/>
-        </g>
-      </svg>
-    )
-  },
-  { 
-    id: 'next', 
-    name: 'Next.js', 
-    category: 'Frontend', 
-    desc: 'Server-side rendering (SSR), static site generation, React Server Components (RSC), and edge routing.', 
-    ring: 0, 
-    angle: 90, 
-    glow: 'rgba(255, 255, 255, 0.3)',
-    icon: (
-      <svg className="w-4 h-4 text-white" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <mask id="next-mask-galaxy" maskUnits="userSpaceOnUse" x="0" y="0" width="180" height="180">
-          <circle cx="90" cy="90" r="90" fill="white"/>
-        </mask>
-        <g mask="url(#next-mask-galaxy)">
-          <circle cx="90" cy="90" r="90" fill="transparent" stroke="currentColor" strokeWidth="10"/>
-          <path d="M140 150L95 90V140H80V50H95L132 100V50H145V150H140Z" fill="currentColor"/>
-        </g>
-      </svg>
-    )
-  },
-  { 
-    id: 'openai', 
-    name: 'OpenAI API', 
-    category: 'AI / ML', 
-    desc: 'Fine-tuning LLM pipelines, RAG integrations, semantic search matrices, and token budget management.', 
-    ring: 0, 
-    angle: 180, 
-    glow: 'rgba(16, 185, 129, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-emerald-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M21.7 10.3c.3-.5.4-1.2.2-1.8-.2-.6-.7-1.1-1.3-1.3l-1.8-.6c.2-.6.1-1.3-.2-1.9-.3-.5-.9-.9-1.5-1l-1.8-.1c-.1-.7-.6-1.2-1.2-1.5-.6-.3-1.3-.2-1.9.1l-1.6.9c-.5-.3-1.2-.4-1.8-.2-.6.2-1.1.7-1.3 1.3l-.6 1.8c-.6-.2-1.3-.1-1.9.2-.5.3-.9.9-1 1.5l-.1 1.8c-.7.1-1.2.6-1.5 1.2-.3.6-.2 1.3.1 1.9l.9 1.6c-.3.5-.4 1.2-.2 1.8.2.6.7 1.1 1.3 1.3l1.8.6c-.2.6-.1 1.3.2 1.9.3.5.9.9 1.5 1l1.8.1c.1.7.6 1.2 1.2 1.5.6.3 1.3.2 1.9-.1l1.6-.9c.5.3 1.2.4 1.8.2.6-.2 1.1-.7 1.3-1.3l.6-1.8c.6.2 1.3.1 1.9-.2.5-.3.9-.9 1-1.5l.1-1.8c.7-.1 1.2-.6 1.5-1.2.3-.6.2-1.3-.1-1.9l-.9-1.6zM12 14.5c-1.4 0-2.5-1.1-2.5-2.5s1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5-1.1 2.5-2.5 2.5z"/>
-      </svg>
-    )
-  },
-  { 
-    id: 'python', 
-    name: 'Python', 
-    category: 'AI / ML', 
-    desc: 'Multi-threaded background compute, mathematical data modeling, and asynchronous task management.', 
-    ring: 0, 
-    angle: 270, 
-    glow: 'rgba(234, 179, 8, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-yellow-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12.0003 2C10.7417 2 9.53907 2.15556 8.52834 2.45109C5.39414 3.3674 5.37895 5.56844 5.37895 7.15217V8.58696H12.0872C13.5651 8.58696 14.7766 9.85109 14.7766 11.3391V14.6304H18.6214C20.6121 14.6304 22.0003 13.5855 22.0003 11.0543V7.6087C22.0003 4.2407 19.3496 2 12.0003 2ZM7.23439 4.3913C7.75549 4.3913 8.18222 4.81804 8.18222 5.33913C8.18222 5.86022 7.75549 6.28696 7.23439 6.28696C6.71329 6.28696 6.28656 5.86022 6.28656 5.33913C6.28656 4.81804 6.71329 4.3913 7.23439 4.3913ZM5.37895 9.36957C3.38827 9.36957 2.00007 10.4145 2.00007 12.9457V16.3913C2.00007 19.7593 4.65076 22 12.0003 22C13.2589 22 14.4615 21.8444 15.4723 21.5489C18.6065 20.6326 18.6217 18.4316 18.6217 16.8478V15.413H11.9133C10.4354 15.413 9.22396 14.1489 9.22396 12.6609V9.36957H5.37895ZM16.7662 17.7174C17.2873 17.7174 17.714 18.1441 17.714 18.6652C17.714 19.1863 17.2873 19.613 16.7662 19.613C16.2451 19.613 15.8184 19.1863 15.8184 18.6652C15.8184 18.1441 16.2451 17.7174 16.7662 17.7174Z"/>
-      </svg>
-    )
-  },
-  { 
-    id: 'fastapi', 
-    name: 'FastAPI', 
-    category: 'Backend', 
-    desc: 'High-frequency asynchronous APIs, strict Pydantic data sanitization, and high-concurrency loops.', 
-    ring: 1, 
-    angle: 45, 
-    glow: 'rgba(5, 150, 105, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-[#059669]" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.891 9.429L12.56 16.48a1.2 1.2 0 0 1-1.745.183l-3.791-3.223a1.2 1.2 0 1 1 1.554-1.829l2.766 2.352 4.66-6.388a1.2 1.2 0 1 1 1.948 1.424z"/>
-      </svg>
-    )
-  },
-  { 
-    id: 'node', 
-    name: 'Node.js', 
-    category: 'Backend', 
-    desc: 'Non-blocking I/O event loops, stream-based file structures, and custom Express middleware frameworks.', 
-    ring: 1, 
-    angle: 135, 
-    glow: 'rgba(132, 204, 22, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-lime-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L3.5 6.9v10.2L12 22l8.5-4.9V6.9L12 2zm6.7 14.1L12 20l-6.7-3.9V7.9L12 4l6.7 3.9v8.2z"/>
-      </svg>
-    )
-  },
-  { 
-    id: 'redis', 
-    name: 'Redis', 
-    category: 'Backend', 
-    desc: 'In-memory caching pools, pub/sub socket brokers, and temporary key TTL session states.', 
-    ring: 1, 
-    angle: 225, 
-    glow: 'rgba(239, 68, 68, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 14h-2v-2h2v2zm0-4h-2V7h2v5z"/>
-      </svg>
-    )
-  },
-  { 
-    id: 'mongodb', 
-    name: 'MongoDB', 
-    category: 'Backend', 
-    desc: 'NoSQL aggregate processing, index optimizations, and high-frequency document writes.', 
-    ring: 1, 
-    angle: 315, 
-    glow: 'rgba(34, 197, 94, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-green-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M17.15 11.23c-.76-2.58-2.61-4.9-4.52-6.52-.3-.25-.76-.25-1.06 0-2 1.7-3.8 4-4.55 6.57-.76 2.58-.33 5.4 1.25 7.6 1.15 1.6 3 2.65 4.73 3.03.35.08.7.08 1.05 0 1.73-.38 3.58-1.43 4.73-3.03 1.6-2.2 2-5 .25-7.65zM12 18.5a.75.75 0 0 1-.75-.75v-11.5a.75.75 0 0 1 1.5 0v11.5a.75.75 0 0 1-.75.75z"/>
-      </svg>
-    )
-  },
-  { 
-    id: 'docker', 
-    name: 'Docker', 
-    category: 'Cloud & DevOps', 
-    desc: 'Multi-stage container layering, volume mounts, isolated microservice clusters, and minimal images.', 
-    ring: 2, 
-    angle: 15, 
-    glow: 'rgba(14, 165, 233, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-sky-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M13.983 8.18h2.119v-2.12h-2.119zm-2.737 0h2.119v-2.12H11.246zm-2.737 0h2.12v-2.12h-2.12zm-2.737 0h2.119v-2.12H5.772zm2.737-2.738h2.12v-2.12h-2.12zm2.737 0h2.119v-2.12H11.246zm0-2.737h2.119v-2.119h-2.119zm5.474 5.475h2.118v-2.12H16.72zm-2.737-5.475h2.119v-2.119h-2.119zM1.123 9.948c.08.385.25.753.487 1.077.295.39.69.696 1.15.89 2.597 1.09 5.617.9 8.2-.18.73-.3 1.488-.5 2.268-.588.618-.07 1.245-.03 1.854.12 1.344.333 2.5.6 3.65.6.865 0 1.636-.26 2.3-.77.77-.594 1.35-1.5 1.7-2.67.245-.826.37-1.687.37-2.552 0-.256-.008-.51-.026-.763-.095-1.342-.71-2.548-1.68-3.4-.645-.568-1.46-.867-2.29-.844h-.132c-1.07.01-2.115.35-3 .986l-.42.3c-.312.227-.584.498-.81.804l-.24.323c-.347.464-.537 1.026-.54 1.602l.006.5a.65.65 0 0 1-.365.59c-.43.208-.89.344-1.36.4H5.973c-.5.06-1 .212-1.45.45l-.47.24c-.453.238-.838.583-1.12.996L2.31 9.2c-.363.473-.772.845-1.187.747z"/>
-      </svg>
-    )
-  },
-  { 
-    id: 'aws', 
-    name: 'AWS Lambda', 
-    category: 'Cloud & DevOps', 
-    desc: 'Serverless function scheduling, cold-start mitigation, API Gateway mapping, and event-driven queues.', 
-    ring: 2, 
-    angle: 105, 
-    glow: 'rgba(249, 115, 22, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-orange-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6.3 22l6.2-11.2L17.7 22h3.5L14 8.2l4.8-8.2h-3.5L10.3 8.8 7.2 3H3.7l4.8 8.8L3 22h3.3z" />
-      </svg>
-    )
-  },
-  { 
-    id: 'celery', 
-    name: 'Celery', 
-    category: 'AI / ML', 
-    desc: 'Distributed background queue worker, AMQP/RabbitMQ integration, task result cachers, and rate-limiting.', 
-    ring: 2, 
-    angle: 195, 
-    glow: 'rgba(167, 139, 250, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-violet-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
-      </svg>
-    )
-  },
-  { 
-    id: 'firebase', 
-    name: 'Firebase', 
-    category: 'Cloud & DevOps', 
-    desc: 'Realtime database synchronization, OAuth authentication keys, and serverless hosting triggers.', 
-    ring: 2, 
-    angle: 285, 
-    glow: 'rgba(245, 158, 11, 0.4)',
-    icon: (
-      <svg className="w-4 h-4 text-amber-500" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 2L3.5 6.9v10.2L12 22l8.5-4.9V6.9L12 2zm6.7 14.1L12 20l-6.7-3.9V7.9L12 4l6.7 3.9v8.2z"/>
-      </svg>
-    )
-  }
-];
+gsap.registerPlugin(ScrollTrigger);
 
-export default function SkillsGalaxy() {
-  const [hoveredSkill, setHoveredSkill] = useState(skillsData[0]); // Default details display
-  const [isMobile, setIsMobile] = useState(false);
-  const [rotation, setRotation] = useState(0);
+// ==========================================
+// HIGH-FIDELITY VECTOR MOCKUPS (SCREENSHOTS)
+// ==========================================
 
-  const containerRef = useRef(null);
+const ReactMockup = () => (
+  <div className="w-full h-[140px] bg-slate-950/80 rounded-lg p-3 border border-white/5 font-mono text-[9px] text-slate-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-white/5 pb-2">
+      <span className="text-[8px] text-slate-500 font-bold uppercase tracking-wider">React Fiber Telemetry</span>
+      <div className="flex items-center gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span className="text-[7px] text-emerald-400 font-bold">120 FPS</span>
+      </div>
+    </div>
+    <div className="flex-1 py-2 flex items-center justify-between gap-3">
+      {/* Mini Bar Chart */}
+      <div className="flex-1 h-full flex flex-col justify-between">
+        <div className="flex justify-between text-[7px] text-slate-500">
+          <span>RENDER LATENCY</span>
+          <span className="text-cyan-400">0.42ms</span>
+        </div>
+        <div className="h-10 flex items-end gap-1.5 pb-1">
+          {[40, 65, 30, 85, 45, 95, 70].map((h, i) => (
+            <div key={i} className="flex-1 bg-gradient-to-t from-cyan-600 to-sky-400 rounded-t-[1px]" style={{ height: `${h}%` }}></div>
+          ))}
+        </div>
+      </div>
+      {/* Mini Gauge */}
+      <div className="w-12 h-12 rounded-full border-2 border-white/5 relative flex items-center justify-center">
+        <div className="absolute inset-0 rounded-full border-2 border-transparent border-t-cyan-400 border-r-cyan-400 rotate-45"></div>
+        <span className="text-[8px] font-bold text-slate-200">89.4%</span>
+      </div>
+    </div>
+    <div className="text-[7px] text-slate-500 border-t border-white/5 pt-1.5 flex justify-between">
+      <span>HOOKS IN SCOPE: 8</span>
+      <span>RE-RENDERS: 0</span>
+    </div>
+  </div>
+);
+
+const NextMockup = () => (
+  <div className="w-full h-[140px] bg-[#030303] rounded-lg p-3 border border-white/10 font-sans flex flex-col justify-between overflow-hidden relative">
+    {/* Grid Background */}
+    <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{
+      backgroundImage: 'radial-gradient(circle, #fff 1px, transparent 1px)',
+      backgroundSize: '8px 8px'
+    }}></div>
+    
+    <div className="flex items-center justify-between z-10 border-b border-white/5 pb-2">
+      <div className="flex items-center gap-1">
+        <span className="font-extrabold text-[10px] text-white tracking-tighter">NEXT.js</span>
+        <span className="text-[6px] text-slate-500 border border-slate-700 px-1 rounded-sm uppercase tracking-wide">v15.0</span>
+      </div>
+      <span className="text-[7px] text-violet-400 font-mono">edge:route /dashboard</span>
+    </div>
+    <div className="flex-1 py-3 flex flex-col justify-center items-center text-center z-10">
+      <h4 className="text-[9px] font-bold text-white leading-tight max-w-[120px] mb-1.5">
+        Production-grade Server Components
+      </h4>
+      <div className="w-16 h-4 bg-white text-black font-bold text-[7px] rounded flex items-center justify-center shadow-lg shadow-white/5 cursor-pointer uppercase tracking-wider">
+        Deploy Now
+      </div>
+    </div>
+    <div className="text-[6px] font-mono text-slate-500 flex justify-between border-t border-white/5 pt-1.5 z-10">
+      <span>RSC HYDRATED</span>
+      <span>TTI: 0.12s</span>
+    </div>
+  </div>
+);
+
+const SpringBootMockup = () => (
+  <div className="w-full h-[140px] bg-[#0e1712] rounded-lg p-3 border border-emerald-950 font-mono text-[8px] text-emerald-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-emerald-900/40 pb-1.5">
+      <span className="text-emerald-500 font-bold uppercase tracking-wider">Spring Swagger API v3</span>
+      <span className="text-[7px] text-emerald-600">secure:active</span>
+    </div>
+    <div className="flex-1 py-2 flex flex-col justify-center gap-1.5">
+      <div className="flex items-center justify-between bg-emerald-950/60 border border-emerald-900/50 rounded px-1.5 py-0.5">
+        <span className="text-[7px] bg-green-500 text-black px-1 rounded-sm font-bold uppercase">POST</span>
+        <span className="flex-1 text-left pl-1.5 text-slate-300">/api/v1/telemetry</span>
+        <span className="text-emerald-500">201 OK</span>
+      </div>
+      <div className="flex items-center justify-between bg-emerald-950/40 border border-emerald-900/30 rounded px-1.5 py-0.5 opacity-80">
+        <span className="text-[7px] bg-blue-500 text-white px-1 rounded-sm font-bold uppercase">GET</span>
+        <span className="flex-1 text-left pl-1.5 text-slate-300">/api/v1/nodes/cluster</span>
+        <span className="text-emerald-500">200 OK</span>
+      </div>
+      <div className="flex items-center justify-between bg-emerald-950/20 border border-emerald-900/20 rounded px-1.5 py-0.5 opacity-60">
+        <span className="text-[7px] bg-amber-500 text-black px-1 rounded-sm font-bold uppercase">PUT</span>
+        <span className="flex-1 text-left pl-1.5 text-slate-300">/api/v1/nodes/sync</span>
+        <span className="text-amber-400">202 PND</span>
+      </div>
+    </div>
+    <div className="text-[6px] text-emerald-600 flex justify-between border-t border-emerald-900/40 pt-1">
+      <span>JVM RUNNING</span>
+      <span>HEAP: 420MB / 1GB</span>
+    </div>
+  </div>
+);
+
+const FastAPIMockup = () => (
+  <div className="w-full h-[140px] bg-[#0c131a] rounded-lg p-3 border border-cyan-950/80 font-mono text-[8px] text-cyan-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-cyan-900/40 pb-1.5">
+      <span className="text-cyan-500 font-bold uppercase tracking-wider">FastAPI OpenAPI Schema</span>
+      <span className="text-[7px] text-cyan-600">async_loop:uvicorn</span>
+    </div>
+    <div className="flex-1 py-1.5 flex flex-col justify-between">
+      <div className="flex items-center gap-1.5">
+        <span className="text-[7px] bg-rose-500 text-white px-1 rounded-sm font-bold uppercase">POST</span>
+        <span className="text-slate-300">/v2/rag/query</span>
+      </div>
+      <div className="bg-[#050a0f] p-1.5 rounded border border-cyan-900/30 text-slate-400 text-[7px] leading-tight">
+        <span className="text-cyan-500">request_body:</span><br />
+        {`{ "query": "vector latency", "top_k": 3 }`}<br />
+        <span className="text-emerald-400">response [200]:</span> {`{ "matches": 42 }`}
+      </div>
+    </div>
+    <div className="text-[6px] text-cyan-600 flex justify-between border-t border-cyan-900/40 pt-1">
+      <span>Pydantic v2 Compiled</span>
+      <span>LATENCY: 3.14ms</span>
+    </div>
+  </div>
+);
+
+const DockerMockup = () => (
+  <div className="w-full h-[140px] bg-[#0d1624] rounded-lg p-3 border border-sky-950 font-mono text-[8px] text-sky-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-sky-900/40 pb-2">
+      <div className="flex items-center gap-1">
+        <span className="w-2 h-2 bg-sky-400 rounded-sm"></span>
+        <span className="font-bold text-white uppercase tracking-wider">Docker Desktop</span>
+      </div>
+      <span className="text-[6px] text-slate-500">STABLE CONTAINER GRID</span>
+    </div>
+    <div className="flex-1 py-2 flex flex-col gap-1">
+      <div className="flex items-center justify-between bg-sky-950/20 px-1.5 py-0.5 rounded border border-sky-900/30">
+        <div className="flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span className="text-slate-300">edge-router</span>
+        </div>
+        <span className="text-slate-500 text-[6px]">nginx:alpine</span>
+      </div>
+      <div className="flex items-center justify-between bg-sky-950/20 px-1.5 py-0.5 rounded border border-sky-900/30">
+        <div className="flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span className="text-slate-300">redis-broker</span>
+        </div>
+        <span className="text-slate-500 text-[6px]">redis:7.2</span>
+      </div>
+      <div className="flex items-center justify-between bg-sky-950/20 px-1.5 py-0.5 rounded border border-sky-900/30 opacity-70">
+        <div className="flex items-center gap-1">
+          <span className="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+          <span className="text-slate-400">django-cron</span>
+        </div>
+        <span className="text-slate-500 text-[6px]">python:3.11</span>
+      </div>
+    </div>
+    <div className="text-[7px] text-sky-500/80 flex justify-between border-t border-sky-900/40 pt-1">
+      <span>CPU: 1.4%</span>
+      <span>RAM: 382MB</span>
+    </div>
+  </div>
+);
+
+const MongoDBMockup = () => (
+  <div className="w-full h-[140px] bg-[#0c140e] rounded-lg p-3 border border-green-950 font-mono text-[8px] text-green-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-green-900/40 pb-1.5">
+      <span className="text-green-500 font-bold uppercase tracking-wider">Compass Database Document</span>
+      <span className="text-[6px] text-slate-500">prod_db.nodes</span>
+    </div>
+    <div className="flex-1 py-1.5 overflow-hidden">
+      <div className="text-[7.5px] leading-relaxed text-slate-400">
+        <span className="text-purple-400">{`{`}</span><br />
+        <span className="pl-3 text-emerald-500">"_id":</span> <span className="text-amber-400">"65a2d9c021ef"</span>,<br />
+        <span className="pl-3 text-emerald-500">"role":</span> <span className="text-amber-400">"edge-node"</span>,<br />
+        <span className="pl-3 text-emerald-500">"active":</span> <span className="text-indigo-400">true</span>,<br />
+        <span className="pl-3 text-emerald-500">"metrics":</span> <span className="text-purple-400">{`{`}</span> <span className="text-slate-500">"rtt": 4ms</span> <span className="text-purple-400">{`}`}</span><br />
+        <span className="text-purple-400">{`}`}</span>
+      </div>
+    </div>
+    <div className="text-[6px] text-green-600 flex justify-between border-t border-green-900/40 pt-1">
+      <span>FILTER: {"{ role: 'edge-node' }"}</span>
+      <span>SHARD: PRIMARY</span>
+    </div>
+  </div>
+);
+
+const PostgresMockup = () => (
+  <div className="w-full h-[140px] bg-[#0b1219] rounded-lg p-2.5 border border-sky-950 font-mono text-[7px] text-slate-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-sky-900/40 pb-1.5 text-[8px]">
+      <span className="text-sky-400 font-bold">SQL Editor: telemetry</span>
+      <span className="text-emerald-400">SELECT * FROM cluster_metrics;</span>
+    </div>
+    <div className="flex-1 py-1.5 overflow-x-auto">
+      <table className="w-full text-left border-collapse text-[7px]">
+        <thead>
+          <tr className="border-b border-sky-900/20 text-sky-500 font-bold text-[7px]">
+            <th className="pb-1">id</th>
+            <th className="pb-1">system_name</th>
+            <th className="pb-1">status</th>
+            <th className="pb-1">load_pct</th>
+          </tr>
+        </thead>
+        <tbody className="text-slate-300">
+          <tr className="border-b border-sky-900/10">
+            <td className="py-0.5">1</td>
+            <td className="py-0.5">gateway-router</td>
+            <td className="py-0.5 text-emerald-400">ACTIVE</td>
+            <td className="py-0.5">18.4%</td>
+          </tr>
+          <tr className="border-b border-sky-900/10">
+            <td className="py-0.5">2</td>
+            <td className="py-0.5">vector-store</td>
+            <td className="py-0.5 text-emerald-400">ACTIVE</td>
+            <td className="py-0.5">42.1%</td>
+          </tr>
+          <tr className="opacity-60">
+            <td className="py-0.5">3</td>
+            <td className="py-0.5">auth-microservice</td>
+            <td className="py-0.5 text-rose-400">STANDBY</td>
+            <td className="py-0.5">0.0%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div className="text-[6px] text-sky-600 flex justify-between border-t border-sky-900/40 pt-1">
+      <span>ROWS: 3</span>
+      <span>EXECUTION TIME: 0.82ms</span>
+    </div>
+  </div>
+);
+
+const GitHubMockup = () => (
+  <div className="w-full h-[140px] bg-[#090b0e] rounded-lg p-3 border border-white/5 font-mono text-[8px] text-slate-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-white/5 pb-2">
+      <span className="text-[7.5px] text-slate-400">github.com/shammichalas</span>
+      <span className="text-[7px] text-slate-500 font-bold uppercase tracking-wider">Actions Pipeline</span>
+    </div>
+    <div className="flex-1 py-2 flex flex-col justify-center items-center">
+      <div className="text-[7px] text-slate-500 mb-1">1,824 contributions in the last 12 months</div>
+      {/* 20 columns x 5 rows grid */}
+      <div className="grid grid-cols-[repeat(20,minmax(0,1fr))] gap-[2px]">
+        {Array.from({ length: 100 }).map((_, i) => {
+          // Generate realistic contribution density patterns
+          const rand = Math.sin(i * 0.1) * Math.cos(i * 0.2);
+          let bg = "bg-neutral-900"; // zero
+          if (rand > 0.6) bg = "bg-emerald-400"; // very high
+          else if (rand > 0.2) bg = "bg-emerald-600"; // medium
+          else if (rand > -0.2) bg = "bg-emerald-800"; // low
+          else if (rand > -0.6) bg = "bg-emerald-950"; // low-medium
+          return <div key={i} className={`w-[5.5px] h-[5.5px] rounded-sm ${bg}`}></div>;
+        })}
+      </div>
+    </div>
+    <div className="text-[7px] text-emerald-400 border-t border-white/5 pt-1.5 flex items-center justify-between">
+      <div className="flex items-center gap-1">
+        <Check className="w-2.5 h-2.5" />
+        <span>CI PIPELINE GREEN</span>
+      </div>
+      <span className="text-slate-500">telemetry-sync.yml</span>
+    </div>
+  </div>
+);
+
+const VSCodeMockup = () => (
+  <div className="w-full h-[140px] bg-[#1e1e1e] rounded-lg p-2.5 border border-white/5 font-mono text-[7.5px] text-[#d4d4d4] flex flex-col justify-between overflow-hidden shadow-2xl">
+    <div className="flex items-center justify-between border-b border-black/40 pb-1.5 text-[7px] text-slate-400">
+      <div className="flex items-center gap-1.5">
+        <span className="w-2 h-2 rounded-full bg-rose-500"></span>
+        <span className="w-2 h-2 rounded-full bg-amber-500"></span>
+        <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+        <span className="ml-1 text-slate-300 font-bold bg-[#2d2d2d] px-2 py-0.5 rounded border border-white/5">SkillsGalaxy.jsx</span>
+      </div>
+      <span className="text-slate-500">WORKSPACE: SHAMMICHALAS</span>
+    </div>
+    <div className="flex-1 py-1.5 flex text-left leading-normal">
+      <div className="text-slate-600 text-right pr-2 select-none border-r border-white/5 mr-2">
+        <div>1</div>
+        <div>2</div>
+        <div>3</div>
+        <div>4</div>
+        <div>5</div>
+      </div>
+      <div className="flex-1 overflow-x-auto text-[7.5px] text-slate-300">
+        <div><span className="text-purple-400">import</span> {`{ gsap }`} <span className="text-purple-400">from</span> <span className="text-emerald-400">'gsap'</span>;</div>
+        <div><span className="text-purple-400">export function</span> <span className="text-blue-400">orchestrate</span>() {`{`}</div>
+        <div className="pl-3"><span className="text-purple-400">return</span> <span className="text-cyan-400">System</span>.<span className="text-yellow-400">build</span>({`{`}</div>
+        <div className="pl-6">architecture: <span className="text-emerald-400">"cinematic"</span></div>
+        <div>{`  });`}</div>
+      </div>
+    </div>
+    <div className="text-[6.5px] text-slate-500 flex justify-between border-t border-black/40 pt-1">
+      <span>UTF-8 │ JAVASCRIPT REACT</span>
+      <span>LN 3, COL 24</span>
+    </div>
+  </div>
+);
+
+const TerminalMockup = () => (
+  <div className="w-full h-[140px] bg-black/90 rounded-lg p-3 border border-slate-900 font-mono text-[7.5px] text-slate-300 flex flex-col justify-between overflow-hidden relative">
+    <div className="flex items-center justify-start gap-1.5 border-b border-white/5 pb-2 mb-1.5">
+      <span className="w-2 h-2 rounded-full bg-rose-500/80"></span>
+      <span className="w-2 h-2 rounded-full bg-amber-500/80"></span>
+      <span className="w-2 h-2 rounded-full bg-emerald-500/80"></span>
+      <span className="text-[7px] text-slate-500 font-bold ml-2">bash - sham@edge-compute</span>
+    </div>
+    <div className="flex-1 flex flex-col gap-1.5 text-left text-slate-400 leading-tight">
+      <div>
+        <span className="text-emerald-400">sham@edge-compute:~$</span> <span className="text-slate-200">npm run build</span>
+      </div>
+      <div>
+        <span className="text-slate-500">vite v6.0.0 building for production...</span>
+      </div>
+      <div className="text-emerald-400">✓ 142 modules compiled successfully.</div>
+      <div className="text-slate-500 pl-2">
+        dist/assets/index-A4f91.js &nbsp; &nbsp; 241.82 kB │ gzip: 64.18 kB<br />
+        dist/assets/index-G92d1.css &nbsp; &nbsp; 48.12 kB │ gzip: 12.02 kB
+      </div>
+      <div className="flex items-center gap-1 text-emerald-400">
+        <span>✔ Production build completed in 1.42s</span>
+      </div>
+    </div>
+    <div className="text-[7px] text-slate-500 flex justify-between border-t border-white/5 pt-1.5">
+      <span>SHELL: ZSH</span>
+      <span className="flex items-center gap-1">
+        <RefreshCw className="w-2.5 h-2.5 animate-spin text-emerald-400" />
+        <span>SERVER STANDBY</span>
+      </span>
+    </div>
+  </div>
+);
+
+const AWSMockup = () => (
+  <div className="w-full h-[140px] bg-[#111721] rounded-lg p-3 border border-amber-500/20 font-mono text-[8px] text-slate-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-white/5 pb-2">
+      <div className="flex items-center gap-1.5">
+        <span className="text-amber-500 font-bold text-[9px]">AWS</span>
+        <span className="text-slate-500 font-bold">CloudWatch</span>
+      </div>
+      <span className="text-[7px] text-emerald-400 bg-emerald-950/80 px-1 rounded-sm border border-emerald-900/30">ALL SYSTEMS OK</span>
+    </div>
+    <div className="flex-1 py-2 flex justify-between items-center gap-3">
+      <div className="flex-1 flex flex-col justify-between h-full py-0.5 text-left gap-1">
+        <div className="flex justify-between border-b border-white/5 pb-0.5">
+          <span>Lambda::gateway</span>
+          <span className="text-emerald-400">200 OK</span>
+        </div>
+        <div className="flex justify-between border-b border-white/5 pb-0.5">
+          <span>ECS::cluster</span>
+          <span className="text-emerald-400">100% UP</span>
+        </div>
+        <div className="flex justify-between">
+          <span>S3::telemetry</span>
+          <span className="text-sky-400">14.8 GB</span>
+        </div>
+      </div>
+      <div className="w-14 h-full flex flex-col justify-between items-center bg-slate-950/50 p-1.5 rounded border border-white/5">
+        <span className="text-[6.5px] text-slate-500 uppercase flex">Requests</span>
+        <svg className="w-full h-8 overflow-visible">
+          <path d="M 0 25 Q 10 5, 20 20 T 40 5 T 60 18" fill="none" stroke="#f97316" strokeWidth="1.5" />
+          <circle cx="50" cy="18" r="2.5" fill="#f97316" className="animate-ping" />
+        </svg>
+      </div>
+    </div>
+    <div className="text-[7px] text-slate-500 border-t border-white/5 pt-1.5 flex justify-between">
+      <span>REGION: us-east-1</span>
+      <span>ERROR RATE: 0.02%</span>
+    </div>
+  </div>
+);
+
+const OpenAIMockup = () => (
+  <div className="w-full h-[140px] bg-[#0f171d] rounded-lg p-3 border border-emerald-950/80 font-mono text-[8px] text-slate-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-white/5 pb-2">
+      <div className="flex items-center gap-1.5">
+        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        <span className="text-[8px] text-slate-300 font-bold uppercase tracking-wider">GPT-4o fine-tuning</span>
+      </div>
+      <span className="text-[7px] text-slate-500">hyperparameters:dev</span>
+    </div>
+    <div className="flex-1 py-2 flex flex-col gap-2 leading-relaxed">
+      <div className="bg-slate-900/60 p-1.5 rounded border border-white/5 text-right max-w-[80%] self-end text-slate-200">
+        "Optimize SQL indexes for composite query workloads."
+      </div>
+      <div className="bg-[#050b10] p-1.5 rounded border border-emerald-900/20 max-w-[85%] text-slate-300">
+        "To optimize, construct indexing using: <span className="text-emerald-400">CREATE INDEX idx_nodes ON nodes(status, load);</span>"
+      </div>
+    </div>
+    <div className="text-[6px] text-slate-500 border-t border-white/5 pt-1.5 flex justify-between">
+      <span>TEMPERATURE: 0.2</span>
+      <span>TOKENS: 420 /sec</span>
+    </div>
+  </div>
+);
+
+const LangChainMockup = () => (
+  <div className="w-full h-[140px] bg-slate-950/90 rounded-lg p-2.5 border border-white/5 font-mono text-[7.5px] text-slate-400 flex flex-col justify-between overflow-hidden relative">
+    <div className="flex items-center justify-between border-b border-white/5 pb-1.5 mb-1">
+      <span className="text-[8px] text-slate-300 font-bold uppercase tracking-wider">LangChain Agent Canvas</span>
+      <span className="text-[7px] text-purple-400">agent_state:execute</span>
+    </div>
+    <div className="flex-1 relative flex items-center justify-center">
+      {/* Mini Node Graph */}
+      <div className="absolute inset-0 flex items-center justify-between px-3">
+        <div className="w-9 h-7 bg-[#1e1e2d] border border-sky-500/50 rounded flex flex-col justify-center items-center shadow-lg">
+          <span className="text-[6px] text-sky-400 font-bold uppercase">Prompt</span>
+        </div>
+        <div className="w-9 h-7 bg-[#2d1e2f] border border-purple-500/50 rounded flex flex-col justify-center items-center shadow-lg">
+          <span className="text-[6px] text-purple-400 font-bold uppercase">LLMChain</span>
+        </div>
+        <div className="w-9 h-7 bg-[#1e2d24] border border-emerald-500/50 rounded flex flex-col justify-center items-center shadow-lg">
+          <span className="text-[6px] text-emerald-400 font-bold uppercase">Store</span>
+        </div>
+      </div>
+      {/* Node connecting SVG line */}
+      <svg className="absolute inset-0 w-full h-full pointer-events-none">
+        <path d="M 45 42 L 80 42" fill="none" stroke="rgba(168,85,247,0.4)" strokeWidth="1" strokeDasharray="3 2" />
+        <path d="M 120 42 L 155 42" fill="none" stroke="rgba(16,185,129,0.4)" strokeWidth="1" strokeDasharray="3 2" />
+      </svg>
+    </div>
+    <div className="text-[6.5px] text-slate-500 border-t border-white/5 pt-1.5 flex justify-between">
+      <span>MEMORY CORE: REDIS</span>
+      <span>CALL LATENCY: 220ms</span>
+    </div>
+  </div>
+);
+
+const RAGMockup = () => (
+  <div className="w-full h-[140px] bg-[#0c0d12] rounded-lg p-3 border border-white/5 font-mono text-[8px] text-slate-400 flex flex-col justify-between overflow-hidden">
+    <div className="flex items-center justify-between border-b border-white/5 pb-2">
+      <span className="text-[8px] text-slate-300 font-bold uppercase tracking-wider">Semantic Vector Space</span>
+      <span className="text-[7px] text-rose-400 font-bold">RAG PIPELINE</span>
+    </div>
+    <div className="flex-1 py-1.5 flex gap-2 justify-between items-center">
+      {/* 2D Vector Cluster Space Scatter Plot */}
+      <div className="w-18 h-full bg-slate-950/50 rounded border border-white/5 relative flex items-center justify-center">
+        <div className="absolute top-2 left-4 w-1 h-1 bg-sky-400 rounded-full"></div>
+        <div className="absolute top-6 left-8 w-1 h-1 bg-sky-400 rounded-full animate-ping"></div>
+        <div className="absolute top-8 left-12 w-1.5 h-1.5 bg-rose-500 rounded-full shadow-[0_0_8px_rgba(244,63,94,0.8)]"></div>
+        <div className="absolute top-4 left-16 w-1 h-1 bg-sky-400 rounded-full"></div>
+        <div className="absolute top-8 left-2 w-1 h-1 bg-sky-400 rounded-full"></div>
+      </div>
+      <div className="flex-1 flex flex-col justify-center text-left text-[7px] leading-snug">
+        <div className="text-slate-500">QUERY EMBEDDING:</div>
+        <div className="text-rose-400 truncate font-bold">[0.142, -0.912, 0.428...]</div>
+        <div className="text-slate-500 mt-1">COSINE SIMILARITY:</div>
+        <div className="text-emerald-400 font-bold">94.8% Match (Chunk_12)</div>
+      </div>
+    </div>
+    <div className="text-[7px] text-slate-500 border-t border-white/5 pt-1.5 flex justify-between">
+      <span>DIMENSIONS: 1536</span>
+      <span>DB: PGVECTOR</span>
+    </div>
+  </div>
+);
+
+// ==========================================
+// INDIVIDUAL FLOATING CARD WRAPPER WITH TILT
+// ==========================================
+
+const PremiumTechCard = ({ card, isMobile }) => {
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
 
-  // Global mouse coordinates for parallax
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-  const smoothMouseX = useSpring(mouseX, { stiffness: 50, damping: 20 });
-  const smoothMouseY = useSpring(mouseY, { stiffness: 50, damping: 20 });
-
-  // Cursor coordinates inside the console card for 3D tilt
-  const cardX = useMotionValue(0);
-  const cardY = useMotionValue(0);
-  const smoothCardX = useSpring(cardX, { stiffness: 90, damping: 25 });
-  const smoothCardY = useSpring(cardY, { stiffness: 90, damping: 25 });
-
-  // Slow continuous rotation of the galaxy
-  useEffect(() => {
-    let frameId;
-    const animateRotation = () => {
-      setRotation(prev => (prev + 0.08) % 360);
-      frameId = requestAnimationFrame(animateRotation);
-    };
-    animateRotation();
-    return () => cancelAnimationFrame(frameId);
-  }, []);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    const handleMouseMove = (e) => {
-      if (window.innerWidth < 768) return;
-      // Normalise coordinates to range [-1, 1] relative to viewport
-      const nx = (e.clientX / window.innerWidth - 0.5) * 2;
-      const ny = (e.clientY / window.innerHeight - 0.5) * 2;
-      mouseX.set(nx);
-      mouseY.set(ny);
-    };
-
-    window.addEventListener('resize', handleResize);
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [mouseX, mouseY]);
-
-  const handleCardMouseMove = (e) => {
-    if (!cardRef.current || isMobile) return;
+  const handleMouseMove = (e) => {
+    if (isMobile || !cardRef.current) return;
     const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    // Calculate normalized coordinate relative to card center, range [-0.5, 0.5]
-    const x = (e.clientX - rect.left) / width - 0.5;
-    const y = (e.clientY - rect.top) / height - 0.5;
-    cardX.set(x);
-    cardY.set(y);
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    setTilt({ x, y });
   };
 
-  const handleCardMouseLeave = () => {
-    cardX.set(0);
-    cardY.set(0);
+  const handleMouseLeave = () => {
+    setTilt({ x: 0, y: 0 });
   };
 
-  // Parallax offsets (max shift in px)
-  const bgParallaxX = useTransform(smoothMouseX, [-1, 1], [15, -15]);
-  const bgParallaxY = useTransform(smoothMouseY, [-1, 1], [15, -15]);
-
-  const ringParallaxX = useTransform(smoothMouseX, [-1, 1], [-10, 10]);
-  const ringParallaxY = useTransform(smoothMouseY, [-1, 1], [-10, 10]);
-
-  const mapParallaxX = useTransform(smoothMouseX, [-1, 1], [-32, 32]);
-  const mapParallaxY = useTransform(smoothMouseY, [-1, 1], [-32, 32]);
-
-  const cardParallaxX = useTransform(smoothMouseX, [-1, 1], [-18, 18]);
-  const cardParallaxY = useTransform(smoothMouseY, [-1, 1], [-18, 18]);
-
-  // Card 3D tilt angles
-  const rotateX = useTransform(smoothCardY, [-0.5, 0.5], [8, -8]);
-  const rotateY = useTransform(smoothCardX, [-0.5, 0.5], [-8, 8]);
-
-  // Card cursor highlight coordinates (defined at top level to obey rules of hooks)
-  const highlightLeft = useTransform(smoothCardX, [-0.5, 0.5], ['0%', '100%']);
-  const highlightTop = useTransform(smoothCardY, [-0.5, 0.5], ['0%', '100%']);
-
-  // Ring radii calculation
-  const getRingRadius = (ringIdx) => {
-    if (isMobile) return [50, 95, 140][ringIdx];
-    return [90, 160, 230][ringIdx];
-  };
-
-  const currentGlowColor = hoveredSkill ? hoveredSkill.glow.replace('0.4', '0.22') : 'rgba(249, 115, 22, 0.15)';
+  // 3D rotations based on mouse cursor position
+  const rotateX = -tilt.y * 22; // max tilt degrees
+  const rotateY = tilt.x * 22;
+  const scale = tilt.x !== 0 || tilt.y !== 0 ? 1.05 : 1;
+  const shadowTranslateZ = tilt.x !== 0 || tilt.y !== 0 ? '25px' : '0px';
 
   return (
-    <section 
-      id="skills" 
-      ref={containerRef}
-      className="relative min-h-screen py-32 px-6 md:px-12 bg-[#0A0A0A] flex flex-col justify-center overflow-hidden z-40 border-t border-white/5 select-none"
+    <div
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      data-speed={card.speed}
+      className={`parallax-card absolute z-20 transition-all duration-300 ease-out select-none cursor-pointer ${card.floatClass}`}
+      style={{
+        left: `${card.left}px`,
+        top: card.top,
+        width: `${isMobile ? card.size * 0.7 : card.size}px`,
+        transformStyle: 'preserve-3d',
+        perspective: 1000,
+      }}
     >
-      {/* Cinematic Ambient Spatial Backdrop Layer */}
-      <motion.div 
-        style={{ 
-          x: isMobile ? 0 : bgParallaxX, 
-          y: isMobile ? 0 : bgParallaxY,
-          scale: 1.08
+      {/* Holographic Glowing Border Background */}
+      <div 
+        style={{
+          transform: `rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(${scale})`,
+          transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
+          background: 'rgba(10, 10, 12, 0.65)',
+          boxShadow: `0 35px 80px -20px rgba(0, 0, 0, 0.9), inset 0 1px 0 0 rgba(255, 255, 255, 0.12)`,
         }}
-        className="absolute inset-0 w-full h-full pointer-events-none -z-20 overflow-hidden select-none"
+        className="rounded-2xl p-4 backdrop-blur-2xl border border-white/10 flex flex-col justify-between relative overflow-hidden group select-none"
       >
-        {/* Subtle dot matrix grid (radial-gradient dots every 32px with 0.05 opacity) */}
+        {/* Fine-grained Noise Layer */}
         <div 
-          className="absolute inset-0 opacity-[0.05] pointer-events-none"
           style={{
-            backgroundImage: 'radial-gradient(rgba(255, 255, 255, 1) 1px, transparent 1px)',
-            backgroundSize: '32px 32px'
+            backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
+            opacity: 0.02
+          }}
+          className="absolute inset-0 pointer-events-none z-0 mix-blend-overlay"
+        />
+
+        {/* Ambient Backlight Reflection */}
+        <div 
+          className="absolute inset-0 pointer-events-none z-0 rounded-2xl opacity-40 transition-opacity duration-500 group-hover:opacity-100"
+          style={{
+            background: `radial-gradient(circle at ${(tilt.x + 0.5) * 100}% ${(tilt.y + 0.5) * 100}%, ${card.glow} 0%, transparent 60%)`
           }}
         />
 
-        {/* Ambient floating volumetric lights */}
-        {!isMobile && (
-          <>
-            <motion.div 
-              animate={{ 
-                x: [-40, 40, -40],
-                y: [-30, 30, -30]
-              }}
-              transition={{
-                duration: 22,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute top-[15%] left-[15%] w-[500px] h-[500px] rounded-full bg-[hsla(270,70%,45%,0.06)] blur-[120px]"
-            />
-            <motion.div 
-              animate={{ 
-                x: [40, -40, 40],
-                y: [30, -30, 30]
-              }}
-              transition={{
-                duration: 28,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute bottom-[20%] right-[10%] w-[550px] h-[550px] rounded-full bg-[hsla(210,75%,45%,0.05)] blur-[130px]"
-            />
-            <motion.div 
-              animate={{ 
-                x: [-35, 35, -35],
-                y: [40, -40, 40]
-              }}
-              transition={{
-                duration: 25,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-              className="absolute top-[40%] right-[30%] w-[450px] h-[450px] rounded-full bg-[hsla(340,75%,50%,0.05)] blur-[110px]"
-            />
-          </>
-        )}
-
-        {/* Soft dark-to-transparent overlays on all sides to blend seamlessly */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-transparent to-[#0A0A0A]" />
-      </motion.div>
-
-      {/* Dynamic atmospheric radial background glow specific to the active hovered skill */}
-      <div 
-        style={{ 
-          backgroundColor: hoveredSkill ? hoveredSkill.glow.replace('0.4', '0.04') : 'rgba(249, 115, 22, 0.02)',
-          transition: 'background-color 1s ease'
-        }}
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full blur-[140px] pointer-events-none -z-10" 
-      />
-
-      <div 
-        className="scroll-section-reveal max-w-7xl mx-auto w-full flex flex-col lg:flex-row items-center gap-16 relative z-10"
-      >
-        
-        {/* Left Side: Header & Interactive Dashboard Display Panel */}
-        <motion.div 
-          style={{ 
-            x: isMobile ? 0 : cardParallaxX, 
-            y: isMobile ? 0 : cardParallaxY 
-          }}
-          className="w-full lg:w-[42%] flex flex-col justify-center z-10 relative"
-        >
-          {/* Realistic backlit backlit glow passing through crystal glass */}
-          {!isMobile && (
-            <div 
-              style={{ 
-                backgroundColor: hoveredSkill ? hoveredSkill.glow.replace('0.4', '0.14') : 'rgba(249, 115, 22, 0.05)',
-                transition: 'background-color 1s ease, box-shadow 1s ease',
-                boxShadow: hoveredSkill ? `0 0 90px 15px ${hoveredSkill.glow.replace('0.4', '0.08')}` : 'none'
-              }}
-              className="absolute inset-0 rounded-3xl blur-[40px] -z-10 pointer-events-none opacity-80" 
-            />
-          )}
-
-          <div className="mb-8">
-            <span className="font-display text-xs font-bold tracking-[0.3em] text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-400 to-rose-400 uppercase border border-purple-500/20 px-3 py-1 rounded-full inline-block backdrop-blur-md">
-              SPATIAL INTERFACE
+        {/* Card Header */}
+        <div className="flex items-center justify-between mb-3 z-10 select-none">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-300 group-hover:bg-white/10 group-hover:border-white/20">
+              {card.icon}
+            </div>
+            <span className="font-sans font-extrabold text-xs uppercase tracking-widest text-slate-200">
+              {card.name}
             </span>
-            <h2 className="font-display text-4xl md:text-5xl font-extrabold mt-4 mb-6 leading-tight text-white">
-              Skills <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-purple-400 to-rose-400 drop-shadow-[0_0_15px_rgba(168,85,247,0.25)]">Galaxy</span>
-            </h2>
-            <p className="font-sans text-slate-400 text-sm md:text-base leading-relaxed">
-              Immerse yourself in my cognitive ecosystem. Hover over the floating nodes to traverse the network. Parallax tilt is mapped to your spatial perspective.
-            </p>
           </div>
+          {/* Mini active status light */}
+          <div className="w-2 h-2 rounded-full bg-emerald-500/80 shadow-[0_0_6px_#10b981] animate-pulse"></div>
+        </div>
 
-          {/* Interactive details spatial console panel */}
-          <motion.div
-            ref={cardRef}
-            onMouseMove={handleCardMouseMove}
-            onMouseLeave={handleCardMouseLeave}
-            animate={isMobile ? {} : {
-              y: [0, -6, 0]
-            }}
-            transition={isMobile ? {} : {
-              duration: 6,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-            style={{
-              rotateX: isMobile ? 0 : rotateX,
-              rotateY: isMobile ? 0 : rotateY,
-              transformStyle: 'preserve-3d',
-              perspective: 1000,
-              background: 'radial-gradient(circle at center, rgba(15, 23, 42, 0.08) 0%, rgba(15, 23, 42, 0.76) 100%)',
-              boxShadow: '0 25px 60px rgba(0,0,0,0.85), inset 0 1.5px 2.5px rgba(255,255,255,0.2), inset 0 -1.5px 2.5px rgba(0,0,0,0.5)',
-            }}
-            className="relative overflow-hidden backdrop-blur-xl border border-white/10 rounded-3xl p-8 min-h-[230px] flex flex-col justify-between group transition-all duration-300"
-          >
-            {/* Micro-noise texture for sandblasted glass grain effect */}
-            <div 
-              style={{
-                backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E\")",
-                opacity: 0.03
-              }}
-              className="absolute inset-0 pointer-events-none z-0 mix-blend-overlay rounded-3xl"
-            />
+        {/* High-Fidelity Mockup Container */}
+        <div 
+          className="relative z-10 transition-transform duration-500 ease-out select-none"
+          style={{ transform: `translateZ(${shadowTranslateZ})` }}
+        >
+          {card.mockup}
+        </div>
+      </div>
+    </div>
+  );
+};
 
-            {/* Soft top-left room light reflection */}
-            <div 
-              className="absolute inset-0 pointer-events-none z-0 rounded-3xl"
-              style={{
-                background: 'radial-gradient(circle at 8% 8%, rgba(255, 255, 255, 0.12) 0%, transparent 45%)'
-              }}
-            />
+// ==========================================
+// MOBILE FLOATING CARD SPECIFIC WRAPPER
+// ==========================================
 
-            {/* Dynamic Cursor Light (Spatial Eye Highlight) */}
-            {!isMobile && (
-              <motion.div 
-                style={{ 
-                  left: highlightLeft, 
-                  top: highlightTop, 
-                  transform: 'translate(-50%, -50%)',
-                  background: `radial-gradient(circle, ${currentGlowColor} 0%, transparent 65%)`
-                }}
-                className="absolute w-80 h-80 pointer-events-none z-0 mix-blend-screen transition-all duration-700"
-              />
-            )}
-
-            <AnimatePresence mode="wait">
-              {hoveredSkill && (
-                <motion.div
-                  key={hoveredSkill.id}
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -15 }}
-                  transition={{ duration: 0.4, ease: "easeOut" }}
-                  style={{ transform: 'translateZ(30px)' }}
-                  className="flex flex-col h-full relative z-10"
-                >
-                  <div className="flex items-center gap-3 mb-4">
-                    <div 
-                      style={{ 
-                        backgroundColor: hoveredSkill.glow.replace('0.4', '1'),
-                        boxShadow: `0 0 10px ${hoveredSkill.glow}`
-                      }}
-                      className="w-2.5 h-2.5 rounded-full animate-pulse" 
-                    />
-                    <span 
-                      style={{ color: hoveredSkill.glow.replace('0.4', '0.9') }}
-                      className="font-display text-[10px] tracking-widest font-extrabold uppercase"
-                    >
-                      {hoveredSkill.category}
-                    </span>
-                  </div>
-
-                  <h3 className="font-display text-2xl font-extrabold text-white mb-3 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
-                    {hoveredSkill.name}
-                  </h3>
-
-                  <p className="font-sans text-slate-300 text-xs md:text-sm leading-relaxed mb-6 font-medium">
-                    {hoveredSkill.desc}
-                  </p>
-
-                  <div className="flex items-center justify-between border-t border-white/5 pt-4 text-[10px] tracking-wider font-extrabold text-slate-500 uppercase">
-                    <span>COGNITIVE MATRIX</span>
-                    <span style={{ color: hoveredSkill.glow.replace('0.4', '0.95') }}>STATUS: CALIBRATED</span>
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
-        </motion.div>
-
-        {/* Right Side: Rotating 3D Galaxy Map */}
-        {isMobile ? (
-          <div className="w-full grid grid-cols-2 sm:grid-cols-3 gap-4 pt-6 z-10">
-            {skillsData.map((skill) => {
-              const isSelected = hoveredSkill?.id === skill.id;
-              return (
-                <div
-                  key={skill.id}
-                  onClick={() => setHoveredSkill(skill)}
-                  style={{
-                    borderColor: isSelected ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.05)',
-                    backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.08)' : 'rgba(15, 23, 42, 0.25)',
-                    boxShadow: isSelected ? '0 10px 25px rgba(0,0,0,0.5)' : 'none',
-                  }}
-                  className="p-4 rounded-2xl flex flex-col items-center justify-center text-center border transition-all duration-300 cursor-pointer backdrop-blur-md"
-                >
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center mb-3 bg-slate-900/50 border border-white/5 transition-transform duration-300 ${
-                    isSelected ? 'scale-105 border-white/20' : ''
-                  }`}>
-                    {skill.icon}
-                  </div>
-                  <span className="font-sans text-[10px] font-bold text-slate-200 uppercase tracking-widest leading-none">{skill.name}</span>
-                </div>
-              );
-            })}
+const MobileTechCard = ({ card }) => {
+  return (
+    <div
+      className={`absolute z-10 select-none ${card.cls}`}
+      style={{
+        left: card.left || 'auto',
+        right: card.right || 'auto',
+        top: card.top,
+        width: `${card.size}px`,
+      }}
+    >
+      <div 
+        style={{
+          background: 'rgba(10, 10, 12, 0.75)',
+          boxShadow: `0 20px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)`,
+        }}
+        className="rounded-xl p-2.5 backdrop-blur-xl border border-white/5 flex flex-col justify-between overflow-hidden select-none"
+      >
+        <div className="flex items-center justify-between mb-2 select-none">
+          <div className="flex items-center gap-1.5">
+            <div className="w-5 h-5 rounded bg-white/5 border border-white/10 flex items-center justify-center">
+              {React.cloneElement(card.icon, { className: "w-2.5 h-2.5" })}
+            </div>
+            <span className="font-sans font-extrabold text-[8px] uppercase tracking-widest text-slate-300">
+              {card.name}
+            </span>
           </div>
-        ) : (
-          <div className="w-full lg:w-[58%] flex items-center justify-center relative min-h-[380px] md:min-h-[500px] overflow-visible">
+          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></div>
+        </div>
+        
+        {/* Scale down mockup to fit the mobile card */}
+        <div className="scale-90 origin-top">
+          {card.mockup}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ==========================================
+// MAIN SKILLSGALAXY COMPONENT
+// ==========================================
+
+export default function SkillsGalaxy() {
+  const [isMobile, setIsMobile] = useState(false);
+  const sectionRef = useRef(null);
+  const stickyRef = useRef(null);
+  const trackRef = useRef(null);
+  const mobileStickyRef = useRef(null);
+  const wordRefs = useRef([]);
+
+  // Clear word refs on each render to prevent array leakage
+  wordRefs.current = [];
+
+  // Styling token keyframe injections for floating offsets
+  const animationStyles = `
+    @keyframes float-up {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+    @keyframes float-down {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(12px); }
+    }
+    @keyframes rotate-slow {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(3deg); }
+    }
+    @keyframes rotate-counter-slow {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(-3deg); }
+    }
+    @keyframes horizontal-drift {
+      0%, 100% { transform: translateX(0px); }
+      50% { transform: translateX(10px); }
+    }
+    @keyframes depth-pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.03); }
+    }
+    .animate-float-up { animation: float-up 6s ease-in-out infinite; }
+    .animate-float-down { animation: float-down 7s ease-in-out infinite; }
+    .animate-rotate-slow { animation: rotate-slow 9s ease-in-out infinite; }
+    .animate-rotate-counter-slow { animation: rotate-counter-slow 8s ease-in-out infinite; }
+    .animate-horizontal-drift { animation: horizontal-drift 8s ease-in-out infinite; }
+    .animate-depth-pulse { animation: depth-pulse 10s ease-in-out infinite; }
+  `;
+
+  // 14 Premium technology cards dataset for desktop
+  const cardsData = [
+    {
+      name: "React",
+      icon: <Code className="w-4 h-4 text-sky-400" />,
+      size: 380,
+      left: 450,
+      top: "14%",
+      speed: 1.08,
+      floatClass: "animate-float-up",
+      glow: "rgba(56, 189, 248, 0.15)",
+      mockup: <ReactMockup />
+    },
+    {
+      name: "VS Code",
+      icon: <FileCode className="w-4 h-4 text-sky-500" />,
+      size: 280,
+      left: 950,
+      top: "58%",
+      speed: 0.92,
+      floatClass: "animate-depth-pulse",
+      glow: "rgba(0, 122, 255, 0.12)",
+      mockup: <VSCodeMockup />
+    },
+    {
+      name: "Next.js",
+      icon: <Layers className="w-4 h-4 text-white" />,
+      size: 340,
+      left: 1550,
+      top: "12%",
+      speed: 1.05,
+      floatClass: "animate-float-down",
+      glow: "rgba(255, 255, 255, 0.1)",
+      mockup: <NextMockup />
+    },
+    {
+      name: "Spring Boot",
+      icon: <Server className="w-4 h-4 text-emerald-400" />,
+      size: 240,
+      left: 2100,
+      top: "64%",
+      speed: 0.95,
+      floatClass: "animate-rotate-slow",
+      glow: "rgba(109, 179, 63, 0.1)",
+      mockup: <SpringBootMockup />
+    },
+    {
+      name: "FastAPI",
+      icon: <Activity className="w-4 h-4 text-cyan-400" />,
+      size: 250,
+      left: 2700,
+      top: "15%",
+      speed: 1.06,
+      floatClass: "animate-horizontal-drift",
+      glow: "rgba(5, 150, 105, 0.12)",
+      mockup: <FastAPIMockup />
+    },
+    {
+      name: "Terminal",
+      icon: <TermIcon className="w-4 h-4 text-slate-400" />,
+      size: 240,
+      left: 3200,
+      top: "60%",
+      speed: 0.88,
+      floatClass: "animate-float-up",
+      glow: "rgba(148, 163, 184, 0.1)",
+      mockup: <TerminalMockup />
+    },
+    {
+      name: "Docker",
+      icon: <Layers className="w-4 h-4 text-sky-500" />,
+      size: 300,
+      left: 3800,
+      top: "13%",
+      speed: 1.12,
+      floatClass: "animate-float-down",
+      glow: "rgba(14, 165, 233, 0.15)",
+      mockup: <DockerMockup />
+    },
+    {
+      name: "MongoDB",
+      icon: <Database className="w-4 h-4 text-emerald-500" />,
+      size: 290,
+      left: 4400,
+      top: "66%",
+      speed: 0.94,
+      floatClass: "animate-depth-pulse",
+      glow: "rgba(34, 197, 94, 0.12)",
+      mockup: <MongoDBMockup />
+    },
+    {
+      name: "PostgreSQL",
+      icon: <Database className="w-4 h-4 text-sky-600" />,
+      size: 320,
+      left: 5000,
+      top: "12%",
+      speed: 1.04,
+      floatClass: "animate-float-up",
+      glow: "rgba(51, 103, 145, 0.12)",
+      mockup: <PostgresMockup />
+    },
+    {
+      name: "GitHub",
+      icon: <Play className="w-4 h-4 text-slate-300" />,
+      size: 260,
+      left: 5600,
+      top: "62%",
+      speed: 0.9,
+      floatClass: "animate-rotate-counter-slow",
+      glow: "rgba(255, 255, 255, 0.1)",
+      mockup: <GitHubMockup />
+    },
+    {
+      name: "AWS",
+      icon: <Cloud className="w-4 h-4 text-amber-500" />,
+      size: 330,
+      left: 6200,
+      top: "15%",
+      speed: 1.15,
+      floatClass: "animate-horizontal-drift",
+      glow: "rgba(249, 115, 22, 0.15)",
+      mockup: <AWSMockup />
+    },
+    {
+      name: "OpenAI",
+      icon: <Brain className="w-4 h-4 text-emerald-500" />,
+      size: 310,
+      left: 6800,
+      top: "58%",
+      speed: 0.96,
+      floatClass: "animate-float-up",
+      glow: "rgba(16, 185, 129, 0.15)",
+      mockup: <OpenAIMockup />
+    },
+    {
+      name: "LangChain",
+      icon: <Workflow className="w-4 h-4 text-violet-400" />,
+      size: 200,
+      left: 7400,
+      top: "14%",
+      speed: 1.05,
+      floatClass: "animate-rotate-slow",
+      glow: "rgba(139, 92, 246, 0.1)",
+      mockup: <LangChainMockup />
+    },
+    {
+      name: "RAG Pipeline",
+      icon: <Cpu className="w-4 h-4 text-rose-400" />,
+      size: 190,
+      left: 7900,
+      top: "64%",
+      speed: 0.92,
+      floatClass: "animate-float-down",
+      glow: "rgba(244, 63, 94, 0.1)",
+      mockup: <RAGMockup />
+    }
+  ];
+
+  // 6 Premium technology cards dataset for mobile
+  const mobileCards = [
+    {
+      name: "React",
+      icon: <Code className="w-4 h-4 text-sky-400" />,
+      size: 130,
+      left: "4%",
+      top: "10%",
+      glow: "rgba(56, 189, 248, 0.1)",
+      mockup: <ReactMockup />,
+      cls: "mobile-card-react"
+    },
+    {
+      name: "Spring Boot",
+      icon: <Server className="w-4 h-4 text-emerald-400" />,
+      size: 120,
+      right: "4%",
+      top: "14%",
+      glow: "rgba(109, 179, 63, 0.08)",
+      mockup: <SpringBootMockup />,
+      cls: "mobile-card-springboot"
+    },
+    {
+      name: "Docker",
+      icon: <Layers className="w-4 h-4 text-sky-500" />,
+      size: 125,
+      left: "2%",
+      top: "40%",
+      glow: "rgba(14, 165, 233, 0.1)",
+      mockup: <DockerMockup />,
+      cls: "mobile-card-docker"
+    },
+    {
+      name: "GitHub",
+      icon: <Play className="w-4 h-4 text-slate-300" />,
+      size: 120,
+      right: "2%",
+      top: "44%",
+      glow: "rgba(255, 255, 255, 0.08)",
+      mockup: <GitHubMockup />,
+      cls: "mobile-card-github"
+    },
+    {
+      name: "MongoDB",
+      icon: <Database className="w-4 h-4 text-emerald-500" />,
+      size: 120,
+      left: "4%",
+      top: "74%",
+      glow: "rgba(34, 197, 94, 0.08)",
+      mockup: <MongoDBMockup />,
+      cls: "mobile-card-mongodb"
+    },
+    {
+      name: "OpenAI",
+      icon: <Brain className="w-4 h-4 text-emerald-500" />,
+      size: 130,
+      right: "4%",
+      top: "78%",
+      glow: "rgba(16, 185, 129, 0.1)",
+      mockup: <OpenAIMockup />,
+      cls: "mobile-card-openai"
+    }
+  ];
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
+    const maxScrollX = () => trackRef.current ? trackRef.current.scrollWidth - window.innerWidth : 0;
+
+    if (window.innerWidth >= 1024) {
+      // ==========================================
+      // DESKTOP: CINEMATIC HORIZONTAL CANVAS SCRUB
+      // ==========================================
+      const desktopTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      desktopTl.to(trackRef.current, {
+        x: () => -maxScrollX(),
+        ease: 'none',
+        duration: 0.75
+      }, 0);
+
+      desktopTl.to('.parallax-card', {
+        x: (i, target) => {
+          const speed = parseFloat(target.getAttribute('data-speed') || '1.0');
+          return -maxScrollX() * (speed - 1);
+        },
+        ease: 'none',
+        duration: 0.75
+      }, 0);
+
+      // Resting pause hold buffer at the end of scroll
+      desktopTl.to({}, {
+        duration: 0.25
+      });
+
+    } else {
+      // ==========================================
+      // MOBILE: PINNED TEXT REVEAL STORY FLOW
+      // ==========================================
+      const mobileTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: 'top top',
+          end: 'bottom bottom',
+          scrub: 1,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      // Filter out empty spaces and select span targets
+      const words = wordRefs.current.filter(Boolean);
+      const totalSteps = words.length;
+
+      // Programmed sequence:
+      // Active word is highlighted at opacity 1 + subtle blue glow.
+      // Previously read words transition to opacity 0.75.
+      // Inactive future words remain at opacity 0.25.
+      words.forEach((word, index) => {
+        const startTime = index * 0.08; // sequential spacing
+
+        // Highlight active word
+        mobileTl.to(word, {
+          opacity: 1,
+          textShadow: '0 0 12px rgba(255, 255, 255, 0.95), 0 0 20px rgba(56, 189, 248, 0.45)',
+          color: '#ffffff',
+          duration: 0.05
+        }, startTime);
+
+        // Previous word dims to read status
+        if (index > 0) {
+          mobileTl.to(words[index - 1], {
+            opacity: 0.75,
+            textShadow: 'none',
+            duration: 0.05
+          }, startTime);
+        }
+      });
+
+      // Subtle float animations and micro-rotation mapped to mobile scroll progress
+      mobileTl.to('.mobile-card-react', { y: -20, rotate: 2, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-springboot', { y: 25, rotate: -2, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-docker', { y: -15, rotate: 1, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-github', { y: 20, rotate: -2, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-mongodb', { y: -25, rotate: 2, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-openai', { y: 15, rotate: -1, ease: 'none', duration: 0.8 }, 0);
+
+      // Final scroll hold so the full sentence is visible for a moment
+      mobileTl.to({}, { duration: 0.22 });
+    }
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger === sectionRef.current) {
+          trigger.kill();
+        }
+      });
+    };
+  }, [isMobile]);
+
+  return (
+    <section 
+      ref={sectionRef}
+      id="skills" 
+      className="relative w-full h-[400vh] lg:h-[400vh] h-[250vh] bg-[#050505] overflow-visible border-t border-white/5 z-[25]"
+    >
+      <style>{animationStyles}</style>
+
+      {/* ==========================================
+          DESKTOP VIEWPORT: HORIZONTAL SCRUB POSTER
+          ========================================== */}
+      <div 
+        ref={stickyRef}
+        className="hidden lg:flex sticky top-0 w-full h-screen overflow-hidden flex-col justify-center bg-[#050505] z-[25]"
+      >
+        {/* Spatial Vignette to blend transitions */}
+        <div className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] opacity-100" />
+
+        {/* Panning Track */}
+        <div 
+          ref={trackRef}
+          className="flex items-center relative h-full whitespace-nowrap px-[20vw] select-none"
+          style={{ minWidth: '8400px' }}
+        >
+          {/* Monumental Text Line */}
+          <h2 className="text-[clamp(140px,18vw,280px)] font-extrabold font-display tracking-tight text-white/5 uppercase select-none relative z-10 flex items-center leading-none">
+            <span className="text-white/10 pr-6 transition-all duration-300 hover:text-white">I don't just</span>
+            <span className="text-white/20 pr-6 transition-all duration-300 hover:text-white font-bold">know these</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-violet-400 to-rose-400 pr-6 select-none font-extrabold filter drop-shadow-[0_0_20px_rgba(139,92,246,0.1)]">technologies</span>
+            <span className="text-white/25 pr-6">—</span>
+            <span className="text-white/30 pr-6 transition-all duration-300 hover:text-white font-bold">I build</span>
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-amber-400 to-emerald-400 pr-6 font-extrabold filter drop-shadow-[0_0_20px_rgba(244,63,94,0.1)] font-extrabold">systems</span>
+            <span className="text-white/15">with them.</span>
+          </h2>
+
+          {/* Absolute Cards */}
+          {cardsData.map((card, i) => (
+            <PremiumTechCard 
+              key={i} 
+              card={card} 
+              isMobile={false}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ==========================================
+          MOBILE VIEWPORT: PINNED TEXT REVEAL STORY
+          ========================================== */}
+      <div 
+        ref={mobileStickyRef}
+        className="flex lg:hidden sticky top-0 w-full h-screen overflow-hidden flex-col justify-center items-center bg-[#050505] z-[25] px-6"
+      >
+        {/* Spatial Vignette */}
+        <div className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] opacity-100" />
+        
+        {/* Soft active glow behind the text */}
+        <div className="absolute w-72 h-72 rounded-full bg-[hsla(210,80%,70%,0.015)] blur-[110px] pointer-events-none -z-10 animate-pulse" />
+
+        {/* Central Responsive Typography Block */}
+        <div className="max-w-[90%] text-center z-20 leading-[1.1]">
+          <div className="flex flex-col text-center font-display font-extrabold tracking-tighter text-white uppercase select-none text-[32px] min-[400px]:text-[38px] min-[500px]:text-[46px]">
+            {/* Line 1 */}
+            <div className="mb-2 flex justify-center gap-1.5">
+              <span ref={el => wordRefs.current[0] = el} className="inline-block opacity-25">I</span>
+              <span ref={el => wordRefs.current[1] = el} className="inline-block opacity-25">don't</span>
+              <span ref={el => wordRefs.current[2] = el} className="inline-block opacity-25">just</span>
+              <span ref={el => wordRefs.current[3] = el} className="inline-block opacity-25">know</span>
+            </div>
             
-            {/* Layer 1: Constellation Rings (linked to ringParallax) */}
-            <motion.div
-              style={{
-                x: ringParallaxX,
-                y: ringParallaxY,
-              }}
-              className="absolute inset-0 flex items-center justify-center pointer-events-none z-0"
-            >
-              {[0, 1, 2].map((ringIdx) => (
-                <div
-                  key={ringIdx}
-                  style={{
-                    width: `${getRingRadius(ringIdx) * 2}px`,
-                    height: `${getRingRadius(ringIdx) * 2}px`,
-                    border: '1.2px dashed rgba(255,255,255,0.04)',
-                    boxShadow: hoveredSkill?.ring === ringIdx ? '0 0 30px rgba(168, 85, 247, 0.02)' : 'none',
-                    transition: 'box-shadow 0.6s'
-                  }}
-                  className="absolute rounded-full"
-                />
-              ))}
-            </motion.div>
-
-            {/* Layer 2: Galaxy Node Map (linked to mapParallax) */}
-            <motion.div
-              style={{
-                x: mapParallaxX,
-                y: mapParallaxY,
-                transformStyle: 'preserve-3d',
-              }}
-              className="absolute inset-0 flex items-center justify-center z-10"
-            >
-              {/* Inner rotating container holding nodes and connection lines */}
-              <div 
-                style={{ 
-                  transform: `rotate(${rotation}deg)`,
-                  width: '500px',
-                  height: '500px',
-                  transformStyle: 'preserve-3d',
-                }}
-                className="relative flex items-center justify-center transition-transform duration-75"
-              >
-                {/* SVG Connecting lines overlaid from active hovered node */}
-                <svg className="absolute inset-0 w-full h-full pointer-events-none z-0 overflow-visible mix-blend-screen">
-                  {hoveredSkill && skillsData.map((node) => {
-                    // Only draw links to other nodes in the SAME category
-                    if (node.id === hoveredSkill.id || node.category !== hoveredSkill.category) return null;
-
-                    const center = 250;
-                    
-                    // Coords of active hovered node
-                    const radiusA = getRingRadius(hoveredSkill.ring);
-                    const angleA = ((hoveredSkill.angle + rotation) * Math.PI) / 180;
-                    const ax = center + radiusA * Math.cos(angleA);
-                    const ay = center + radiusA * Math.sin(angleA);
-
-                    // Coords of target connected node
-                    const radiusB = getRingRadius(node.ring);
-                    const angleB = ((node.angle + rotation) * Math.PI) / 180;
-                    const bx = center + radiusB * Math.cos(angleB);
-                    const by = center + radiusB * Math.sin(angleB);
-
-                    // Curve controls
-                    const cx1 = ax + (bx - ax) * 0.25;
-                    const cy1 = ay + (by - ay) * 0.75;
-
-                    return (
-                      <g key={node.id}>
-                        {/* Underlying faint background connector path */}
-                        <path
-                          d={`M ${ax} ${ay} Q ${cx1} ${cy1} ${bx} ${by}`}
-                          fill="none"
-                          stroke={hoveredSkill.glow}
-                          strokeWidth="1.2"
-                          opacity="0.15"
-                        />
-                        
-                        {/* Travelling Bright Laser Spark */}
-                        <motion.path
-                          d={`M ${ax} ${ay} Q ${cx1} ${cy1} ${bx} ${by}`}
-                          fill="none"
-                          stroke={hoveredSkill.glow.replace('0.4', '0.95')}
-                          strokeWidth="2.5"
-                          opacity="0.95"
-                          initial={{ pathLength: 0.15, pathOffset: 0 }}
-                          animate={{ pathOffset: [0, 1.05] }}
-                          transition={{ 
-                            duration: 2.2, 
-                            repeat: Infinity, 
-                            ease: "linear"
-                          }}
-                          style={{ 
-                            filter: `drop-shadow(0 0 5px ${hoveredSkill.glow.replace('0.4', '0.85')})` 
-                          }}
-                        />
-
-                        {/* Small glowing joint receiver point */}
-                        <circle 
-                          cx={bx} 
-                          cy={by} 
-                          r="3" 
-                          fill="#f97316" 
-                          opacity="0.8" 
-                          style={{ filter: 'drop-shadow(0 0 3px #f97316)' }}
-                        />
-                      </g>
-                    );
-                  })}
-                </svg>
-
-                {/* Render nodes */}
-                {skillsData.map((skill) => {
-                  const radius = getRingRadius(skill.ring);
-                  const angleRad = ((skill.angle + rotation) * Math.PI) / 180;
-                  const nodeX = radius * Math.cos(angleRad);
-                  const nodeY = radius * Math.sin(angleRad);
-                  
-                  const isHovered = hoveredSkill?.id === skill.id;
-
-                  return (
-                    <div
-                      key={skill.id}
-                      style={{
-                        position: 'absolute',
-                        left: `calc(50% + ${nodeX}px)`,
-                        top: `calc(50% + ${nodeY}px)`,
-                        transform: `translate(-50%, -50%) rotate(${-rotation}deg) scale(${isHovered ? 1.25 : 1})`,
-                        transition: 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)',
-                        zIndex: isHovered ? 30 : 10,
-                        transformStyle: 'preserve-3d'
-                      }}
-                      className="cursor-pointer group pointer-events-auto"
-                      onMouseEnter={() => setHoveredSkill(skill)}
-                    >
-                      {/* Frosted Spherical Glass Node containing high-fidelity icon */}
-                      <div 
-                        style={{
-                          boxShadow: isHovered 
-                            ? `0 0 30px ${skill.glow}, inset 0 1px 1px rgba(255,255,255,0.15)` 
-                            : '0 4px 10px rgba(0,0,0,0.4), inset 0 1px 1px rgba(255,255,255,0.05)',
-                          borderColor: isHovered ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.08)',
-                          backgroundColor: isHovered ? skill.glow.replace('0.4', '0.12') : 'rgba(15, 23, 42, 0.35)',
-                        }}
-                        className="w-9 h-9 md:w-11 md:h-11 rounded-full border backdrop-blur-md flex items-center justify-center transition-all duration-500"
-                      >
-                        <div className="w-5 h-5 flex items-center justify-center scale-90 md:scale-100 transition-transform duration-300 group-hover:scale-105">
-                          {skill.icon}
-                        </div>
-                      </div>
-
-                      {/* Node label */}
-                      <div className={`absolute left-1/2 -translate-x-1/2 mt-2 px-2.5 py-1 rounded-md border backdrop-blur-md bg-slate-950/80 text-[9px] font-sans font-extrabold tracking-widest uppercase transition-all duration-300 pointer-events-none whitespace-nowrap ${
-                        isHovered 
-                          ? 'opacity-100 border-white/20 text-white shadow-lg' 
-                          : 'opacity-0 group-hover:opacity-90 border-white/5 text-slate-400'
-                      }`}>
-                        {skill.name}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </motion.div>
+            {/* Line 2 */}
+            <div className="mb-6 flex justify-center">
+              <span ref={el => wordRefs.current[4] = el} className="inline-block opacity-25">these technologies —</span>
+            </div>
+            
+            {/* Line 3 */}
+            <div className="mb-2 flex justify-center gap-1.5">
+              <span ref={el => wordRefs.current[5] = el} className="inline-block opacity-25">I</span>
+              <span ref={el => wordRefs.current[6] = el} className="inline-block opacity-25">build</span>
+              <span ref={el => wordRefs.current[7] = el} className="inline-block opacity-25">systems</span>
+            </div>
+            
+            {/* Line 4 */}
+            <div className="flex justify-center">
+              <span ref={el => wordRefs.current[8] = el} className="inline-block opacity-25">with them.</span>
+            </div>
           </div>
-        )}
+        </div>
 
+        {/* Mobile floating cards */}
+        {mobileCards.map((card, i) => (
+          <MobileTechCard key={i} card={card} />
+        ))}
       </div>
     </section>
   );

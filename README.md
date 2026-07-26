@@ -1,176 +1,90 @@
-<!-- HEADER BANNER -->
-<div align="center">
+<h1 align="center">Hey, I'm Sham 👋</h1>
+<h3 align="center">Full-Stack Engineer · GenAI / LLM Developer · Patent Holder</h3>
 
-```
-░██████╗██╗░░██╗░█████╗░███╗░░░███╗███╗░░░███╗██╗░█████╗░██╗░░██╗░█████╗░██╗░░░░░░█████╗░░██████╗
-██╔════╝██║░░██║██╔══██╗████╗░████║████╗░████║██║██╔══██╗██║░░██║██╔══██╗██║░░░░░██╔══██╗██╔════╝
-╚█████╗░███████║███████║██╔████╔██║██╔████╔██║██║██║░░╚═╝███████║███████║██║░░░░░███████║╚█████╗░
-░╚═══██╗██╔══██║██╔══██║██║╚██╔╝██║██║╚██╔╝██║██║██║░░██╗██╔══██║██╔══██║██║░░░░░██╔══██║░╚═══██╗
-██████╔╝██║░░██║██║░░██║██║░╚═╝░██║██║░╚═╝░██║██║╚█████╔╝██║░░██║██║░░██║███████╗██║░░██║██████╔╝
-╚═════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═╝░░░░╚═╝╚═╝░╚════╝░╚═╝░░╚═╝╚═╝░░╚═╝╚══════╝╚═╝░░╚═╝╚═════╝░
-```
-
-<img src="https://readme-typing-svg.herokuapp.com?font=JetBrains+Mono&weight=700&size=22&duration=3000&pause=1000&color=F08080&center=true&vCenter=true&width=600&lines=Creative+Developer+%F0%9F%8E%AC;Cinematic+UI+Architect+%F0%9F%8E%A8;3D+Physics+%26+WebGL+Enthusiast+%E2%9A%A1;Building+the+Unforgettable+%F0%9F%94%A5" alt="Typing SVG" />
-
-</div>
+<p align="center">
+  <a href="https://shammichalas.netlify.app"><img src="https://img.shields.io/badge/Portfolio-shammichalas.netlify.app-black?style=for-the-badge" /></a>
+  <a href="https://linkedin.com/in/shammichalas"><img src="https://img.shields.io/badge/LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin" /></a>
+  <a href="mailto:shammichalas0007@gmail.com"><img src="https://img.shields.io/badge/Email-Contact-red?style=for-the-badge&logo=gmail" /></a>
+</p>
 
 ---
 
-<!-- ABOUT SECTION -->
-<div align="center">
+### 🚀 About Me
 
-## 🎬 Who Am I?
-
-</div>
-
-> *"I don't build websites. I craft experiences that leave a mark."*
-
-I'm **Shammichalas** — a developer obsessed with the intersection of **cinema, code, and creativity**. I build portfolios and web apps that feel less like software and more like *interactive films*. Every pixel is intentional. Every animation has a purpose. Every project tells a story.
-
-- 🎥 **Cinematic UI** — Frame-by-frame canvas sequences, physics-driven interactions
-- ⚡ **Hardware-accelerated rendering** — WebGL, Three.js, GPU-pushed visuals
-- 🎨 **Design-first development** — I obsess over typography, motion, and spatial composition
-- 🕹️ **Game-like interfaces** — UI that rewards curiosity and rewards exploration
+- 🎓 M.Tech Information Technology @ Francis Xavier Engineering College *(started Aug 2026)*
+- 🎓 B.Tech Information Technology — CGPA 8.07/10 *(2022–2026)*
+- 🧠 Building full-stack, AI-integrated web apps with **React.js, Next.js, FastAPI, MongoDB, AWS Lambda**
+- 🤖 Deep into **GenAI / LLM engineering** — RAG pipelines, prompt engineering, MCP servers
+- 🏆 Filed patent holder — **ECO-WELL** (Application No. 202541041540 A, India)
+- 💼 Interned at **Skill Software INC** (Delaware, USA · Remote) and **Team InfoSoft** (Tirunelveli)
+- 🔭 Currently open to **Software Engineer / GenAI roles** in Chennai & Bangalore
 
 ---
 
-<!-- TECH STACK -->
-## 🛠️ The Arsenal
+### 🛠️ Tech Stack
 
-<div align="center">
+**Languages**
+![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
+![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
+![Java](https://img.shields.io/badge/-Java-007396?style=flat-square&logo=openjdk&logoColor=white)
+![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![C#](https://img.shields.io/badge/-C%23-239120?style=flat-square&logo=csharp&logoColor=white)
 
-### ⚙️ Core Stack
+**Frontend**
+![React](https://img.shields.io/badge/-React-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Next.js](https://img.shields.io/badge/-Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
+![Blazor](https://img.shields.io/badge/-Blazor-512BD4?style=flat-square&logo=blazor&logoColor=white)
+![Bootstrap](https://img.shields.io/badge/-Bootstrap-7952B3?style=flat-square&logo=bootstrap&logoColor=white)
 
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Three.js](https://img.shields.io/badge/Three.js-000000?style=for-the-badge&logo=threedotjs&logoColor=white)
+**Backend**
+![FastAPI](https://img.shields.io/badge/-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
+![Node.js](https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
+![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white)
+![Django](https://img.shields.io/badge/-Django-092E20?style=flat-square&logo=django&logoColor=white)
+![.NET](https://img.shields.io/badge/-.NET-512BD4?style=flat-square&logo=dotnet&logoColor=white)
 
-### 🎨 Motion & Visual
+**Databases & Cloud**
+![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
+![Redis](https://img.shields.io/badge/-Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
+![AWS](https://img.shields.io/badge/-AWS%20Lambda-FF9900?style=flat-square&logo=awslambda&logoColor=white)
+![Docker](https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
 
-![Framer Motion](https://img.shields.io/badge/Framer_Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white)
-![GSAP](https://img.shields.io/badge/GSAP-88CE02?style=for-the-badge&logo=greensock&logoColor=black)
-![WebGL](https://img.shields.io/badge/WebGL-990000?style=for-the-badge&logo=webgl&logoColor=white)
-![Canvas API](https://img.shields.io/badge/Canvas_API-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-
-### 🧰 Tools & Backend
-
-![Node.js](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=nodedotjs&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white)
-![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-
-</div>
-
----
-
-<!-- FEATURED PROJECT -->
-## 🌟 Signature Work
-
-### 🎬 [Shammichalas — Creative Portfolio](https://github.com/Shammichalas/Shammichalas)
-
-> *A cinematic, interactive developer portfolio that blurs the line between website and film.*
-
-```
-┌─────────────────────────────────────────────────────────────┐
-│                                                             │
-│   🎞️  40-Frame Canvas Sequence Engine                       │
-│   🖱️  Cursor-reactive spotlight overlay                     │
-│   ⚡  Hardware-accelerated 3D physics                       │
-│   📱  Fully responsive — mobile to ultra-wide               │
-│   🎭  AnimatePresence-driven scene transitions              │
-│                                                             │
-└─────────────────────────────────────────────────────────────┘
-```
-
-**What makes it cinematic:**
-- Preloads **40 high-resolution frames** to simulate video without the bloat
-- A **custom preloader** that tracks load progress with elegant fade animations
-- The hero section reacts to your **every cursor movement** — it's alive
-- Object-fit cover logic built natively in Canvas for pixel-perfect crops
+**AI / GenAI**
+![Gemini](https://img.shields.io/badge/-Gemini%20API-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)
+![OpenAI](https://img.shields.io/badge/-OpenAI%20API-412991?style=flat-square&logo=openai&logoColor=white)
 
 ---
 
-<!-- GITHUB STATS -->
-## 📊 By The Numbers
+### 🌟 Featured Projects
 
-<div align="center">
-
-<img height="180em" src="https://github-readme-stats.vercel.app/api?username=shammichalas&show_icons=true&theme=radical&bg_color=0d1117&title_color=F08080&text_color=c9d1d9&icon_color=F08080&border_color=30363d&hide_border=false&count_private=true"/>
-
-<img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=shammichalas&layout=compact&theme=radical&bg_color=0d1117&title_color=F08080&text_color=c9d1d9&border_color=30363d&hide_border=false"/>
-
-</div>
-
-<div align="center">
-
-[![GitHub Streak](https://streak-stats.demolab.com?user=shammichalas&theme=radical&background=0d1117&border=30363d&ring=F08080&fire=F08080&currStreakLabel=F08080)](https://git.io/streak-stats)
-
-</div>
+| Project | Description | Stack |
+|---|---|---|
+| **[Flint](https://flintn.netlify.app)** | AI document intelligence platform — PDF → multi-level summaries, RAG-powered semantic search (Gemini embeddings + cosine similarity from scratch), spaced repetition quizzes, and a custom physics force graph in raw SVG | Next.js 14, FastAPI, MongoDB, Gemini API |
+| **[CafeSphere](https://cafespheree.netlify.app)** | Real-time cafe management platform — Clean Architecture + CQRS backend, live order pipeline via SignalR, AI sales-assistant module | .NET 10, Blazor WASM, MongoDB Atlas, SignalR, Redis |
+| **[HRMS](https://workforhub.netlify.app)** | Full HRMS covering employee lifecycle, attendance, leave, payroll — JWT auth, RBAC, Flyway migrations | React 19, TypeScript, Spring Boot 3, PostgreSQL |
+| **Cookbook Studio** | Full-stack recipe & digital cookbook platform with chef profiles, threaded comments, and a ReportLab-powered PDF ebook generator | Django 5.2, PostgreSQL, ReportLab |
 
 ---
 
-<!-- PHILOSOPHY -->
-## 🧠 My Design Philosophy
+### 🏆 Patent
 
-```javascript
-const shammichalas = {
-  belief:     "Every interface should feel like it was made for exactly one person.",
-  approach:   "Cinema-first. Performance-obsessed. Detail-maniacal.",
-  currently:  "Pushing the boundaries of what a portfolio can feel like.",
-  mantra:     "Don't build. Compose.",
-
-  tools: {
-    motion:   ["GSAP", "Framer Motion", "CSS Keyframes"],
-    render:   ["Three.js", "WebGL", "Canvas API"],
-    stack:    ["React", "Next.js", "TypeScript", "Tailwind"],
-  },
-
-  superpower: "Turning static UIs into interactive experiences 🎬",
-};
-```
+**ECO-WELL** — Combining Sustainability and Well-being: Food & Medicine Management System
+Application No. 202541041540 A · Filed 30 Apr 2025 · Published 30 May 2025 · India
 
 ---
 
-<!-- ACTIVITY GRAPH -->
-## 🔥 Activity
+### 📊 GitHub Stats
 
-<div align="center">
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api?username=shammichalas&show_icons=true&theme=radical&hide_border=true" height="165" />
+  <img src="https://github-readme-streak-stats.herokuapp.com/?user=shammichalas&theme=radical&hide_border=true" height="165" />
+</p>
 
-[![Activity Graph](https://github-readme-activity-graph.vercel.app/graph?username=shammichalas&bg_color=0d1117&color=F08080&line=F08080&point=ffffff&area=true&hide_border=true)](https://github.com/ashutosh00710/github-readme-activity-graph)
-
-</div>
-
----
-
-<!-- CONNECT -->
-## 📡 Reach The Director
-
-<div align="center">
-
-*I'm always open to collabs on ambitious, visually-rich projects.*
-
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/shammichalas)
-[![Portfolio](https://img.shields.io/badge/Portfolio-F08080?style=for-the-badge&logo=googlechrome&logoColor=white)](#)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](#)
-[![Twitter](https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](#)
-
-</div>
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=shammichalas&layout=compact&theme=radical&hide_border=true" />
+</p>
 
 ---
 
-<div align="center">
-
-```
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-▓                                                ▓
-▓   "The best interfaces are the ones people     ▓
-▓    forget are interfaces."                     ▓
-▓                              — Shammichalas    ▓
-▓                                                ▓
-▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
-```
-
-![Profile Views](https://komarev.com/ghpvc/?username=shammichalas&color=F08080&style=for-the-badge&label=SCENE+VIEWS)
-
-</div>
+<p align="center"><i>📫 Reach me at shammichalas0007@gmail.com — open to Software Engineer & GenAI roles in Chennai / Bangalore</i></p>

@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion } from 'framer-motion';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Loader from './Loader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -55,14 +56,16 @@ const MagneticButton = ({ children, className, href, ...props }) => {
 
 export default function NewHeroSection() {
   const containerRef = useRef(null);
+  const heroFrameRef = useRef(null);
   const canvasRef = useRef(null);
 
   // States
   const [images, setImages] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [preloadProgress, setPreloadProgress] = useState(0);
   const activeFrameCount = 51;
 
-  // Preload Image Sequence (51 Frames)
+  // Preload Image Sequence (51 Frames) with progress tracking
   useEffect(() => {
     let loadedCount = 0;
     const loadedImages = [];
@@ -79,6 +82,28 @@ export default function NewHeroSection() {
       }
     );
 
+    const checkFinished = () => {
+      if (loadedCount === activeFrameCount) {
+        setImages(loadedImages);
+        setPreloadProgress(100);
+      }
+    };
+
+    // Safety timeout to ensure loader resolves smoothly even if network is slow
+    const safetyTimeout = setTimeout(() => {
+      if (isMounted && loadedCount < activeFrameCount) {
+        for (let idx = 0; idx < activeFrameCount; idx++) {
+          if (!loadedImages[idx]) {
+            const fallback = new Image();
+            fallback.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%23ffffff"/></svg>';
+            loadedImages[idx] = fallback;
+          }
+        }
+        setImages([...loadedImages]);
+        setPreloadProgress(100);
+      }
+    }, 5000);
+
     activeFrames.forEach((src, idx) => {
       const img = new Image();
       img.src = src;
@@ -86,10 +111,8 @@ export default function NewHeroSection() {
         if (!isMounted) return;
         loadedCount++;
         loadedImages[idx] = img;
-        if (loadedCount === activeFrameCount) {
-          setImages(loadedImages);
-          setIsLoading(false);
-        }
+        setPreloadProgress((loadedCount / activeFrameCount) * 100);
+        checkFinished();
       };
       img.onerror = () => {
         if (!isMounted) return;
@@ -97,15 +120,14 @@ export default function NewHeroSection() {
         const fallback = new Image();
         fallback.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600"><rect width="800" height="600" fill="%23ffffff"/></svg>';
         loadedImages[idx] = fallback;
-        if (loadedCount === activeFrameCount) {
-          setImages(loadedImages);
-          setIsLoading(false);
-        }
+        setPreloadProgress((loadedCount / activeFrameCount) * 100);
+        checkFinished();
       };
     });
 
     return () => {
       isMounted = false;
+      clearTimeout(safetyTimeout);
     };
   }, []);
 
@@ -215,8 +237,10 @@ export default function NewHeroSection() {
       }
     });
 
-    bgTl.to(containerRef.current, {
-      background: 'radial-gradient(circle at 35% 50%, #ffffff 55%, #f1f5f9 100%)',
+    const targetFrame = heroFrameRef.current || containerRef.current;
+
+    bgTl.to(targetFrame, {
+      background: 'radial-gradient(circle at 35% 50%, #F3F3F1 55%, #EBEBE8 100%)',
       ease: 'none',
       duration: 10
     });
@@ -241,102 +265,117 @@ export default function NewHeroSection() {
   ];
 
   return (
-    <section
-      ref={containerRef}
-      id="home"
-      style={{ background: 'radial-gradient(circle at 35% 50%, #ffffff 30%, #e2e8f0 100%)' }}
-      className="relative w-full h-screen overflow-hidden flex items-center justify-center select-none bg-white"
-    >
-      {/* Artwork Canvas Background (Full Screen on all viewports) */}
-      <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center z-0">
-        {isLoading && (
-          <div className="absolute inset-0 bg-white flex items-center justify-center text-sm font-semibold text-slate-400 z-20">
-            <div className="w-6 h-6 border-2 border-slate-300 border-t-slate-800 rounded-full animate-spin"></div>
-          </div>
-        )}
+    <>
+      {/* Connected Cinematic Preloader */}
+      <Loader progress={preloadProgress} active={isLoading} onComplete={() => setIsLoading(false)} />
 
-        <div className="w-full h-full relative">
-          {/* Gentle Floating Wrapper */}
-          <motion.div
-            className="w-full h-full origin-center"
-            animate={{
-              y: [0, -4, 0],
-            }}
-            transition={{
-              duration: 5,
-              repeat: Infinity,
-              ease: "easeInOut"
-            }}
-          >
-            <canvas
-              ref={canvasRef}
-              className="w-full h-full object-cover pointer-events-none origin-center"
-            />
-          </motion.div>
-        </div>
-      </div>
-
-      {/* Content Overlay (Centered on all viewports) */}
-      <div
-        className="hero-text-content absolute inset-0 w-full h-full flex flex-col justify-center items-center text-center px-6 z-10"
+      <section
+        ref={containerRef}
+        id="home"
+        className="relative w-full h-screen p-2 overflow-hidden flex items-center justify-center select-none bg-[#0B0D0D]"
       >
-        {/* Headline lines reveals */}
-        <div className="flex flex-col gap-1 md:gap-1.5 mb-6 md:mb-8 items-center">
-          {headlineLines.map((line, idx) => (
-            <div key={idx} className="overflow-hidden flex items-center h-[38px] sm:h-[62px] md:h-[84px] lg:h-[105px] xl:h-[125px]">
-              <motion.span
-                initial={{ y: 80, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{
-                  duration: 0.9,
-                  ease: [0.16, 1, 0.3, 1],
-                  delay: idx * 0.12 + 0.15
+        {/* Premium Rounded Outer Frame */}
+        <div
+          ref={heroFrameRef}
+          style={{ background: 'radial-gradient(circle at 35% 50%, #F3F3F1 30%, #E6E6E3 100%)' }}
+          className="relative w-full h-full rounded-[14px] border border-[#111313]/10 dark:border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.08)] overflow-hidden flex items-center justify-center"
+        >
+          {/* Artwork Canvas Background (Full Screen within Frame) */}
+          <div className="absolute inset-0 w-full h-full overflow-hidden flex items-center justify-center z-0">
+            <div className="w-full h-full relative">
+              {/* Gentle Floating Wrapper */}
+              <motion.div
+                className="w-full h-full origin-center"
+                animate={{
+                  y: [0, -4, 0],
                 }}
-                className="font-black leading-[0.82] tracking-[-1.2px] sm:tracking-[-2px] lg:tracking-[-3px] text-[#111111] text-[8.5vw] sm:text-[7.5vw] md:text-[6vw] lg:text-[100px] xl:text-[120px]"
-                style={{ fontFamily: "'Satoshi', sans-serif" }}
+                transition={{
+                  duration: 5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
               >
-                {line}
-              </motion.span>
+                <canvas
+                  ref={canvasRef}
+                  className="w-full h-full object-cover pointer-events-none origin-center opacity-95"
+                />
+              </motion.div>
             </div>
-          ))}
+          </div>
+
+          {/* Content Overlay (Centered within Frame) */}
+          <div
+            className="hero-text-content absolute inset-0 w-full h-full flex flex-col justify-center items-center text-center px-6 z-10"
+          >
+            {/* Eyebrow / Welcome Tag */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="px-4 py-1.5 rounded-full border border-[#111313]/10 bg-[#111313]/5 text-[#5F6363] font-mono text-[10px] sm:text-xs font-bold tracking-[0.25em] uppercase mb-4 sm:mb-5 shadow-sm backdrop-blur-sm"
+            >
+              WELCOME TO SHAM'S PORTFOLIO
+            </motion.div>
+
+            {/* Headline lines reveals - Proportional, balanced font size */}
+            <div className="flex flex-col gap-1 md:gap-1.5 mb-5 md:mb-6 items-center">
+              {headlineLines.map((line, idx) => (
+                <div key={idx} className="overflow-hidden flex items-center h-[24px] sm:h-[36px] md:h-[48px] lg:h-[58px] xl:h-[68px]">
+                  <motion.span
+                    initial={{ y: 60, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{
+                      duration: 0.9,
+                      ease: [0.16, 1, 0.3, 1],
+                      delay: idx * 0.12 + 0.15
+                    }}
+                    className="font-black leading-[0.85] tracking-[-0.8px] sm:tracking-[-1.2px] lg:tracking-[-2px] text-[#111313] text-[4.8vw] sm:text-[4vw] md:text-[3.2vw] lg:text-[50px] xl:text-[60px]"
+                    style={{ fontFamily: "'Satoshi', sans-serif" }}
+                  >
+                    {line}
+                  </motion.span>
+                </div>
+              ))}
+            </div>
+
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
+              className="text-[13px] sm:text-[15px] md:text-[16px] text-[#5F6363] leading-relaxed max-w-[320px] sm:max-w-[440px] md:max-w-[520px] font-normal mb-6 md:mb-8 tracking-tight px-2 sm:px-0 text-center"
+              style={{ fontFamily: "'Inter', sans-serif" }}
+            >
+              Designing, building, and deploying scalable digital products that transform ambitious ideas into exceptional user experiences.
+            </motion.p>
+
+            {/* Action Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.95 }}
+              className="flex flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto"
+            >
+              <MagneticButton
+                href="#projects"
+                className="flex items-center justify-center bg-[#111313] hover:bg-[#222424] text-[#F3F3F1] font-semibold rounded-full h-[46px] sm:h-[52px] text-[11px] sm:text-xs px-6 sm:px-8 transition-colors duration-300 select-none cursor-pointer shadow-lg shadow-black/5"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Explore My Work
+              </MagneticButton>
+
+              <MagneticButton
+                href="#contact"
+                className="flex items-center justify-center bg-transparent hover:bg-[#111313] text-[#111313] hover:text-[#F3F3F1] font-semibold border border-[#111313] rounded-full h-[46px] sm:h-[52px] text-[11px] sm:text-xs px-6 sm:px-8 transition-all duration-300 select-none cursor-pointer"
+                style={{ fontFamily: "'Inter', sans-serif" }}
+              >
+                Let's Build Together
+              </MagneticButton>
+            </motion.div>
+          </div>
         </div>
-
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.8 }}
-          className="text-[14px] sm:text-[17px] md:text-[18px] text-[#666666] leading-relaxed max-w-[340px] sm:max-w-[450px] md:max-w-[550px] font-normal mb-8 md:mb-10 tracking-tight px-2 sm:px-0 text-center"
-          style={{ fontFamily: "'Inter', sans-serif" }}
-        >
-          Designing, building, and deploying scalable digital products that transform ambitious ideas into exceptional user experiences.
-        </motion.p>
-
-        {/* Action Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: 0.95 }}
-          className="flex flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto"
-        >
-          <MagneticButton
-            href="#projects"
-            className="flex items-center justify-center bg-black hover:bg-[#111111] text-white font-semibold rounded-full h-[48px] sm:h-[56px] text-[11px] sm:text-sm px-6 sm:px-8 transition-colors duration-300 select-none cursor-pointer shadow-lg hover:shadow-black/5"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Explore My Work
-          </MagneticButton>
-
-          <MagneticButton
-            href="#contact"
-            className="flex items-center justify-center bg-transparent hover:bg-black text-black hover:text-white font-semibold border border-black rounded-full h-[48px] sm:h-[56px] text-[11px] sm:text-sm px-6 sm:px-8 transition-all duration-300 select-none cursor-pointer"
-            style={{ fontFamily: "'Inter', sans-serif" }}
-          >
-            Let's Build Together
-          </MagneticButton>
-        </motion.div>
-      </div>
-
-    </section>
+      </section>
+    </>
   );
 }
+

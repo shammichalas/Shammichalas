@@ -233,10 +233,10 @@ export default function Loader({ progress, active, onComplete }) {
         {/* Welcome message */}
         <div 
           ref={welcomeRef}
-          className="font-display font-medium text-[10px] md:text-xs tracking-[0.65em] text-white/45 uppercase mb-[70px] select-none text-center"
+          className="font-display font-medium text-[10px] md:text-xs tracking-[0.65em] text-white/45 uppercase mb-[40px] select-none text-center"
           style={{ fontFamily: "'Inter', sans-serif" }}
         >
-          WELCOME TO MY
+          WELCOME TO SHAM'S 
         </div>
 
         {/* Main title "PORTFOLIO" */}
@@ -251,7 +251,7 @@ export default function Loader({ progress, active, onComplete }) {
                 ref={el => titleLettersRef.current[index] = el}
                 className="inline-block text-white font-display font-black leading-none tracking-tighter"
                 style={{ 
-                  fontSize: 'clamp(50px, 13vw, 220px)',
+                  fontSize: 'clamp(36px, 8vw, 110px)',
                   letterSpacing: '-0.06em',
                   textShadow: '0 4px 12px rgba(0, 0, 0, 0.4)',
                   fontFamily: "'Neue Montreal', 'General Sans', 'Clash Display', 'Outfit', sans-serif"

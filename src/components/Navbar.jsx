@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Home, Code2, Layers, Briefcase, Mail } from 'lucide-react';
+import { Home, Code2, Layers, Briefcase, Mail } from 'lucide-react';
 
 const navItems = [
   { name: 'Home', href: '#home', icon: Home },
@@ -112,97 +112,57 @@ export default function Navbar() {
   };
 
   return (
-    <>
-      {/* Fixed Top Header (Logo + Let's Connect CTA) */}
-      <motion.header
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 3.8 }}
-        className="fixed top-0 left-0 w-full z-[60] py-6 pointer-events-none mix-blend-difference"
-      >
-        <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between pointer-events-auto">
-          {/* Logo */}
-          <a 
-            href="#home"
-            onClick={(e) => handleNavClick(e, 'Home', '#home')}
-            className="flex items-center gap-2 group cursor-pointer"
+    <motion.div
+      variants={entryVariants}
+      initial="hidden"
+      animate={animationState}
+      className="fixed bottom-[24px] left-1/2 z-[9999] flex items-center gap-[2px] sm:gap-[6px] px-[6px] sm:px-[10px] py-[6px] sm:py-[8px] rounded-3xl border border-white/10 bg-[rgba(20,20,20,0.65)] backdrop-blur-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.35)] select-none max-w-[95vw] sm:max-w-max"
+      style={{
+        x: "-50%"
+      }}
+    >
+      {navItems.map((item) => {
+        const isActive = activeSection === item.name;
+        const Icon = item.icon;
+        return (
+          <motion.a
+            key={item.name}
+            href={item.href}
+            onClick={(e) => handleNavClick(e, item.name, item.href)}
+            className="relative px-[12px] sm:px-[20px] py-[6px] sm:py-[10px] font-sans text-[10px] sm:text-[12px] tracking-normal font-medium cursor-pointer select-none transition-all duration-300 flex flex-col items-center justify-center gap-1 rounded-2xl text-slate-400"
+            style={{
+              color: isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.45)',
+              fontWeight: isActive ? 600 : 500,
+              transform: isActive ? 'scale(1.02)' : 'scale(1)',
+              zIndex: 10
+            }}
+            whileHover={!isActive ? { 
+              y: -1, 
+              scale: 1.02, 
+              color: "rgba(255,255,255,0.8)",
+              transition: { duration: 0.2 }
+            } : { 
+              scale: 1.04,
+              transition: { duration: 0.2 }
+            }}
           >
-            <div className="w-8 h-8 rounded-lg bg-white flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
-              <span className="text-black font-display font-extrabold text-sm tracking-widest">S</span>
-            </div>
-            <span className="font-display font-bold tracking-widest text-sm text-white group-hover:text-slate-300 transition-all duration-300 uppercase">
-              Sham Michalas
-            </span>
-          </a>
-
-          {/* Let's Connect CTA (Desktop only) */}
-          <div className="hidden md:flex items-center">
-            <a
-              href="#contact"
-              onClick={(e) => handleNavClick(e, 'Contact', '#contact')}
-              className="group relative px-6 py-2.5 rounded-full overflow-hidden flex items-center gap-1.5 border border-white/20 bg-white/5 hover:bg-white/10 hover:border-white/40 font-display text-xs font-bold tracking-widest text-white transition-all duration-500 cursor-pointer"
-            >
-              <div className="absolute inset-0 w-full h-full bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out" />
-              <span className="relative z-10">LET'S CONNECT</span>
-              <ArrowUpRight className="w-3.5 h-3.5 relative z-10 text-white group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300" />
-            </a>
-          </div>
-        </div>
-      </motion.header>
-
-      {/* Floating Bottom Nav Container */}
-      <motion.div
-        variants={entryVariants}
-        initial="hidden"
-        animate={animationState}
-        className="fixed bottom-[24px] left-1/2 z-[9999] flex items-center gap-[2px] sm:gap-[6px] px-[6px] sm:px-[10px] py-[6px] sm:py-[8px] rounded-3xl border border-white/8 bg-[#0A0A0A]/82 backdrop-blur-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.35)] select-none max-w-[95vw] sm:max-w-max"
-        style={{
-          x: "-50%"
-        }}
-      >
-        {navItems.map((item) => {
-          const isActive = activeSection === item.name;
-          const Icon = item.icon;
-          return (
-            <motion.a
-              key={item.name}
-              href={item.href}
-              onClick={(e) => handleNavClick(e, item.name, item.href)}
-              className="relative px-[12px] sm:px-[20px] py-[6px] sm:py-[10px] font-sans text-[10px] sm:text-[12px] tracking-normal font-medium cursor-pointer select-none transition-all duration-300 flex flex-col items-center justify-center gap-1 rounded-2xl text-slate-400"
-              style={{
-                color: isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.45)',
-                fontWeight: isActive ? 600 : 500,
-                transform: isActive ? 'scale(1.02)' : 'scale(1)',
-                zIndex: 10
-              }}
-              whileHover={!isActive ? { 
-                y: -1, 
-                scale: 1.02, 
-                color: "rgba(255,255,255,0.8)",
-                transition: { duration: 0.2 }
-              } : { 
-                scale: 1.04,
-                transition: { duration: 0.2 }
-              }}
-            >
-              <Icon className="w-4 h-4 sm:w-5 sm:h-5 relative z-20" />
-              <span className="relative z-20 select-none">{item.name}</span>
-              {isActive && (
-                <motion.div
-                  layoutId="activeFloatingPill"
-                  className="absolute inset-0 rounded-2xl bg-white/[0.10] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.15),_inset_0_1px_0_rgba(255,255,255,0.15)] z-10"
-                  transition={{ 
-                    type: 'spring', 
-                    stiffness: 280, 
-                    damping: 26, 
-                    mass: 0.9 
-                  }}
-                />
-              )}
-            </motion.a>
-          );
-        })}
-      </motion.div>
-    </>
+            <Icon className="w-4 h-4 sm:w-5 sm:h-5 relative z-20" />
+            <span className="relative z-20 select-none">{item.name}</span>
+            {isActive && (
+              <motion.div
+                layoutId="activeFloatingPill"
+                className="absolute inset-0 rounded-2xl bg-white/[0.10] border border-white/[0.08] shadow-[0_4px_12px_rgba(0,0,0,0.15),_inset_0_1px_0_rgba(255,255,255,0.15)] z-10"
+                transition={{ 
+                  type: 'spring', 
+                  stiffness: 280, 
+                  damping: 26, 
+                  mass: 0.9 
+                }}
+              />
+            )}
+          </motion.a>
+        );
+      })}
+    </motion.div>
   );
 }

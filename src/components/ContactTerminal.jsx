@@ -231,7 +231,7 @@ export default function ContactTerminal() {
     <section 
       id="contact" 
       ref={sectionRef}
-      className="relative min-h-screen py-24 lg:pt-24 lg:pb-36 px-6 md:px-12 bg-[#04060d] flex flex-col justify-center overflow-hidden z-50 border-t border-white/5 select-none"
+      className="relative min-h-screen py-24 lg:pt-24 lg:pb-36 px-6 md:px-12 bg-[#0B0D0D] flex flex-col justify-center overflow-hidden z-50 border-t border-white/5 select-none"
     >
       <style>{`
         @keyframes cursorBlink {
@@ -250,20 +250,20 @@ export default function ContactTerminal() {
         style={{ opacity: 0 }}
       />
 
-      {/* Volumetric Neon Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-orange-600/[0.02] blur-[150px] pointer-events-none z-10 animate-pulse-slow" />
+      {/* Volumetric Subtle Ambient Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] rounded-full bg-white/[0.015] blur-[150px] pointer-events-none z-10 animate-pulse-slow" />
 
       <div className="max-w-4xl mx-auto w-full relative z-10">
         
-        {/* Header (Fades out dynamically on desktop scroll via opacity, stays readable) */}
+        {/* Header */}
         <div className="text-center mb-16 max-w-xl mx-auto">
-          <span className="font-display text-[10px] font-bold tracking-[0.25em] text-orange-500 uppercase border border-orange-500/20 px-3.5 py-1 rounded-full inline-block backdrop-blur-md">
+          <span className="font-display text-[10px] font-bold tracking-[0.25em] text-neutral-400 uppercase border border-white/10 bg-white/5 px-3.5 py-1 rounded-full inline-block backdrop-blur-md">
             COMMUNICATION INTERFACE
           </span>
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold mt-4 mb-4 tracking-tight leading-tight text-white uppercase">
+          <h2 className="font-display text-4xl md:text-5xl font-extrabold mt-4 mb-4 tracking-tight leading-tight text-[#F3F3F1] uppercase">
             Connect Terminal
           </h2>
-          <p className="font-sans text-slate-400 text-sm leading-relaxed">
+          <p className="font-sans text-[#5F6363] text-sm leading-relaxed">
             Initialize an authenticated session below to send encrypted messages or download engineering briefs.
           </p>
         </div>
@@ -272,17 +272,17 @@ export default function ContactTerminal() {
         <div 
           ref={terminalRef}
           style={isMobile ? {
-            background: 'radial-gradient(circle at center, rgba(15, 23, 42, 0.12) 0%, rgba(15, 23, 42, 0.78) 100%)',
-            boxShadow: '0 25px 60px rgba(0,0,0,0.85), inset 0 1.5px 2.5px rgba(255,255,255,0.15), inset 0 -1.5px 2.5px rgba(0,0,0,0.5)'
+            background: 'radial-gradient(circle at center, rgba(20, 20, 20, 0.4) 0%, rgba(11, 13, 13, 0.95) 100%)',
+            boxShadow: '0 25px 60px rgba(0,0,0,0.85), inset 0 1.5px 2.5px rgba(255,255,255,0.1), inset 0 -1.5px 2.5px rgba(0,0,0,0.5)'
           } : {
-            background: 'radial-gradient(circle at center, rgba(15, 23, 42, 0.12) 0%, rgba(15, 23, 42, 0.78) 100%)',
-            boxShadow: '0 25px 60px rgba(0,0,0,0.85), inset 0 1.5px 2.5px rgba(255,255,255,0.15), inset 0 -1.5px 2.5px rgba(0,0,0,0.5)',
+            background: 'radial-gradient(circle at center, rgba(20, 20, 20, 0.4) 0%, rgba(11, 13, 13, 0.95) 100%)',
+            boxShadow: '0 25px 60px rgba(0,0,0,0.85), inset 0 1.5px 2.5px rgba(255,255,255,0.1), inset 0 -1.5px 2.5px rgba(0,0,0,0.5)',
             transformOrigin: 'center center'
           }}
           className="relative rounded-3xl overflow-hidden border border-white/10 backdrop-blur-xl flex flex-col z-10 w-full"
         >
           {/* Background backlit glow passing through crystal terminal */}
-          <div className="absolute inset-0 rounded-3xl blur-[40px] bg-orange-500/5 shadow-[0_0_80px_rgba(249,115,22,0.06)] -z-10 pointer-events-none" />
+          <div className="absolute inset-0 rounded-3xl blur-[40px] bg-white/[0.02] shadow-[0_0_80px_rgba(255,255,255,0.03)] -z-10 pointer-events-none" />
 
           {/* Micro-noise texture for sandblasted glass grain effect */}
           <div 
@@ -297,19 +297,19 @@ export default function ContactTerminal() {
           <div 
             className="absolute inset-0 pointer-events-none z-0 rounded-3xl"
             style={{
-              background: 'radial-gradient(circle at 6% 6%, rgba(255, 255, 255, 0.1) 0%, transparent 40%)'
+              background: 'radial-gradient(circle at 6% 6%, rgba(255, 255, 255, 0.08) 0%, transparent 40%)'
             }}
           />
           
           {/* Terminal Window Header Bar */}
           <div className="px-6 py-4 bg-white/[0.02] border-b border-white/10 flex items-center justify-between relative z-10 backdrop-blur-md">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-rose-500/35 border border-rose-500/20" />
-              <div className="w-3 h-3 rounded-full bg-amber-500/35 border border-amber-500/20" />
-              <div className="w-3 h-3 rounded-full bg-emerald-500/35 border border-emerald-500/20" />
+              <div className="w-3 h-3 rounded-full bg-white/20 border border-white/10" />
+              <div className="w-3 h-3 rounded-full bg-white/15 border border-white/10" />
+              <div className="w-3 h-3 rounded-full bg-white/10 border border-white/10" />
             </div>
-            <div className="flex items-center gap-2 text-slate-500 font-mono text-[10px] font-extrabold tracking-widest uppercase">
-              <Terminal className="w-3.5 h-3.5 text-orange-500" />
+            <div className="flex items-center gap-2 text-neutral-400 font-mono text-[10px] font-extrabold tracking-widest uppercase">
+              <Terminal className="w-3.5 h-3.5 text-neutral-300" />
               <span>guest@shammichalas.dev:~</span>
             </div>
             <div className="w-16" /> {/* Spacer */}
@@ -319,20 +319,20 @@ export default function ContactTerminal() {
           <div className="p-6 md:p-8 font-mono text-xs md:text-sm flex flex-col gap-4 flex-grow relative z-10 text-left">
             
             {/* Live output console log */}
-            <div className="flex flex-col gap-2.5 text-slate-400">
+            <div className="flex flex-col gap-2.5 text-neutral-400">
               
               {/* Prompt line 1 */}
               <div className="leading-relaxed">
-                <span className="text-orange-500 font-bold">shammichalas@dev:~ $ </span>
-                <span className="text-slate-200">{cmd1}</span>
+                <span className="text-white font-bold">shammichalas@dev:~ $ </span>
+                <span className="text-neutral-200">{cmd1}</span>
                 {activeCursor === 1 && (
-                  <span className="inline-block w-[7px] h-[14px] bg-orange-500 ml-1.5 align-middle terminal-cursor-indicator" />
+                  <span className="inline-block w-[7px] h-[14px] bg-white ml-1.5 align-middle terminal-cursor-indicator" />
                 )}
               </div>
 
               {/* System Reply line 1 */}
               {showSystem1 && (
-                <div className="leading-relaxed text-slate-500 font-semibold pl-4">
+                <div className="leading-relaxed text-neutral-500 font-semibold pl-4">
                   &gt; Connecting to server nodes...<br />
                   &gt; Connection Established. Session initiated.
                 </div>
@@ -341,10 +341,10 @@ export default function ContactTerminal() {
               {/* Prompt line 2 */}
               {showSystem1 && (
                 <div className="leading-relaxed">
-                  <span className="text-orange-500 font-bold">shammichalas@dev:~ $ </span>
-                  <span className="text-slate-200">{cmd2}</span>
+                  <span className="text-white font-bold">shammichalas@dev:~ $ </span>
+                  <span className="text-neutral-200">{cmd2}</span>
                   {activeCursor === 2 && (
-                    <span className="inline-block w-[7px] h-[14px] bg-orange-500 ml-1.5 align-middle terminal-cursor-indicator" />
+                    <span className="inline-block w-[7px] h-[14px] bg-white ml-1.5 align-middle terminal-cursor-indicator" />
                   )}
                 </div>
               )}
@@ -361,22 +361,22 @@ export default function ContactTerminal() {
               style={{ opacity: isMobile ? 1 : 0 }}
             >
               {/* Direct formatted contact info */}
-              <div className="text-[10px] md:text-xs text-slate-500 space-y-1 pl-4">
+              <div className="text-[10px] md:text-xs text-neutral-500 space-y-1 pl-4">
                 <div>&gt; HOST DATA: SMTP ENCRYPTED TRANSMISSION READY</div>
                 <div>&gt; TARGET DIRECTORY: shammichalas0007@gmail.com</div>
               </div>
 
               {/* Form submit logs output inside the container */}
               {consoleLogs.length > 3 && (
-                <div className="flex flex-col gap-1 border-b border-white/5 pb-4 text-slate-400 pl-4">
+                <div className="flex flex-col gap-1 border-b border-white/5 pb-4 text-neutral-400 pl-4">
                   {consoleLogs.slice(3).map((log, logIdx) => (
                     <div key={logIdx} className="leading-relaxed text-[11px]">
                       {log.type === 'input' && (
-                        <span className="text-orange-500 font-bold">$ <span className="text-slate-300">{log.text}</span></span>
+                        <span className="text-white font-bold">$ <span className="text-neutral-300">{log.text}</span></span>
                       )}
-                      {log.type === 'system' && <span className="text-slate-500 font-semibold">&gt; {log.text}</span>}
-                      {log.type === 'error' && <span className="text-rose-400 font-bold">&gt;&gt; {log.text}</span>}
-                      {log.type === 'success' && <span className="text-emerald-400 font-bold">&gt;&gt; {log.text}</span>}
+                      {log.type === 'system' && <span className="text-neutral-500 font-semibold">&gt; {log.text}</span>}
+                      {log.type === 'error' && <span className="text-neutral-300 font-bold">&gt;&gt; {log.text}</span>}
+                      {log.type === 'success' && <span className="text-white font-bold">&gt;&gt; {log.text}</span>}
                     </div>
                   ))}
                 </div>
@@ -387,8 +387,8 @@ export default function ContactTerminal() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {/* Name */}
                   <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-1 text-[10px] tracking-wider text-slate-400 font-bold uppercase font-display">
-                      <span className="text-orange-500 font-mono font-bold">$</span>
+                    <div className="flex items-center gap-1 text-[10px] tracking-wider text-neutral-400 font-bold uppercase font-display">
+                      <span className="text-white font-mono font-bold">$</span>
                       <span>Identity Name</span>
                     </div>
                     <input
@@ -397,14 +397,14 @@ export default function ContactTerminal() {
                       value={formData.name}
                       onChange={(e) => handleInputChange('name', e.target.value)}
                       placeholder="Enter your name..."
-                      className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-100 text-xs focus:outline-none focus:border-orange-500/45 focus:bg-white/[0.05] transition-all duration-300 placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.08)] font-mono backdrop-blur-md"
+                      className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-[#F3F3F1] text-xs focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all duration-300 placeholder:text-neutral-600 focus:shadow-[0_0_12px_rgba(255,255,255,0.08)] font-mono backdrop-blur-md"
                     />
                   </div>
 
                   {/* Email */}
                   <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-1 text-[10px] tracking-wider text-slate-400 font-bold uppercase font-display">
-                      <span className="text-orange-500 font-mono font-bold">$</span>
+                    <div className="flex items-center gap-1 text-[10px] tracking-wider text-neutral-400 font-bold uppercase font-display">
+                      <span className="text-white font-mono font-bold">$</span>
                       <span>Identity Email</span>
                     </div>
                     <input
@@ -413,15 +413,15 @@ export default function ContactTerminal() {
                       value={formData.email}
                       onChange={(e) => handleInputChange('email', e.target.value)}
                       placeholder="Enter your email address..."
-                      className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-100 text-xs focus:outline-none focus:border-orange-500/45 focus:bg-white/[0.05] transition-all duration-300 placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.08)] font-mono backdrop-blur-md"
+                      className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-[#F3F3F1] text-xs focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all duration-300 placeholder:text-neutral-600 focus:shadow-[0_0_12px_rgba(255,255,255,0.08)] font-mono backdrop-blur-md"
                     />
                   </div>
                 </div>
 
                 {/* Message */}
                 <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-1 text-[10px] tracking-wider text-slate-400 font-bold uppercase font-display">
-                    <span className="text-orange-500 font-mono font-bold">$</span>
+                  <div className="flex items-center gap-1 text-[10px] tracking-wider text-neutral-400 font-bold uppercase font-display">
+                    <span className="text-white font-mono font-bold">$</span>
                     <span>Transmission Payload</span>
                   </div>
                   <textarea
@@ -430,7 +430,7 @@ export default function ContactTerminal() {
                     value={formData.message}
                     onChange={(e) => handleInputChange('message', e.target.value)}
                     placeholder="Type your message payload..."
-                    className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-slate-100 text-xs focus:outline-none focus:border-orange-500/45 focus:bg-white/[0.05] transition-all duration-300 placeholder:text-slate-600 focus:shadow-[0_0_12px_rgba(249,115,22,0.08)] resize-none font-mono backdrop-blur-md"
+                    className="px-4 py-3 rounded-xl bg-white/[0.03] border border-white/10 text-[#F3F3F1] text-xs focus:outline-none focus:border-white/30 focus:bg-white/[0.06] transition-all duration-300 placeholder:text-neutral-600 focus:shadow-[0_0_12px_rgba(255,255,255,0.08)] resize-none font-mono backdrop-blur-md"
                   />
                 </div>
 
@@ -438,34 +438,34 @@ export default function ContactTerminal() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full py-4 rounded-xl bg-gradient-to-r from-orange-500 to-rose-500 text-center font-display text-xs font-bold tracking-widest text-white hover:shadow-glow-orange cursor-pointer transition-all duration-300 uppercase flex items-center justify-center gap-2"
+                  className="w-full py-4 rounded-xl bg-[#F3F3F1] text-[#111313] hover:bg-white text-center font-display text-xs font-bold tracking-widest cursor-pointer transition-all duration-300 uppercase flex items-center justify-center gap-2 shadow-lg shadow-white/5 hover:shadow-white/10"
                 >
-                  <Send className="w-4 h-4" />
+                  <Send className="w-4 h-4 text-[#111313]" />
                   <span>{isSubmitting ? 'TRANSMITTING ENCRYPTED...' : 'EXECUTE SEND_MESSAGE.SH'}</span>
                 </button>
               </form>
 
               {/* Social credentials links */}
-              <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-[10px] tracking-wider text-slate-500 uppercase font-extrabold">
+              <div className="border-t border-white/5 pt-6 flex flex-col sm:flex-row items-center justify-between gap-6 text-[10px] tracking-wider text-neutral-500 uppercase font-extrabold">
                 <span>authenticated node: secure link</span>
                 
                 <div className="flex items-center gap-5">
-                  <a href="https://github.com/shammichalas" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-orange-500 transition-colors flex items-center gap-1">
+                  <a href="https://github.com/shammichalas" target="_blank" rel="noreferrer" className="text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
                     <Github className="w-3.5 h-3.5" />
                     <span>GitHub</span>
                   </a>
-                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-orange-500 transition-colors flex items-center gap-1">
+                  <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1">
                     <Linkedin className="w-3.5 h-3.5" />
                     <span>LinkedIn</span>
                   </a>
-                  <a href="mailto:shammichalas0007@gmail.com" className="text-slate-400 hover:text-orange-500 transition-colors flex items-center gap-1">
+                  <a href="mailto:shammichalas0007@gmail.com" className="text-neutral-400 hover:text-white transition-colors flex items-center gap-1">
                     <Mail className="w-3.5 h-3.5" />
                     <span>Email</span>
                   </a>
                   <a 
                     href="/Sham%20Michalas%20Resume.pdf" 
                     download="Sham_Michalas_Resume.pdf" 
-                    className="text-slate-400 hover:text-orange-500 transition-colors flex items-center gap-1"
+                    className="text-neutral-400 hover:text-white transition-colors flex items-center gap-1"
                   >
                     <FileText className="w-3.5 h-3.5" />
                     <span>Brief</span>

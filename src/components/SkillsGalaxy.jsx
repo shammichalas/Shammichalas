@@ -557,41 +557,43 @@ const PremiumTechCard = ({ card, isMobile }) => {
 };
 
 // ==========================================
+// ==========================================
 // MOBILE FLOATING CARD SPECIFIC WRAPPER
 // ==========================================
 
 const MobileTechCard = ({ card }) => {
   return (
     <div
-      className={`absolute z-10 select-none ${card.cls}`}
+      className={`absolute z-10 select-none pointer-events-auto transition-transform duration-500 ${card.cls}`}
       style={{
         left: card.left || 'auto',
         right: card.right || 'auto',
-        top: card.top,
+        top: card.top || 'auto',
+        bottom: card.bottom || 'auto',
         width: `${card.size}px`,
       }}
     >
       <div 
         style={{
-          background: 'rgba(10, 10, 12, 0.75)',
-          boxShadow: `0 20px 40px -10px rgba(0, 0, 0, 0.8), inset 0 1px 0 0 rgba(255, 255, 255, 0.1)`,
+          background: 'rgba(17, 19, 19, 0.88)',
+          boxShadow: `0 15px 35px -5px rgba(0, 0, 0, 0.75), inset 0 1px 0 0 rgba(255, 255, 255, 0.12)`,
         }}
-        className="rounded-xl p-2.5 backdrop-blur-xl border border-white/5 flex flex-col justify-between overflow-hidden select-none"
+        className="rounded-2xl p-2.5 backdrop-blur-xl border border-white/10 flex flex-col justify-between overflow-hidden select-none"
       >
-        <div className="flex items-center justify-between mb-2 select-none">
+        <div className="flex items-center justify-between mb-1.5 select-none">
           <div className="flex items-center gap-1.5">
-            <div className="w-5 h-5 rounded bg-white/5 border border-white/10 flex items-center justify-center">
-              {React.cloneElement(card.icon, { className: "w-2.5 h-2.5" })}
+            <div className="w-4 h-4 rounded-md bg-white/10 border border-white/10 flex items-center justify-center">
+              {React.cloneElement(card.icon, { className: "w-2.5 h-2.5 text-neutral-300" })}
             </div>
-            <span className="font-sans font-extrabold text-[8px] uppercase tracking-widest text-slate-300">
+            <span className="font-sans font-medium text-[9px] tracking-wide text-neutral-300">
               {card.name}
             </span>
           </div>
-          <div className="w-1.5 h-1.5 rounded-full bg-emerald-500/80"></div>
+          <div className="w-1.5 h-1.5 rounded-full bg-white/40"></div>
         </div>
         
         {/* Scale down mockup to fit the mobile card */}
-        <div className="scale-90 origin-top">
+        <div className="scale-85 origin-top-left -mr-4 -mb-1">
           {card.mockup}
         </div>
       </div>
@@ -810,61 +812,61 @@ export default function SkillsGalaxy() {
   const mobileCards = [
     {
       name: "React",
-      icon: <Code className="w-4 h-4 text-sky-400" />,
-      size: 130,
-      left: "4%",
-      top: "10%",
-      glow: "rgba(56, 189, 248, 0.1)",
+      icon: <Code className="w-4 h-4 text-neutral-300" />,
+      size: 125,
+      left: "3%",
+      top: "8%",
+      glow: "rgba(255, 255, 255, 0.05)",
       mockup: <ReactMockup />,
       cls: "mobile-card-react"
     },
     {
       name: "Spring Boot",
-      icon: <Server className="w-4 h-4 text-emerald-400" />,
+      icon: <Server className="w-4 h-4 text-neutral-300" />,
       size: 120,
-      right: "4%",
-      top: "14%",
-      glow: "rgba(109, 179, 63, 0.08)",
+      right: "3%",
+      top: "11%",
+      glow: "rgba(255, 255, 255, 0.05)",
       mockup: <SpringBootMockup />,
       cls: "mobile-card-springboot"
     },
     {
       name: "Docker",
-      icon: <Layers className="w-4 h-4 text-sky-500" />,
-      size: 125,
+      icon: <Layers className="w-4 h-4 text-neutral-300" />,
+      size: 120,
       left: "2%",
-      top: "40%",
-      glow: "rgba(14, 165, 233, 0.1)",
+      top: "41%",
+      glow: "rgba(255, 255, 255, 0.05)",
       mockup: <DockerMockup />,
       cls: "mobile-card-docker"
     },
     {
       name: "GitHub",
-      icon: <Play className="w-4 h-4 text-slate-300" />,
+      icon: <Play className="w-4 h-4 text-neutral-300" />,
       size: 120,
       right: "2%",
-      top: "44%",
-      glow: "rgba(255, 255, 255, 0.08)",
+      top: "45%",
+      glow: "rgba(255, 255, 255, 0.05)",
       mockup: <GitHubMockup />,
       cls: "mobile-card-github"
     },
     {
       name: "MongoDB",
-      icon: <Database className="w-4 h-4 text-emerald-500" />,
+      icon: <Database className="w-4 h-4 text-neutral-300" />,
       size: 120,
       left: "4%",
-      top: "74%",
-      glow: "rgba(34, 197, 94, 0.08)",
+      bottom: "16%",
+      glow: "rgba(255, 255, 255, 0.05)",
       mockup: <MongoDBMockup />,
       cls: "mobile-card-mongodb"
     },
     {
       name: "OpenAI",
-      icon: <Brain className="w-4 h-4 text-emerald-500" />,
-      size: 130,
+      icon: <Brain className="w-4 h-4 text-neutral-300" />,
+      size: 125,
       right: "4%",
-      top: "78%",
-      glow: "rgba(16, 185, 129, 0.1)",
+      bottom: "18%",
+      glow: "rgba(255, 255, 255, 0.05)",
       mockup: <OpenAIMockup />,
       cls: "mobile-card-openai"
     }
@@ -888,7 +890,9 @@ export default function SkillsGalaxy() {
           trigger: sectionRef.current,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: 1,
+          scrub: 1.2,
+          pin: stickyRef.current,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
         }
       });
@@ -896,7 +900,7 @@ export default function SkillsGalaxy() {
       desktopTl.to(trackRef.current, {
         x: () => -maxScrollX(),
         ease: 'none',
-        duration: 0.75
+        duration: 1
       }, 0);
 
       desktopTl.to('.parallax-card', {
@@ -905,13 +909,25 @@ export default function SkillsGalaxy() {
           return -maxScrollX() * (speed - 1);
         },
         ease: 'none',
-        duration: 0.75
+        duration: 1
       }, 0);
 
       // Resting pause hold buffer at the end of scroll
       desktopTl.to({}, {
         duration: 0.25
       });
+
+      // Refresh ScrollTrigger after DOM renders to capture true track width
+      const timer = setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 400);
+
+      return () => {
+        clearTimeout(timer);
+        window.removeEventListener('resize', handleResize);
+        desktopTl.scrollTrigger?.kill();
+        desktopTl.kill();
+      };
 
     } else {
       // ==========================================
@@ -923,33 +939,32 @@ export default function SkillsGalaxy() {
           start: 'top top',
           end: 'bottom bottom',
           scrub: 1,
+          pin: mobileStickyRef.current,
+          anticipatePin: 1,
           invalidateOnRefresh: true,
         }
       });
 
       // Filter out empty spaces and select span targets
       const words = wordRefs.current.filter(Boolean);
-      const totalSteps = words.length;
 
       // Programmed sequence:
-      // Active word is highlighted at opacity 1 + subtle blue glow.
-      // Previously read words transition to opacity 0.75.
-      // Inactive future words remain at opacity 0.25.
+      // Active word is highlighted at opacity 1 + subtle white glow.
+      // Previously read words transition to opacity 0.7.
+      // Inactive future words remain at opacity 0.2.
       words.forEach((word, index) => {
-        const startTime = index * 0.08; // sequential spacing
+        const startTime = index * 0.08;
 
-        // Highlight active word
         mobileTl.to(word, {
           opacity: 1,
-          textShadow: '0 0 12px rgba(255, 255, 255, 0.95), 0 0 20px rgba(56, 189, 248, 0.45)',
-          color: '#ffffff',
+          textShadow: '0 0 20px rgba(243, 243, 241, 0.4)',
+          color: '#F3F3F1',
           duration: 0.05
         }, startTime);
 
-        // Previous word dims to read status
         if (index > 0) {
           mobileTl.to(words[index - 1], {
-            opacity: 0.75,
+            opacity: 0.7,
             textShadow: 'none',
             duration: 0.05
           }, startTime);
@@ -957,32 +972,29 @@ export default function SkillsGalaxy() {
       });
 
       // Subtle float animations and micro-rotation mapped to mobile scroll progress
-      mobileTl.to('.mobile-card-react', { y: -20, rotate: 2, ease: 'none', duration: 0.8 }, 0);
-      mobileTl.to('.mobile-card-springboot', { y: 25, rotate: -2, ease: 'none', duration: 0.8 }, 0);
-      mobileTl.to('.mobile-card-docker', { y: -15, rotate: 1, ease: 'none', duration: 0.8 }, 0);
-      mobileTl.to('.mobile-card-github', { y: 20, rotate: -2, ease: 'none', duration: 0.8 }, 0);
-      mobileTl.to('.mobile-card-mongodb', { y: -25, rotate: 2, ease: 'none', duration: 0.8 }, 0);
-      mobileTl.to('.mobile-card-openai', { y: 15, rotate: -1, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-react', { y: -16, rotate: 1.5, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-springboot', { y: 18, rotate: -1.5, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-docker', { y: -12, rotate: 1, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-github', { y: 15, rotate: -1.5, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-mongodb', { y: -18, rotate: 1.5, ease: 'none', duration: 0.8 }, 0);
+      mobileTl.to('.mobile-card-openai', { y: 12, rotate: -1, ease: 'none', duration: 0.8 }, 0);
 
       // Final scroll hold so the full sentence is visible for a moment
       mobileTl.to({}, { duration: 0.22 });
-    }
 
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === sectionRef.current) {
-          trigger.kill();
-        }
-      });
-    };
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        mobileTl.scrollTrigger?.kill();
+        mobileTl.kill();
+      };
+    }
   }, [isMobile]);
 
   return (
     <section 
       ref={sectionRef}
       id="skills" 
-      className="relative w-full h-[400vh] lg:h-[400vh] h-[250vh] bg-[#050505] overflow-visible border-t border-white/5 z-[25]"
+      className="relative w-full h-[300vh] lg:h-[450vh] bg-[#0B0D0D] overflow-visible border-t border-white/5 z-[25]"
     >
       <style>{animationStyles}</style>
 
@@ -1025,44 +1037,53 @@ export default function SkillsGalaxy() {
       </div>
 
       {/* ==========================================
-          MOBILE VIEWPORT: PINNED TEXT REVEAL STORY
+          MOBILE VIEWPORT: EDITORIAL PHONE VIEWPORT
           ========================================== */}
       <div 
         ref={mobileStickyRef}
-        className="flex lg:hidden sticky top-0 w-full h-screen overflow-hidden flex-col justify-center items-center bg-[#050505] z-[25] px-6"
+        className="flex lg:hidden sticky top-0 w-full h-screen overflow-hidden flex-col justify-center items-center bg-[#0B0D0D] z-[25] px-6"
       >
         {/* Spatial Vignette */}
-        <div className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-b from-[#050505] via-transparent to-[#050505] opacity-100" />
+        <div className="absolute inset-0 pointer-events-none -z-10 bg-gradient-to-b from-[#0B0D0D] via-transparent to-[#0B0D0D] opacity-100" />
         
         {/* Soft active glow behind the text */}
-        <div className="absolute w-72 h-72 rounded-full bg-[hsla(210,80%,70%,0.015)] blur-[110px] pointer-events-none -z-10 animate-pulse" />
+        <div className="absolute w-72 h-72 rounded-full bg-white/[0.015] blur-[110px] pointer-events-none -z-10 animate-pulse" />
 
-        {/* Central Responsive Typography Block */}
-        <div className="max-w-[90%] text-center z-20 leading-[1.1]">
-          <div className="flex flex-col text-center font-display font-extrabold tracking-tighter text-white uppercase select-none text-[32px] min-[400px]:text-[38px] min-[500px]:text-[46px]">
+        {/* Central Frosted Glass Card with Editorial Typography */}
+        <div 
+          style={{
+            background: 'rgba(17, 19, 19, 0.65)',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 0 rgba(255, 255, 255, 0.15)',
+          }}
+          className="max-w-[90%] w-full rounded-3xl p-6 min-[380px]:p-8 border border-white/10 backdrop-blur-2xl text-center z-20 relative overflow-hidden select-none"
+        >
+          {/* Subtle Inner Ambient Glow */}
+          <div className="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none -z-10" />
+
+          <div className="flex flex-col text-center font-sans font-light tracking-tight text-[#F3F3F1] select-none text-[22px] min-[370px]:text-[26px] min-[430px]:text-[30px] sm:text-[36px] leading-[1.35]">
             {/* Line 1 */}
-            <div className="mb-2 flex justify-center gap-1.5">
-              <span ref={el => wordRefs.current[0] = el} className="inline-block opacity-25">I</span>
-              <span ref={el => wordRefs.current[1] = el} className="inline-block opacity-25">don't</span>
-              <span ref={el => wordRefs.current[2] = el} className="inline-block opacity-25">just</span>
-              <span ref={el => wordRefs.current[3] = el} className="inline-block opacity-25">know</span>
+            <div className="mb-2 flex justify-center gap-2 flex-wrap">
+              <span ref={el => wordRefs.current[0] = el} className="inline-block opacity-20 font-light">I</span>
+              <span ref={el => wordRefs.current[1] = el} className="inline-block opacity-20 font-light">don't</span>
+              <span ref={el => wordRefs.current[2] = el} className="inline-block opacity-20 font-light">just</span>
+              <span ref={el => wordRefs.current[3] = el} className="inline-block opacity-20 font-light">know</span>
             </div>
             
             {/* Line 2 */}
-            <div className="mb-6 flex justify-center">
-              <span ref={el => wordRefs.current[4] = el} className="inline-block opacity-25">these technologies —</span>
+            <div className="mb-4 flex justify-center">
+              <span ref={el => wordRefs.current[4] = el} className="inline-block opacity-20 font-light">these technologies —</span>
             </div>
             
             {/* Line 3 */}
-            <div className="mb-2 flex justify-center gap-1.5">
-              <span ref={el => wordRefs.current[5] = el} className="inline-block opacity-25">I</span>
-              <span ref={el => wordRefs.current[6] = el} className="inline-block opacity-25">build</span>
-              <span ref={el => wordRefs.current[7] = el} className="inline-block opacity-25">systems</span>
+            <div className="mb-2 flex justify-center gap-2 flex-wrap">
+              <span ref={el => wordRefs.current[5] = el} className="inline-block opacity-20 font-light">I</span>
+              <span ref={el => wordRefs.current[6] = el} className="inline-block opacity-20 font-light">build</span>
+              <span ref={el => wordRefs.current[7] = el} className="inline-block opacity-20 font-light text-white">systems</span>
             </div>
             
             {/* Line 4 */}
             <div className="flex justify-center">
-              <span ref={el => wordRefs.current[8] = el} className="inline-block opacity-25">with them.</span>
+              <span ref={el => wordRefs.current[8] = el} className="inline-block opacity-20 font-light">with them.</span>
             </div>
           </div>
         </div>

@@ -1,103 +1,459 @@
 <div align="center">
 
-# Hi, I'm Sham 👋
+<img src="https://capsule-render.vercel.app/api?type=waving&height=220&color=0:111827,50:1f2937,100:06b6d4&text=SHAM%20MICHALAS%20X&fontSize=42&fontColor=ffffff&animation=fadeIn&fontAlignY=40&desc=FULL-STACK%20SOFTWARE%20ENGINEER%20%E2%80%A2%20AI%20%E2%80%A2%20RAG%20%E2%80%A2%20REAL-TIME%20SYSTEMS&descSize=15&descAlignY=62" width="100%"/>
 
-### Full-Stack Software Engineer | AI/LLM Systems | RAG Pipelines & MCP Servers
+<br>
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-shammichalasx.netlify.app-0A66C2?style=flat-square&logo=googlechrome&logoColor=white)](https://shammichalasx.netlify.app)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-shammichalas-0A66C2?style=flat-square&logo=linkedin&logoColor=white)](https://linkedin.com/in/shammichalas)
-[![Email](https://img.shields.io/badge/Email-shammichalas0007%40gmail.com-D14836?style=flat-square&logo=gmail&logoColor=white)](mailto:shammichalas0007@gmail.com)
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=20&pause=1000&color=22D3EE&center=true&vCenter=true&width=800&lines=Building+clean%2C+scalable+software.;Exploring+AI%2C+RAG+%26+MCP+systems.;Shipping+full-stack+products+end-to-end.;Turning+ideas+into+working+systems+%E2%9A%A1" alt="Typing Animation"/>
+
+<br><br>
+
+<a href="https://shammichalasx.netlify.app">
+<img src="https://img.shields.io/badge/PORTFOLIO-06B6D4?style=for-the-badge&logo=googlechrome&logoColor=white"/>
+</a>
+<a href="https://linkedin.com/in/shammichalas">
+<img src="https://img.shields.io/badge/LINKEDIN-111827?style=for-the-badge&logo=linkedin&logoColor=white"/>
+</a>
+<a href="https://github.com/shammichalas">
+<img src="https://img.shields.io/badge/GITHUB-111827?style=for-the-badge&logo=github&logoColor=white"/>
+</a>
+<a href="mailto:shammichalas0007@gmail.com">
+<img src="https://img.shields.io/badge/EMAIL-111827?style=for-the-badge&logo=gmail&logoColor=white"/>
+</a>
+
+<br><br>
+
+<img src="https://komarev.com/ghpvc/?username=shammichalas&style=for-the-badge&color=06B6D4" alt="Profile Views"/>
 
 </div>
 
 ---
 
-## 🧭 About Me
+## 👋 Hey, I'm Sham
 
-I build production-grade full-stack applications and AI-powered platforms — from real-time systems with WebSockets and CQRS to LLM-driven RAG pipelines exposed as MCP servers. I care about clean architecture, measurable performance wins, and shipping things end-to-end.
+```text
+Full-Stack Software Engineer
+│
+├── Frontend
+│   ├── React.js
+│   ├── Next.js
+│   ├── TypeScript
+│   └── Blazor
+│
+├── Backend
+│   ├── FastAPI
+│   ├── Spring Boot
+│   ├── ASP.NET Core
+│   ├── Django
+│   └── Node.js
+│
+├── Data
+│   ├── MongoDB
+│   ├── PostgreSQL
+│   ├── MySQL
+│   ├── Redis
+│   └── Supabase
+│
+├── Infrastructure
+│   ├── Docker
+│   ├── AWS Lambda
+│   ├── GitHub Actions
+│   └── CI/CD
+│
+└── AI / Systems
+    ├── LLM Applications
+    ├── RAG
+    ├── MCP
+    ├── WebSockets
+    └── Distributed Systems
+```
 
-- 🎓 Pursuing an M.Tech in Information Technology (Sep 2026 – Apr 2028), Francis Xavier Engineering College
-- 💼 Ex-intern @ Skill Software INC (Delaware, USA, remote) and Team InfoSoft
-- 🌱 Currently exploring deeper distributed-systems and platform-engineering work
+I build **production-grade full-stack applications, AI-powered platforms, real-time systems, and scalable backend architectures**.
+
+I enjoy taking an idea from:
+
+**💡 Idea → 🧩 Architecture → 💻 Code → 🧪 Test → 🐳 Deploy → 🚀 Production**
 
 ---
 
-## 🛠️ Tech Stack
+# ⚡ What I'm Building
 
-**Languages**
-![JavaScript](https://img.shields.io/badge/-JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white)
-![Java](https://img.shields.io/badge/-Java-007396?style=flat-square&logo=openjdk&logoColor=white)
-![C#](https://img.shields.io/badge/-C%23-239120?style=flat-square&logo=csharp&logoColor=white)
-![TypeScript](https://img.shields.io/badge/-TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+<div align="center">
 
-**Frontend**
-![React](https://img.shields.io/badge/-React-61DAFB?style=flat-square&logo=react&logoColor=black)
-![Next.js](https://img.shields.io/badge/-Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-![Blazor](https://img.shields.io/badge/-Blazor-512BD4?style=flat-square&logo=blazor&logoColor=white)
+### `FULL-STACK` × `AI` × `SYSTEM DESIGN` × `UI/UX`
 
-**Backend**
-![FastAPI](https://img.shields.io/badge/-FastAPI-009688?style=flat-square&logo=fastapi&logoColor=white)
-![Node.js](https://img.shields.io/badge/-Node.js-339933?style=flat-square&logo=nodedotjs&logoColor=white)
-![.NET](https://img.shields.io/badge/-.NET-512BD4?style=flat-square&logo=dotnet&logoColor=white)
-![Spring Boot](https://img.shields.io/badge/-Spring%20Boot-6DB33F?style=flat-square&logo=springboot&logoColor=white)
-![Django](https://img.shields.io/badge/-Django-092E20?style=flat-square&logo=django&logoColor=white)
+<br>
 
-**Data & Infra**
-![MongoDB](https://img.shields.io/badge/-MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
-![PostgreSQL](https://img.shields.io/badge/-PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
-![Redis](https://img.shields.io/badge/-Redis-DC382D?style=flat-square&logo=redis&logoColor=white)
-![Docker](https://img.shields.io/badge/-Docker-2496ED?style=flat-square&logo=docker&logoColor=white)
-![AWS Lambda](https://img.shields.io/badge/-AWS%20Lambda-FF9900?style=flat-square&logo=awslambda&logoColor=white)
-![GitHub Actions](https://img.shields.io/badge/-GitHub%20Actions-2088FF?style=flat-square&logo=githubactions&logoColor=white)
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=18&pause=1200&color=06B6D4&center=true&vCenter=true&width=700&lines=Designing+systems%2C+not+just+interfaces.;Building+APIs+that+scale.;Exploring+RAG+%26+MCP+architectures.;Making+complex+systems+feel+simple." />
 
-**AI / LLM**
-![Gemini](https://img.shields.io/badge/-Gemini%20API-8E75B2?style=flat-square&logo=googlegemini&logoColor=white)
-![OpenAI](https://img.shields.io/badge/-OpenAI%20API-412991?style=flat-square&logo=openai&logoColor=white)
-![MCP](https://img.shields.io/badge/-MCP-000000?style=flat-square)
+</div>
 
 ---
 
-## 🚀 Featured Projects
+# 🧩 System Architecture / README
 
-### [Flint](https://flintn.netlify.app)
-`Next.js 14` `FastAPI` `MongoDB` `Firebase Auth` `Gemini API` `MCP Server` `TypeScript`
+```mermaid
+flowchart LR
 
-Full-stack AI document intelligence platform — PDFs become multi-level summaries, semantic vector search, and spaced-repetition quizzes. Custom RAG pipeline built from scratch (Gemini embeddings + cosine similarity) with cross-document synthesis and a physics force graph rendered in raw SVG. Exposed as an **MCP server**, letting Claude and other MCP clients search, retrieve, and create workspace documents via token-scoped tool calls.
+    USER[👤 User]
 
-### [CafeSphere](https://cafespheree.netlify.app)
-`.NET 10` `Blazor WebAssembly` `MongoDB Atlas` `SignalR` `Redis` `Docker`
+    UI[🎨 Frontend]
+    API[⚡ API Layer]
 
-Clean Architecture backend with CQRS (MediatR) across 4 solution layers, powering POS, Kitchen Display, Inventory, Reservations, and an AI-driven sales-assistant module behind JWT-secured, role-isolated APIs. Real-time order pipeline via SignalR WebSockets with Redis caching and automated CI/CD.
+    AUTH[🔐 Authentication]
+    CORE[🧠 Business Logic]
 
-### [HRMS](https://workforhub.netlify.app)
+    DB[(🗄️ Database)]
+    CACHE[(⚡ Redis)]
+
+    QUEUE[📨 Async Queue]
+    WORKER[⚙️ Background Worker]
+
+    AI[🤖 AI / LLM]
+    WS[🔄 WebSocket]
+
+    USER --> UI
+    UI --> API
+
+    API --> AUTH
+    API --> CORE
+
+    CORE --> DB
+    CORE --> CACHE
+
+    CORE --> QUEUE
+    QUEUE --> WORKER
+
+    WORKER --> AI
+
+    API --> WS
+    WS --> UI
+```
+
+### My development flow
+
+```text
+01  PLAN
+ ↓
+02  ARCHITECTURE
+ ↓
+03  UI / API DESIGN
+ ↓
+04  IMPLEMENTATION
+ ↓
+05  DATABASE + SERVICES
+ ↓
+06  TESTING
+ ↓
+07  DOCKER / CI-CD
+ ↓
+08  DEPLOYMENT
+ ↓
+09  ITERATE
+```
+
+---
+
+# 🛠️ Tech Stack
+
+<div align="center">
+
+<img src="https://skillicons.dev/icons?i=js,ts,python,java,cs,c,react,nextjs,fastapi,nodejs,dotnet,spring,django,html,css&perline=8"/>
+
+<br><br>
+
+<img src="https://skillicons.dev/icons?i=mongodb,postgres,mysql,redis,supabase,firebase,docker,aws,githubactions,git,github,figma,vscode&perline=8"/>
+
+</div>
+
+---
+
+## 💻 Languages
+
+`JavaScript` `TypeScript` `Python` `Java` `C` `C#`
+
+## 🎨 Frontend
+
+`React.js` `Next.js` `TypeScript` `Blazor WebAssembly` `HTML` `CSS`
+
+## ⚙️ Backend
+
+`FastAPI` `Node.js` `Express.js` `Flask` `ASP.NET Core` `Spring Boot` `Django`
+
+## 🗄️ Databases
+
+`MongoDB` `PostgreSQL` `MySQL` `Supabase` `Redis` `Firebase`
+
+## ☁️ Cloud & DevOps
+
+`AWS Lambda` `Docker` `Docker Compose` `GitHub Actions` `Jenkins` `CI/CD`
+
+## 🤖 AI / Engineering
+
+`Gemini API` `OpenAI API` `RAG` `MCP` `REST APIs` `JWT` `WebSockets` `CQRS` `OOP`
+
+---
+
+# 🚀 Featured Projects
+
+## 🔥 Flint
+
+### AI Document Intelligence Platform
+
+`Next.js` `FastAPI` `MongoDB` `Firebase Auth` `Gemini API` `MCP` `TypeScript`
+
+```text
+PDF
+ ↓
+Document Processing
+ ↓
+AI Summarization
+ ↓
+Embeddings
+ ↓
+Semantic Search
+ ↓
+RAG Pipeline
+ ↓
+Knowledge Retrieval
+ ↓
+Quizzes / Workspace
+```
+
+Built a full-stack AI document platform capable of processing PDFs into:
+
+* 📄 Multi-level summaries
+* 🔎 Semantic vector search
+* 🧠 Cross-document synthesis
+* 📝 Spaced-repetition quizzes
+* 🕸️ Interactive SVG force graph
+* 🔐 Firebase authentication
+* 🔌 MCP server integration
+
+**[🌐 Live Project](https://flintn.netlify.app)**
+
+---
+
+## ☕ CafeSphere
+
+### Real-Time Restaurant Management Platform
+
+`.NET` `Blazor WebAssembly` `MongoDB Atlas` `SignalR` `Redis` `Docker`
+
+```text
+Customer
+   ↓
+POS
+   ↓
+Order
+   ↓
+SignalR
+   ↓
+Kitchen Display
+   ↓
+Preparing
+   ↓
+Ready
+   ↓
+Completed
+```
+
+Features:
+
+* 🧾 POS
+* 👨‍🍳 Kitchen Display
+* 📦 Inventory
+* 📅 Reservations
+* 🤖 AI sales assistant
+* 🔐 JWT authentication
+* 👥 Role-based access
+* ⚡ Redis caching
+* 🔄 SignalR real-time communication
+* 🐳 Docker
+* 🚀 GitHub Actions CI/CD
+
+**[🌐 Live Project](https://cafespheree.netlify.app)**
+
+---
+
+## 🧑‍💼 HRMS
+
+### Human Resource Management System
+
 `React 19` `TypeScript` `Spring Boot 3` `PostgreSQL` `JWT` `Docker`
 
-Modular HRMS backend covering employee lifecycle, attendance, leave, and payroll, with RBAC, Flyway migrations, and MapStruct DTO mapping. React 19 + TypeScript dashboard (TanStack Query, React Hook Form + Zod, Recharts) with protected routing and JWT-aware Axios interceptors — deployed end-to-end.
+```text
+React Dashboard
+      ↓
+TanStack Query
+      ↓
+REST API
+      ↓
+Spring Boot
+      ↓
+CQRS / Services
+      ↓
+PostgreSQL
+```
 
-### [Cookbook Studio](https://github.com/shammichalas/Cookbook-studio)
-`Django 5.2` `PostgreSQL (Supabase)` `ReportLab`
+Includes:
 
-Full-stack recipe and digital cookbook platform with chef profiles, a follow system, nested threaded comments, and category-based recommendations. Includes a ReportLab-powered PDF generator that produces styled, paginated ebooks with auto-generated tables of contents, ingredient checklists, and nutrition panels.
+* 👤 Employee lifecycle
+* 🕐 Attendance
+* 🌴 Leave management
+* 💰 Payroll
+* 🔐 JWT authentication
+* 🛡️ RBAC
+* 🗃️ Flyway migrations
+* 🔄 MapStruct DTO mapping
+* 📊 Recharts dashboards
+* 🐳 Docker Compose
+
+**[🌐 Live Project](https://workforhub.netlify.app)**
 
 ---
 
-## 💼 Experience
+## 📚 Cookbook Studio
 
-**Software Engineer Intern** — Skill Software INC *(Remote, Delaware, USA)* · Aug – Sep 2025
-Cut p95 latency ~40% via Redis caching + Celery async queues; built LLM-powered automation that reduced manual review time ~70%.
+### Social Recipe & Digital Cookbook Platform
 
-**Full Stack Developer Intern** — Team InfoSoft *(Tirunelveli)* · Jun – Jul 2024
-Led a full React.js redesign of the company's public homepage, shipped to production; built internal data-analysis dashboards.
+`Django` `PostgreSQL` `Supabase` `ReportLab`
+
+Features:
+
+* 👨‍🍳 Chef profiles
+* 👥 Follow system
+* 💬 Nested threaded comments
+* 🍲 Recipe recommendations
+* 📖 Digital cookbook
+* 📄 PDF generation
+* 📑 Automatic table of contents
+* 🥕 Ingredient checklists
+* 🧮 Nutrition panels
+
+**[↗ GitHub Repository](https://github.com/shammichalas/Cookbook-studio)**
 
 ---
 
-## 📊 GitHub Stats
+# 💼 Experience
+
+### Software Engineer Intern
+
+**Skill Software INC — Delaware, USA · Remote**
+
+`Aug 2025 – Sep 2025`
+
+```text
+Production Bottleneck
+        ↓
+Redis Caching
+        +
+Celery Async Queues
+        ↓
+~40% p95 Latency Reduction
+```
+
+Also worked on LLM-powered automation workflows that reduced manual review time by approximately **70%**.
+
+---
+
+### Full Stack Developer Intern
+
+**Team InfoSoft — Tirunelveli**
+
+`Jun 2024 – Jul 2024`
+
+* Redesigned the company's public-facing website using React.js.
+* Delivered the redesign to production.
+* Built internal data-analysis dashboards.
+* Converted business data into structured operational reports.
+
+---
+
+# 📊 GitHub Analytics
 
 <div align="center">
 
-![Sham's GitHub stats](https://github-readme-stats.vercel.app/api?username=shammichalas&show_icons=true&theme=radical&hide_border=true)
-![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=shammichalas&layout=compact&theme=radical&hide_border=true)
+<img src="https://github-readme-stats.vercel.app/api?username=shammichalas&show_icons=true&hide_border=true&theme=tokyonight&rank_icon=github" height="180"/>
+
+<img src="https://github-readme-stats.vercel.app/api/top-langs/?username=shammichalas&layout=compact&hide_border=true&theme=tokyonight" height="180"/>
+
+<br><br>
+
+<img src="https://github-readme-streak-stats.herokuapp.com/?user=shammichalas&theme=tokyonight&hide_border=true"/>
+
+</div>
+
+---
+
+# 🐍 Contribution Animation
+
+<div align="center">
+
+<img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg" alt="GitHub Contribution Snake"/>
+
+</div>
+
+---
+
+# 🎯 Engineering Philosophy
+
+<div align="center">
+
+```text
+"Don't just make it work.
+
+Make it understandable.
+Make it maintainable.
+Make it measurable.
+Then make it beautiful."
+```
+
+</div>
+
+---
+
+# 🎓 Education
+
+### Master of Technology — Information Technology
+
+**Francis Xavier Engineering College, Tirunelveli**
+
+`2026 – 2028`
+
+### Bachelor of Technology — Information Technology
+
+**Francis Xavier Engineering College, Tirunelveli**
+
+`2022 – 2026`
+
+**CGPA: 8.03 / 10**
+
+---
+
+# 🌐 Find Me
+
+<div align="center">
+
+<a href="https://shammichalasx.netlify.app">
+<img src="https://img.shields.io/badge/🌐%20Portfolio-06B6D4?style=for-the-badge"/>
+</a>
+
+<a href="https://linkedin.com/in/shammichalas">
+<img src="https://img.shields.io/badge/LinkedIn-111827?style=for-the-badge&logo=linkedin"/>
+</a>
+
+<a href="https://github.com/shammichalas">
+<img src="https://img.shields.io/badge/GitHub-111827?style=for-the-badge&logo=github"/>
+</a>
+
+<a href="mailto:shammichalas0007@gmail.com">
+<img src="https://img.shields.io/badge/Email-111827?style=for-the-badge&logo=gmail"/>
+</a>
+
+<br><br>
+
+### ⚡ Building → Breaking → Learning → Shipping
 
 </div>
 
@@ -105,6 +461,6 @@ Led a full React.js redesign of the company's public homepage, shipped to produc
 
 <div align="center">
 
-*Always shipping, always learning.*
+<img src="https://capsule-render.vercel.app/api?type=waving&height=130&section=footer&color=0:06b6d4,50:1f2937,100:111827" width="100%"/>
 
 </div>

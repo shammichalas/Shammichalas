@@ -40,143 +40,92 @@ export default function ContactTerminal() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Desktop Scroll-linked typing timeline
+  // Smooth, non-blocking entrance & typewriter animation sequence when entering viewport
   useEffect(() => {
-    if (isMobile) return;
-
     const section = sectionRef.current;
     const terminal = terminalRef.current;
     const bgOverlay = bgOverlayRef.current;
     const formWrapper = formWrapperRef.current;
 
-    // Set initial states
-    gsap.set(terminal, { scale: 0.5, opacity: 0.7 });
-    gsap.set(bgOverlay, { opacity: 0 });
+    // Set clean initial state without miniature scale down or delay gap
+    gsap.set(terminal, { y: 30, opacity: 0, scale: 0.98 });
+    if (formWrapper) gsap.set(formWrapper, { opacity: 0, y: 15 });
+    if (bgOverlay) gsap.set(bgOverlay, { opacity: 0 });
 
-    const typingState = { count1: 0, count2: 0 };
     const cmd1Text = "ssh guest@shammichalas.dev";
     const cmd2Text = "cat contact_details.txt";
 
-    const tl = gsap.timeline({
+    // 1. Entrance animation (runs once as section enters 85% of viewport)
+    const entranceTl = gsap.timeline({
       scrollTrigger: {
         trigger: section,
-        pin: true,
-        scrub: 1,
-        start: "top top",
-        end: () => `+=${window.innerHeight * 1.5}`,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          // Dynamically manage console states based on scrub progress
-          if (progress < 0.25) {
-            setActiveCursor(1);
-            setShowSystem1(false);
-            setShowFinal(false);
-          } else if (progress >= 0.25 && progress < 0.45) {
-            setActiveCursor(1);
-            setShowSystem1(false);
-            setShowFinal(false);
-          } else if (progress >= 0.45 && progress < 0.65) {
-            setActiveCursor(2);
-            setShowSystem1(true);
-            setShowFinal(false);
-          } else {
-            setActiveCursor(3);
-            setShowSystem1(true);
-            setShowFinal(true);
-          }
-        }
+        start: "top 85%",
+        once: true,
       }
     });
 
-    // 1. Zoom terminal and darken background (first 30% of scroll)
-    tl.to(bgOverlay, { opacity: 0.85, duration: 0.3 }, 0);
-    tl.to(terminal, { scale: 1, opacity: 1, duration: 0.3 }, 0);
+    entranceTl
+      .to(terminal, { y: 0, opacity: 1, scale: 1, duration: 0.6, ease: "power2.out" })
+      .to(bgOverlay, { opacity: 0.6, duration: 0.6 }, 0);
 
-    // 2. Type command 1 character by character (30% to 50%)
-    tl.to(typingState, {
-      count1: cmd1Text.length,
-      duration: 0.4,
-      ease: "none",
-      onUpdate: () => {
-        setCmd1(cmd1Text.slice(0, Math.floor(typingState.count1)));
+    // 2. Fast, fluid typewriter sequence
+    const typingState = { count1: 0, count2: 0 };
+    let typingTimer1, typingTimer2;
+
+    const startTypewriter = () => {
+      // Type Command 1
+      gsap.to(typingState, {
+        count1: cmd1Text.length,
+        duration: 0.6,
+        ease: "none",
+        onStart: () => setActiveCursor(1),
+        onUpdate: () => {
+          setCmd1(cmd1Text.slice(0, Math.floor(typingState.count1)));
+        },
+        onComplete: () => {
+          setActiveCursor(2);
+          setShowSystem1(true);
+          
+          // Pause briefly, then type Command 2
+          typingTimer1 = setTimeout(() => {
+            gsap.to(typingState, {
+              count2: cmd2Text.length,
+              duration: 0.6,
+              ease: "none",
+              onUpdate: () => {
+                setCmd2(cmd2Text.slice(0, Math.floor(typingState.count2)));
+              },
+              onComplete: () => {
+                setActiveCursor(3);
+                setShowFinal(true);
+                if (formWrapper) {
+                  gsap.to(formWrapper, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" });
+                }
+              }
+            });
+          }, 300);
+        }
+      });
+    };
+
+    const triggerST = ScrollTrigger.create({
+      trigger: terminal,
+      start: "top 75%",
+      once: true,
+      onEnter: () => {
+        typingTimer2 = setTimeout(startTypewriter, 200);
       }
-    }, 0.3);
-
-    // 3. Pause for system feedback simulation (50% to 60% of scroll)
-    tl.to({}, { duration: 0.1 });
-
-    // 4. Type command 2 character by character (60% to 80%)
-    tl.to(typingState, {
-      count2: cmd2Text.length,
-      duration: 0.4,
-      ease: "none",
-      onUpdate: () => {
-        setCmd2(cmd2Text.slice(0, Math.floor(typingState.count2)));
-      }
-    }, 0.8);
-
-    // 5. Fade in form wrapper and final links (80% to 100%)
-    tl.fromTo(formWrapper,
-      { opacity: 0, y: 15 },
-      { opacity: 1, y: 0, duration: 0.3, ease: "power2.out" },
-      1.2
-    );
+    });
 
     return () => {
-      if (tl.scrollTrigger) tl.scrollTrigger.kill();
-      tl.kill();
-      // Reset scale and opacity on mobile viewports
-      gsap.set(terminal, { clearProps: "transform,scale,opacity" });
-      gsap.set(bgOverlay, { clearProps: "opacity" });
+      if (entranceTl.scrollTrigger) entranceTl.scrollTrigger.kill();
+      entranceTl.kill();
+      if (triggerST) triggerST.kill();
+      clearTimeout(typingTimer1);
+      clearTimeout(typingTimer2);
     };
-  }, [isMobile]);
+  }, []);
 
-  // Mobile Auto-play typewriter fallback on mount
-  useEffect(() => {
-    if (!isMobile) return;
-
-    // Instantly prepare layout and play a fast autoplay typewriter
-    const cmd1Text = "ssh guest@shammichalas.dev";
-    const cmd2Text = "cat contact_details.txt";
-
-    let timeout1, timeout2, timeout3, timeout4;
-
-    let i = 0;
-    const type1 = () => {
-      if (i <= cmd1Text.length) {
-        setCmd1(cmd1Text.slice(0, i));
-        i++;
-        timeout1 = setTimeout(type1, 40);
-      } else {
-        setActiveCursor(2);
-        setShowSystem1(true);
-        timeout2 = setTimeout(() => {
-          let j = 0;
-          const type2 = () => {
-            if (j <= cmd2Text.length) {
-              setCmd2(cmd2Text.slice(0, j));
-              j++;
-              timeout3 = setTimeout(type2, 40);
-            } else {
-              setActiveCursor(3);
-              setShowFinal(true);
-            }
-          };
-          type2();
-        }, 500);
-      }
-    };
-
-    timeout4 = setTimeout(type1, 400);
-
-    return () => {
-      clearTimeout(timeout1);
-      clearTimeout(timeout2);
-      clearTimeout(timeout3);
-      clearTimeout(timeout4);
-    };
-  }, [isMobile]);
 
   const handleInputChange = (field, value) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -304,9 +253,9 @@ export default function ContactTerminal() {
           {/* Terminal Window Header Bar */}
           <div className="px-6 py-4 bg-white/[0.02] border-b border-white/10 flex items-center justify-between relative z-10 backdrop-blur-md">
             <div className="flex items-center gap-2">
-              <div className="w-3 h-3 rounded-full bg-white/20 border border-white/10" />
-              <div className="w-3 h-3 rounded-full bg-white/15 border border-white/10" />
-              <div className="w-3 h-3 rounded-full bg-white/10 border border-white/10" />
+              <div className="w-3 h-3 rounded-full bg-[#FF5F56] border border-[#E0443E] shadow-sm transition-transform duration-200 hover:scale-110 cursor-pointer" />
+              <div className="w-3 h-3 rounded-full bg-[#FFBD2E] border border-[#DEA123] shadow-sm transition-transform duration-200 hover:scale-110 cursor-pointer" />
+              <div className="w-3 h-3 rounded-full bg-[#27C93F] border border-[#1AAB29] shadow-sm transition-transform duration-200 hover:scale-110 cursor-pointer" />
             </div>
             <div className="flex items-center gap-2 text-neutral-400 font-mono text-[10px] font-extrabold tracking-widest uppercase">
               <Terminal className="w-3.5 h-3.5 text-neutral-300" />

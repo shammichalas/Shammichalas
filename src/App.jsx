@@ -126,7 +126,7 @@ export default function App() {
       {/* 10. Minimal Cinematic Footer */}
       <footer className="py-12 border-t border-white/5 bg-[#0B0D0D] text-center text-xs text-slate-500 font-sans z-30 relative">
         <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <p>© 2026 Sham Michalas. Co-creating the digital horizon.</p>
+          <p>© 2026 Sham Michalas.</p>
           <div className="flex items-center gap-6 text-[10px] font-mono uppercase tracking-widest font-bold">
             <span className="text-neutral-400">React</span>
             <span className="text-neutral-400">Tailwind</span>

@@ -4,18 +4,15 @@
 
 <br>
 
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=20&pause=1000&color=22D3EE&center=true&vCenter=true&width=800&lines=Building+clean%2C+scalable+software.;Exploring+AI%2C+RAG+%26+MCP+systems.;Shipping+full-stack+products+end-to-end.;Turning+ideas+into+working+systems+%E2%9A%A1" alt="Typing Animation"/>
+<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=19&pause=1000&color=22D3EE&center=true&vCenter=true&width=850&lines=Building+clean%2C+scalable+software.;Exploring+AI%2C+RAG+%26+MCP+systems.;Designing+systems%2C+not+just+interfaces.;Turning+ideas+into+working+systems+%E2%9A%A1"/>
 
 <br><br>
 
 <a href="https://shammichalasx.netlify.app">
-<img src="https://img.shields.io/badge/PORTFOLIO-06B6D4?style=for-the-badge&logo=googlechrome&logoColor=white"/>
+<img src="https://img.shields.io/badge/🌐%20PORTFOLIO-06B6D4?style=for-the-badge"/>
 </a>
 <a href="https://linkedin.com/in/shammichalas">
 <img src="https://img.shields.io/badge/LINKEDIN-111827?style=for-the-badge&logo=linkedin&logoColor=white"/>
-</a>
-<a href="https://github.com/shammichalas">
-<img src="https://img.shields.io/badge/GITHUB-111827?style=for-the-badge&logo=github&logoColor=white"/>
 </a>
 <a href="mailto:shammichalas0007@gmail.com">
 <img src="https://img.shields.io/badge/EMAIL-111827?style=for-the-badge&logo=gmail&logoColor=white"/>
@@ -23,354 +20,170 @@
 
 <br><br>
 
-<img src="https://komarev.com/ghpvc/?username=shammichalas&style=for-the-badge&color=06B6D4" alt="Profile Views"/>
+<img src="https://komarev.com/ghpvc/?username=shammichalas&style=for-the-badge&color=06B6D4"/>
 
 </div>
 
 ---
-
-## 👋 Hey, I'm Sham
-
-```text
-Full-Stack Software Engineer
-│
-├── Frontend
-│   ├── React.js
-│   ├── Next.js
-│   ├── TypeScript
-│   └── Blazor
-│
-├── Backend
-│   ├── FastAPI
-│   ├── Spring Boot
-│   ├── ASP.NET Core
-│   ├── Django
-│   └── Node.js
-│
-├── Data
-│   ├── MongoDB
-│   ├── PostgreSQL
-│   ├── MySQL
-│   ├── Redis
-│   └── Supabase
-│
-├── Infrastructure
-│   ├── Docker
-│   ├── AWS Lambda
-│   ├── GitHub Actions
-│   └── CI/CD
-│
-└── AI / Systems
-    ├── LLM Applications
-    ├── RAG
-    ├── MCP
-    ├── WebSockets
-    └── Distributed Systems
-```
-
-I build **production-grade full-stack applications, AI-powered platforms, real-time systems, and scalable backend architectures**.
-
-I enjoy taking an idea from:
-
-**💡 Idea → 🧩 Architecture → 💻 Code → 🧪 Test → 🐳 Deploy → 🚀 Production**
-
----
-
-# ⚡ What I'm Building
 
 <div align="center">
 
-### `FULL-STACK` × `AI` × `SYSTEM DESIGN` × `UI/UX`
-
-<br>
-
-<img src="https://readme-typing-svg.demolab.com?font=JetBrains+Mono&size=18&pause=1200&color=06B6D4&center=true&vCenter=true&width=700&lines=Designing+systems%2C+not+just+interfaces.;Building+APIs+that+scale.;Exploring+RAG+%26+MCP+architectures.;Making+complex+systems+feel+simple." />
+```text
+┌──────────────────────────────────────────────────────────┐
+│                                                          │
+│   $ whoami                                               │
+│                                                          │
+│   SHAM MICHALAS X                                        │
+│   Full-Stack Software Engineer                           │
+│                                                          │
+│   Building → AI Systems → APIs → Real-Time Apps         │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+```
 
 </div>
 
----
+## `01 / PROFILE`
 
-# 🧩 System Architecture / README
-
-```mermaid
-flowchart LR
-
-    USER[👤 User]
-
-    UI[🎨 Frontend]
-    API[⚡ API Layer]
-
-    AUTH[🔐 Authentication]
-    CORE[🧠 Business Logic]
-
-    DB[(🗄️ Database)]
-    CACHE[(⚡ Redis)]
-
-    QUEUE[📨 Async Queue]
-    WORKER[⚙️ Background Worker]
-
-    AI[🤖 AI / LLM]
-    WS[🔄 WebSocket]
-
-    USER --> UI
-    UI --> API
-
-    API --> AUTH
-    API --> CORE
-
-    CORE --> DB
-    CORE --> CACHE
-
-    CORE --> QUEUE
-    QUEUE --> WORKER
-
-    WORKER --> AI
-
-    API --> WS
-    WS --> UI
-```
-
-### My development flow
+> I build **scalable web applications, AI-powered systems, and real-time software** — working across frontend, backend, databases, cloud, and system architecture.
 
 ```text
-01  PLAN
- ↓
-02  ARCHITECTURE
- ↓
-03  UI / API DESIGN
- ↓
-04  IMPLEMENTATION
- ↓
-05  DATABASE + SERVICES
- ↓
-06  TESTING
- ↓
-07  DOCKER / CI-CD
- ↓
-08  DEPLOYMENT
- ↓
-09  ITERATE
+IDEA
+  │
+  ▼
+ARCHITECTURE
+  │
+  ▼
+IMPLEMENTATION
+  │
+  ▼
+TESTING
+  │
+  ▼
+DEPLOYMENT
+  │
+  ▼
+ITERATION
 ```
 
 ---
 
-# 🛠️ Tech Stack
+## `02 / STACK`
 
 <div align="center">
 
-<img src="https://skillicons.dev/icons?i=js,ts,python,java,cs,c,react,nextjs,fastapi,nodejs,dotnet,spring,django,html,css&perline=8"/>
-
-<br><br>
-
-<img src="https://skillicons.dev/icons?i=mongodb,postgres,mysql,redis,supabase,firebase,docker,aws,githubactions,git,github,figma,vscode&perline=8"/>
+<img src="https://skillicons.dev/icons?i=js,ts,python,java,cs,c,react,nextjs,fastapi,nodejs,dotnet,spring,django,mongodb,postgres,mysql,redis,supabase,docker,aws,githubactions,git,github,figma,vscode&perline=8"/>
 
 </div>
 
----
-
-## 💻 Languages
+### `LANGUAGES`
 
 `JavaScript` `TypeScript` `Python` `Java` `C` `C#`
 
-## 🎨 Frontend
+### `FRONTEND`
 
-`React.js` `Next.js` `TypeScript` `Blazor WebAssembly` `HTML` `CSS`
+`React` `Next.js` `Blazor` `HTML` `CSS`
 
-## ⚙️ Backend
+### `BACKEND`
 
-`FastAPI` `Node.js` `Express.js` `Flask` `ASP.NET Core` `Spring Boot` `Django`
+`FastAPI` `Node.js` `Express` `Spring Boot` `ASP.NET Core` `Django`
 
-## 🗄️ Databases
+### `DATA`
 
-`MongoDB` `PostgreSQL` `MySQL` `Supabase` `Redis` `Firebase`
+`MongoDB` `PostgreSQL` `MySQL` `Redis` `Supabase` `Firebase`
 
-## ☁️ Cloud & DevOps
+### `AI / SYSTEMS`
 
-`AWS Lambda` `Docker` `Docker Compose` `GitHub Actions` `Jenkins` `CI/CD`
+`RAG` `MCP` `LLM Applications` `REST APIs` `WebSockets` `CQRS`
 
-## 🤖 AI / Engineering
+### `CLOUD / DEVOPS`
 
-`Gemini API` `OpenAI API` `RAG` `MCP` `REST APIs` `JWT` `WebSockets` `CQRS` `OOP`
+`Docker` `AWS` `GitHub Actions` `CI/CD`
 
 ---
 
-# 🚀 Featured Projects
-
-## 🔥 Flint
-
-### AI Document Intelligence Platform
-
-`Next.js` `FastAPI` `MongoDB` `Firebase Auth` `Gemini API` `MCP` `TypeScript`
+## `03 / CURRENT MODE`
 
 ```text
-PDF
- ↓
-Document Processing
- ↓
-AI Summarization
- ↓
-Embeddings
- ↓
-Semantic Search
- ↓
-RAG Pipeline
- ↓
-Knowledge Retrieval
- ↓
-Quizzes / Workspace
+┌───────────────────────┬───────────────────────┐
+│  BUILDING             │  EXPLORING            │
+├───────────────────────┼───────────────────────┤
+│  Full-Stack Systems   │  RAG Architectures    │
+│  Backend APIs         │  MCP Systems           │
+│  Real-Time Apps       │  LLM Applications      │
+│  Cloud Infrastructure │  System Design         │
+└───────────────────────┴───────────────────────┘
 ```
 
-Built a full-stack AI document platform capable of processing PDFs into:
+<div align="center">
 
-* 📄 Multi-level summaries
-* 🔎 Semantic vector search
-* 🧠 Cross-document synthesis
-* 📝 Spaced-repetition quizzes
-* 🕸️ Interactive SVG force graph
-* 🔐 Firebase authentication
-* 🔌 MCP server integration
+`FULL-STACK`　×　`AI`　×　`SYSTEM DESIGN`　×　`UI/UX`
 
-**[🌐 Live Project](https://flintn.netlify.app)**
+</div>
 
 ---
 
-## ☕ CafeSphere
+## `04 / EXPERIENCE`
 
-### Real-Time Restaurant Management Platform
+### `01` — Software Engineer Intern
 
-`.NET` `Blazor WebAssembly` `MongoDB Atlas` `SignalR` `Redis` `Docker`
+**Skill Software INC · Delaware, USA · Remote**
+
+`AUG 2025 → SEP 2025`
 
 ```text
-Customer
-   ↓
-POS
-   ↓
-Order
-   ↓
-SignalR
-   ↓
-Kitchen Display
-   ↓
-Preparing
-   ↓
-Ready
-   ↓
-Completed
-```
-
-Features:
-
-* 🧾 POS
-* 👨‍🍳 Kitchen Display
-* 📦 Inventory
-* 📅 Reservations
-* 🤖 AI sales assistant
-* 🔐 JWT authentication
-* 👥 Role-based access
-* ⚡ Redis caching
-* 🔄 SignalR real-time communication
-* 🐳 Docker
-* 🚀 GitHub Actions CI/CD
-
-**[🌐 Live Project](https://cafespheree.netlify.app)**
-
----
-
-## 🧑‍💼 HRMS
-
-### Human Resource Management System
-
-`React 19` `TypeScript` `Spring Boot 3` `PostgreSQL` `JWT` `Docker`
-
-```text
-React Dashboard
-      ↓
-TanStack Query
-      ↓
-REST API
-      ↓
-Spring Boot
-      ↓
-CQRS / Services
-      ↓
-PostgreSQL
-```
-
-Includes:
-
-* 👤 Employee lifecycle
-* 🕐 Attendance
-* 🌴 Leave management
-* 💰 Payroll
-* 🔐 JWT authentication
-* 🛡️ RBAC
-* 🗃️ Flyway migrations
-* 🔄 MapStruct DTO mapping
-* 📊 Recharts dashboards
-* 🐳 Docker Compose
-
-**[🌐 Live Project](https://workforhub.netlify.app)**
-
----
-
-## 📚 Cookbook Studio
-
-### Social Recipe & Digital Cookbook Platform
-
-`Django` `PostgreSQL` `Supabase` `ReportLab`
-
-Features:
-
-* 👨‍🍳 Chef profiles
-* 👥 Follow system
-* 💬 Nested threaded comments
-* 🍲 Recipe recommendations
-* 📖 Digital cookbook
-* 📄 PDF generation
-* 📑 Automatic table of contents
-* 🥕 Ingredient checklists
-* 🧮 Nutrition panels
-
-**[↗ GitHub Repository](https://github.com/shammichalas/Cookbook-studio)**
-
----
-
-# 💼 Experience
-
-### Software Engineer Intern
-
-**Skill Software INC — Delaware, USA · Remote**
-
-`Aug 2025 – Sep 2025`
-
-```text
-Production Bottleneck
-        ↓
-Redis Caching
-        +
-Celery Async Queues
-        ↓
+Redis
+  +
+Celery
+  +
+LLM Automation
+  ↓
 ~40% p95 Latency Reduction
+~70% Manual Review Reduction
 ```
 
-Also worked on LLM-powered automation workflows that reduced manual review time by approximately **70%**.
+---
+
+### `02` — Full Stack Developer Intern
+
+**Team InfoSoft · Tirunelveli**
+
+`JUN 2024 → JUL 2024`
+
+```text
+React.js
+   ↓
+Production Web Interface
+
+Business Data
+   ↓
+Analysis Dashboards
+```
 
 ---
 
-### Full Stack Developer Intern
+## `05 / EDUCATION`
 
-**Team InfoSoft — Tirunelveli**
-
-`Jun 2024 – Jul 2024`
-
-* Redesigned the company's public-facing website using React.js.
-* Delivered the redesign to production.
-* Built internal data-analysis dashboards.
-* Converted business data into structured operational reports.
+```text
+┌──────────────────────────────────────────────────────────┐
+│                                                          │
+│  M.Tech — Information Technology                         │
+│  Francis Xavier Engineering College                      │
+│  2026 → 2028                                             │
+│                                                          │
+│  ──────────────────────────────────────────────────────  │
+│                                                          │
+│  B.Tech — Information Technology                         │
+│  Francis Xavier Engineering College                      │
+│  2022 → 2026                                             │
+│  CGPA: 8.03 / 10                                         │
+│                                                          │
+└──────────────────────────────────────────────────────────┘
+```
 
 ---
 
-# 📊 GitHub Analytics
+## `06 / GITHUB STATUS`
 
 <div align="center">
 
@@ -386,80 +199,36 @@ Also worked on LLM-powered automation workflows that reduced manual review time 
 
 ---
 
-# 🐍 Contribution Animation
-
-<div align="center">
-
-<img src="https://raw.githubusercontent.com/Platane/snk/output/github-contribution-grid-snake.svg" alt="GitHub Contribution Snake"/>
-
-</div>
-
----
-
-# 🎯 Engineering Philosophy
+## `07 / SYSTEM STATUS`
 
 <div align="center">
 
 ```text
-"Don't just make it work.
-
-Make it understandable.
-Make it maintainable.
-Make it measurable.
-Then make it beautiful."
+┌──────────────────────────────────────────┐
+│                                          │
+│  STATUS       : ONLINE                   │
+│  MODE         : BUILD                    │
+│  FOCUS        : FULL-STACK + AI          │
+│  COFFEE       : REQUIRED                 │
+│  BUGS         :  ███████░░░              │
+│  SHIPPING     :  ██████████              │
+│                                          │
+└──────────────────────────────────────────┘
 ```
+
+### `BUILD → BREAK → LEARN → SHIP`
 
 </div>
 
 ---
-
-# 🎓 Education
-
-### Master of Technology — Information Technology
-
-**Francis Xavier Engineering College, Tirunelveli**
-
-`2026 – 2028`
-
-### Bachelor of Technology — Information Technology
-
-**Francis Xavier Engineering College, Tirunelveli**
-
-`2022 – 2026`
-
-**CGPA: 8.03 / 10**
-
----
-
-# 🌐 Find Me
 
 <div align="center">
 
 <a href="https://shammichalasx.netlify.app">
-<img src="https://img.shields.io/badge/🌐%20Portfolio-06B6D4?style=for-the-badge"/>
-</a>
-
-<a href="https://linkedin.com/in/shammichalas">
-<img src="https://img.shields.io/badge/LinkedIn-111827?style=for-the-badge&logo=linkedin"/>
-</a>
-
-<a href="https://github.com/shammichalas">
-<img src="https://img.shields.io/badge/GitHub-111827?style=for-the-badge&logo=github"/>
-</a>
-
-<a href="mailto:shammichalas0007@gmail.com">
-<img src="https://img.shields.io/badge/Email-111827?style=for-the-badge&logo=gmail"/>
+<img src="https://img.shields.io/badge/EXPLORE%20PORTFOLIO-06B6D4?style=for-the-badge"/>
 </a>
 
 <br><br>
-
-### ⚡ Building → Breaking → Learning → Shipping
-
-</div>
-
----
-
-<div align="center">
 
 <img src="https://capsule-render.vercel.app/api?type=waving&height=130&section=footer&color=0:06b6d4,50:1f2937,100:111827" width="100%"/>
 
